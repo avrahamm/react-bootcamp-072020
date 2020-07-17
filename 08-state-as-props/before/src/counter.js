@@ -1,24 +1,30 @@
 import React from 'react';
-import { useState } from 'react';
 
-export default function Counter(props) {
-  const [count, setCount] = useState(0);
-  const {delta, resetDelta} = props;
+export default class Counter extends React.Component
+{
+    constructor(props) {
+        super(props);
+        this.state = { count: 0}
+        this.inc = this.inc.bind(this)
+    }
 
-    function inc() {
-        setCount(x => x + delta);
-        // console.log(count, count + delta )
-        if (count + delta > 9 ) {
-            resetDelta()
+    inc() {
+        this.setState({count: this.state.count + this.props.delta});
+        console.log(this.state.count, this.state.count + this.props.delta )
+        if (this.state.count + this.props.delta > 9 ) {
+            this.props.resetDelta()
         }
     }
 
-  return (
-    <div>
-      <p>
-        I was clicked {count} times        
-        <button onClick={inc}>Click Me</button>
-      </p>
-    </div>
-  );
+    render() {
+        const {count} = this.state
+        return (
+            <div>
+                <p>
+                    I was clicked {count} times
+                    <button onClick={this.inc}>Click Me</button>
+                </p>
+            </div>
+        )
+    }
 }
