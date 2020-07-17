@@ -3,23 +3,18 @@ import { useState } from 'react';
 
 export default function Counter(props) {
   const [count, setCount] = useState(0);
-  const [delta, setDelta] = useState(1);
+  const {delta, resetDelta} = props;
 
-  function inc() {
-    setCount(x => x + delta);
-  }
-
-  function handleChangeDelta(e) {
-    const newValue = Number(e.target.value);
-    setDelta(newValue);
-  }
+    function inc() {
+        setCount(x => x + delta);
+        // console.log(count, count + delta )
+        if (count + delta > 9 ) {
+            resetDelta()
+        }
+    }
 
   return (
     <div>
-      <label>
-        Increase By:
-        <input type="number" value={delta} onChange={handleChangeDelta} />
-      </label>
       <p>
         I was clicked {count} times        
         <button onClick={inc}>Click Me</button>
