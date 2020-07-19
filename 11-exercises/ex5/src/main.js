@@ -11,6 +11,9 @@ import {useState} from 'react'
  * @returns {*}
  * @constructor
  */
+
+// I got the idea, but I think a loop is just as easy. When you have time try to modify
+// to use a loop
 const ColoredRectangles = () => {
     const [state, setState] = useState(
         ColoredRectangles.initial
