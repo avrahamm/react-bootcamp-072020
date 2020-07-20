@@ -2,20 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {useState} from 'react'
 
+// So look (about the multiple state vars. I've changed it to illustrate):
 const ColorSelector = () => {
-    const [state, setState] = useState(
-        ColorSelector.initial
-        );
+    const [color, setColor] = useState('black');
 
     function updateColor(e) {
-       setState({...state, color: e.target.value})
+       setColor(e.target.value);
     }
 
     const style = {
-        backgroundColor: state.color,
+        backgroundColor: color,
         width:100,
         height:100,
     }
+
+  // HTML now has an
+  // <input type="color" />
+  // and it's cool
 
   return (
     <div>

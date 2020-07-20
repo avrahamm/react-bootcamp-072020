@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import {useState} from 'react'
 
 const GuessNumber = () => {
+  // Same comment - please save each "part" of state in a different useState call
+  // const [x, setX] = useState(0);
+  // const [y, setY] = useState(0);
+  // ...
     const [state, setState] = useState(
         {...GuessNumber.initial, random: generateRandom()}
         );

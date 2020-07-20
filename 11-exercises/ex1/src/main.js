@@ -8,7 +8,8 @@ const MultiInput = () => {
     function updateContent(e) {
         setContent(e.target.value)
     }
-  return (
+  // Cool. Can you modify it to 5? 10? 50?
+  return (    
     <div>
         <label>
             1st

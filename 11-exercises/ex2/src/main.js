@@ -2,7 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {useState} from 'react'
 
+// Can you rewrite it to use ONLY one numeric value in state?
+
 const TimeUnits = () => {
+  // not sure this is the best name...
+  // But more important - don't save an object in state
+  // state should be simple data
+  // And if you insist please watch this one first:
+  // https://www.tocode.co.il/bundles/react/lessons/state
     const [content, setContent] = useState(
         TimeUnits.initial
         );
