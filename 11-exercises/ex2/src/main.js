@@ -29,19 +29,19 @@ const TimeUnits = () => {
         <div>
             <label>
                 Hours
-                <input type="text" value={hours} onChange={(e) => {
+                <input type="number" value={hours} onChange={(e) => {
                     updateHours(e)
                 }}/>
             </label>
             <label>
                 Minutes
-                <input type="text" value={hours * MIN_IN_HOUR} onChange={(e) => {
+                <input type="number" value={hours * MIN_IN_HOUR} onChange={(e) => {
                     updateHours(e, MIN_IN_HOUR)
                 }}/>
             </label>
             <label>
                 Seconds
-                <input type="text" value={hours * SECONDS_IN_HOUR} onChange={(e) => {
+                <input type="number" value={hours * SECONDS_IN_HOUR} onChange={(e) => {
                     updateHours(e, SECONDS_IN_HOUR)
                 }}/>
             </label>
