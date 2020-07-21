@@ -7,6 +7,7 @@ const ColorSelector = () => {
     const [color, setColor] = useState('black');
 
     function updateColor(e) {
+        // console.log(e.target.value)
        setColor(e.target.value);
     }
 
@@ -19,17 +20,13 @@ const ColorSelector = () => {
   // HTML now has an
   // <input type="color" />
   // and it's cool
+  // Fixed
 
   return (
     <div>
         <label>
             Please select color:
-            <select id="mySelect" onChange={updateColor}>
-                <option value="black">black</option>
-                <option value="blue">blue</option>
-                <option value="green">green</option>
-                <option value="orange">orange</option>
-            </select>
+            <input type="color" onChange={updateColor} />
         </label>
 
         <div style={ style } > Hello!

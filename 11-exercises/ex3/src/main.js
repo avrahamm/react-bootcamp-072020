@@ -2,48 +2,51 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {useState} from 'react'
 
-const GuessNumber = () => {
+const GuessNumber = (props) => {
   // Same comment - please save each "part" of state in a different useState call
   // const [x, setX] = useState(0);
   // const [y, setY] = useState(0);
   // ...
-    const [state, setState] = useState(
-        {...GuessNumber.initial, random: generateRandom()}
-        );
+
+    const {range} = props;
+    const [random, setRandom] = useState(generateRandom())
+    const [guess, setGuess] = useState(0)
+    const initialHint = 'Start guessing:)';
+    const [hint, setHint] = useState(initialHint)
 
     function reset() {
-        setState({...GuessNumber.initial, random: generateRandom()})
+        setRandom(generateRandom())
+        setGuess(0)
+        setHint(initialHint)
     }
 
     function generateRandom() {
-        return Math.round(Math.random()*GuessNumber.range)
+        return Math.round(Math.random()*range)
     }
 
     function updateGuess(e) {
         const guess = Number(e.target.value)
-        setState({...state, guess})
-        console.log(state)
+        setGuess(guess)
     }
 
     function checkGuess() {
-        let hint = "Greater"
-        if ( state.guess === state.random) {
-            hint = "Exact answer! Well Done!"
+        let curHint = "Greater"
+        if ( guess === random) {
+            curHint = "Exact answer! Well Done!"
         }
-        else if ( state.guess < state.random) {
-            hint = "Less"
+        else if (guess < random) {
+            curHint = "Less"
         }
-        setState({...state, hint})
-        console.log(state)
+        setHint(curHint)
     }
 
   return (
     <div>
         <label>
-            Please guess a number in range [0..{GuessNumber.range}]
-            <input type="text" value={state.guess} onChange={updateGuess}/>
+            Please guess a number in range [0..{range}]
+            <input type="text" value={guess} onChange={updateGuess}/>
         </label>
-        <p>Hint: {state.hint} </p>
+        <p>Hint: {hint} </p>
         <button type="button" onClick={checkGuess}>Check</button>
         <button type="button" onClick={reset}>Reset</button>
 
@@ -51,14 +54,6 @@ const GuessNumber = () => {
   )
 };
 
-GuessNumber.range = 20
-GuessNumber.initial = {
-    'random': 0,
-    'guess': 0,
-    'hint': ''
-}
-
-
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<GuessNumber />, root);
+ReactDOM.render(<GuessNumber range={20}/>, root);

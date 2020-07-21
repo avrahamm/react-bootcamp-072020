@@ -2,23 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {useState} from 'react'
 
-const MultiInput = () => {
+const MultiInput = (props) => {
     const [content, setContent] = useState('');
+    const {inputNumber} = props
+    const arrByInputSize = new Array(inputNumber).fill(null)
 
     function updateContent(e) {
         setContent(e.target.value)
     }
   // Cool. Can you modify it to 5? 10? 50?
+    // Fixed by inputNumber and map
   return (    
     <div>
-        <label>
-            1st
-            <input type="text" value={content} onChange={updateContent}/>
-        </label>
-        <label>
-            2nd
-            <input type="text" value={content} onChange={updateContent}/>
-        </label>
+        {arrByInputSize.map( () => (
+            <label>
+                1st
+                <input type="text" value={content} onChange={updateContent}/>
+            </label>
+            )
+        )}
     </div>
   )
 };
@@ -26,4 +28,4 @@ const MultiInput = () => {
 
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<MultiInput />, root);
+ReactDOM.render(<MultiInput inputNumber={3} />, root);

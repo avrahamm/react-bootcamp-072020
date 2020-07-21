@@ -14,45 +14,48 @@ import {useState} from 'react'
 
 // I got the idea, but I think a loop is just as easy. When you have time try to modify
 // to use a loop
-const ColoredRectangles = () => {
-    const [state, setState] = useState(
-        ColoredRectangles.initial
-        );
+    // Fixed, added rectanglesNumber, uses loop.
+const ColoredRectangles = (props) => {
+        const initialColor = "#800000";
+        const initialDelta = 50000;
 
-    function updateColor(e) {
-       setState({...state, color: e.target.value})
-    }
+        const {rectanglesNumber} = props;
+        const delta = initialDelta
 
-    const style = {
-        backgroundColor: state.color,
-        width:100,
-        height:100,
-    }
+        const [color, setColor] = useState(initialColor)
 
-    let color1 = '#' + addHexColor((style.backgroundColor).substr(1),state.delta)
-    console.log('color1 =' + color1)
-    let color2 = '#' + addHexColor((style.backgroundColor).substr(1),2*state.delta)
-    console.log(`color2 = ${color2}`)
-  return (
-      <div>
-          <label>
-              Please select color:
-              <input type="color" onChange={updateColor}/>
-          </label>
-          <div style={style}>One</div>
-          <br/>
-          <div style={{...style, backgroundColor: color1 }}>Two</div>
-          <br/>
-          <div style={{...style, backgroundColor: color2 }}>Three</div>
-          <br/>
-      </div>
-  )
-};
+        function updateColor(e) {
+            setColor(e.target.value)
+        }
 
-ColoredRectangles.initial = {
-    color: "#000000",
-    delta: 400000
-}
+        const style = {
+            backgroundColor: color,
+            width: 100,
+            height: 100,
+            margin: 20,
+        }
+
+        let arr = new Array(rectanglesNumber).fill(null)
+
+        return (
+            <div>
+                <label>
+                    Please select color:
+                    <input type="color" onChange={updateColor}/>
+                </label>
+                <ul>
+                    {
+                        arr.map((item, index) => {
+                            let color = '#' + addHexColor((style.backgroundColor).substr(1), delta * index)
+                            return (
+                                <li key={index} style={{...style, backgroundColor: color}}>{color}</li>
+                            )
+                        })
+                    }
+                </ul>
+            </div>
+        )
+    };
 
 /**
  * @link:https://stackoverflow.com/questions/11023144/working-with-hex-strings-and-hex-values-more-easily-in-javascript
@@ -62,12 +65,14 @@ ColoredRectangles.initial = {
  * @returns {string}
  */
 function addHexColor(c1, c2) {
-        // debugger
+    // debugger
     let hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
-    while (hexStr.length < 6) { hexStr = '0' + hexStr; } // Zero pad.
+    while (hexStr.length < 6) {
+        hexStr = '0' + hexStr;
+    } // Zero pad.
     return hexStr;
 }
 
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<ColoredRectangles />, root);
+ReactDOM.render(<ColoredRectangles rectanglesNumber={10}/>, root);
