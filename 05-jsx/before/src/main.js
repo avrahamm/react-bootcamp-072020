@@ -9,7 +9,7 @@ const App = () => {
     <div>
       <Person name="jeff" />
       <Person name="bob" />
-      <Person name="dana" />
+      <Person name="dana" kids={["hill","aviad","emuna"]}/>
     </div>
   )
 };
