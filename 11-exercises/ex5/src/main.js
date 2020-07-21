@@ -43,7 +43,7 @@ const ColoredRectangles = (props) => {
                     Please select color:
                     <input type="color" onChange={updateColor}/>
                 </label>
-                <ul>
+                <ul style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     {
                         arr.map((item, index) => {
                             let color = '#' + addHexColor((style.backgroundColor).substr(1), delta * index)

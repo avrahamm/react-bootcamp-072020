@@ -34,6 +34,9 @@ const GuessNumber = (props) => {
         if ( guess === random) {
             curHint = "Exact answer! Well Done!"
         }
+        else if ( Math.random()*10 > 5 ) {
+            curHint = "Greater-:)))"
+        }
         else if (guess < random) {
             curHint = "Less"
         }
@@ -44,7 +47,7 @@ const GuessNumber = (props) => {
     <div>
         <label>
             Please guess a number in range [0..{range}]
-            <input type="text" value={guess} onChange={updateGuess}/>
+            <input type="number" value={guess} onChange={updateGuess}/>
         </label>
         <p>Hint: {hint} </p>
         <button type="button" onClick={checkGuess}>Check</button>
