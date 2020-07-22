@@ -5,7 +5,7 @@ import Score from './score';
 import Board from './board';
 
 
-const App = () => {
+const RedGame = () => {
     const numberOfElements = 10
     const [score, setScore] = useState(0)
     const [redIndex, setRedIndex] = useState(getRedIndex())
@@ -59,4 +59,4 @@ const App = () => {
 
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<App />, root);
+ReactDOM.render(<RedGame />, root);
