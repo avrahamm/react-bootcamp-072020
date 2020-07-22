@@ -1,21 +1,74 @@
 import React from 'react';
 import { useState } from 'react';
 
-const SelectCity = (props) => {
+const SelectCountry = (props) => {
+  const {countries, selectedCountry, replaceCountry} = props
+
   return (
-    <select></select>
+      <>
+        <p>Selected Country: {selectedCountry}</p>
+
+        <select defaultValue={""}  onChange={(e) => replaceCountry(e.target.value)}>
+          <option key={0} disabled value=""> Please select a country</option>
+          {countries.map((country, index) => (
+              <option key={index+1} value={country}>{country}</option>
+          ))}
+        </select>
+      </>
   );
 };
 
-const SelectCountry = (props) => {
+const SelectCity = (props) => {
+
+  const {cities, selectedCity, setSelectedCity} = props;
+
   return (
-    <select></select>
+      <>
+        <p>Selected City: {selectedCity}</p>
+
+        <select defaultValue={""}
+             onChange={(e) => setSelectedCity(e.target.value)}>
+          <option key={0} disabled value="" > Please select a city</option>
+          {cities.map((city, index) => (
+              <option key={index+1} value={city}>{city}</option>
+          ))}
+        </select>
+      </>
   );
 };
 
 export default function SelectCountryAndCity(props) {
+  const { countriesAndCities } = props;
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedCity, setSelectedCity] = useState(null)
+
+  const countries = Object.keys(countriesAndCities)
+  const cities = countriesAndCities[selectedCountry]
+
+  function replaceCountry(country)
+  {
+    // debugger
+    setSelectedCountry(country);
+    setSelectedCity(null)
+  }
+
   return (
-    <p>Main Component</p>
+      <div>
+    <SelectCountry
+      countries={countries}
+      selectedCountry={selectedCountry}
+      replaceCountry={replaceCountry}
+    />
+
+        {cities &&
+        <SelectCity
+            cities={cities}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+        />
+        }
+
+      </div>
   );
 }
 
