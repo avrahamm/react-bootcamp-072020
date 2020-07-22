@@ -4,29 +4,14 @@ import { useState } from 'react';
 export default function Board(props) {
     const RED_SCORE = 10;
     const GREY_SCORE = -5;
-    const {numberOfElements, updateScore} = props
-    const [redIndex, setRedIndex] = useState(getRedIndex())
-
-   function getRedIndex() {
-        return Math.floor(Math.random()*numberOfElements)
-   }
+    const {numberOfElements, redIndex, resetRedIndex, updateScore} = props
 
    function handleClick(score)
    {
        updateScore(score)
        if ( score === RED_SCORE) {
-           let newRedIndex = getNewRedIndex()
-           setRedIndex(newRedIndex)
+           resetRedIndex()
        }
-   }
-
-   function getNewRedIndex()
-   {
-       let newRedIndex = getRedIndex()
-       if (newRedIndex === redIndex) {
-           newRedIndex = (newRedIndex + 1) % numberOfElements
-       }
-       return newRedIndex
    }
 
   return (
