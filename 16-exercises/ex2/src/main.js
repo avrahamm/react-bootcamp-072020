@@ -5,7 +5,7 @@ import Filter from './filter';
 import ItemsList from './ItemsList';
 
 
-const App = () => {
+const ListWithFilter = () => {
     const initialItems = ["a1", "a12", "b1", "b12", "c3", "c34", "d1234", "abc", "dee"]
     const [pattern, setPattern] = useState("")
     const [itemsList, setItemsList] = useState(initialItems)
@@ -29,4 +29,4 @@ const App = () => {
 
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<App />, root);
+ReactDOM.render(<ListWithFilter />, root);
