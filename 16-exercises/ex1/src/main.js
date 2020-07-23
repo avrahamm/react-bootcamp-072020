@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Score from './score';
 import Board from './board';
 
+const RedGame = ({ numberOfElements }) => {
+    const [score, setScore] = useState(0);
 
-const RedGame = () => {
-    const numberOfElements = 10
-    const [score, setScore] = useState(0)
-    const [redIndex, setRedIndex] = useState(getRedIndex())
+    // const [redIndex, setRedIndex] = useState(() => getRedIndex());
+    const [redIndex, setRedIndex] = useState(getRedIndex);
 
     function updateScore(delta)
     {
@@ -54,6 +54,10 @@ const RedGame = () => {
       />
     </div>
   )
+};
+
+RedGame.defaultProps = {
+    numberOfElements: 10,
 };
 
 
