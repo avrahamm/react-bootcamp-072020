@@ -8,6 +8,7 @@ import ItemsList from './ItemsList';
 const ListWithFilter = () => {
     const initialItems = ["a1", "a12", "b1", "b12", "c3", "c34", "d1234", "abc", "dee"]
     const [pattern, setPattern] = useState("")
+  // You don't really need to save itemList in state, do you?
     const [itemsList, setItemsList] = useState(initialItems)
 
     function updatePattern(newPattern)

@@ -45,6 +45,11 @@ const ColoredRectangles = (props) => {
                 </label>
                 <ul style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     {
+                      // This function has a lot of logic.
+                      // Many times we don't want to "hide" logic
+                      // inside inner loops in components
+                      // better to create a helper function or a sub-component
+                      // and put the logic there
                         arr.map((item, index) => {
                             let color = '#' + addHexColor((style.backgroundColor).substr(1), delta * index)
                             return (
