@@ -17,6 +17,10 @@ const RedGame = () => {
         setScore(score => score + delta)
     }
 
+  // I think a better name would be
+  // getRandomIndex()
+  // because you already have redIndex as a state variable
+  // so getRedIndex is a bit misleading
     function getRedIndex() {
         return Math.floor(Math.random()*numberOfElements)
     }
