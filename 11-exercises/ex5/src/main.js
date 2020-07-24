@@ -28,11 +28,27 @@ const ColoredRectangles = (props) => {
             setColor(e.target.value)
         }
 
-        const style = {
-            backgroundColor: color,
-            width: 100,
-            height: 100,
-            margin: 20,
+        const styles = {
+            container: {
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center"
+            },
+            byDelta(color) {
+                return {
+                    backgroundColor: color,
+                    width: 100,
+                    height: 100,
+                    margin: 20,
+                }
+            }
+        }
+
+        function colorByDelta(delta, index)
+        {
+            let curColor = '#' + addHexColor((color).substr(1), delta * index)
+            return curColor
+
         }
 
         let arr = new Array(rectanglesNumber).fill(null)
@@ -43,17 +59,18 @@ const ColoredRectangles = (props) => {
                     Please select color:
                     <input type="color" onChange={updateColor}/>
                 </label>
-                <ul style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                <ul style={styles.container}>
                     {
                       // This function has a lot of logic.
                       // Many times we don't want to "hide" logic
                       // inside inner loops in components
                       // better to create a helper function or a sub-component
                       // and put the logic there
+                            // Fixed. Added styles.byDelta(color)
+                            // and colorByDelta helper functions
                         arr.map((item, index) => {
-                            let color = '#' + addHexColor((style.backgroundColor).substr(1), delta * index)
                             return (
-                                <li key={index} style={{...style, backgroundColor: color}}>{color}</li>
+                                <li key={index} style={styles.byDelta(colorByDelta(delta, index))}></li>
                             )
                         })
                     }
