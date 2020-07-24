@@ -50,8 +50,9 @@ export default function Board(props) {
 
                 // why not - onClick={() => handleClick(score)} ?
                 // (you have extra curly braces)
+                    // Fixed.
                   return (
-                    <div onClick={() => {handleClick(score)}}
+                    <div onClick={() => handleClick(score)}
                         key={index}
                         style={styles.square(theColor)}
                     ></div>

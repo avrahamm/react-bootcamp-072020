@@ -7,8 +7,8 @@ import Board from './board';
 const RedGame = ({ numberOfElements }) => {
     const [score, setScore] = useState(0);
 
-    // const [redIndex, setRedIndex] = useState(() => getRedIndex());
-    const [redIndex, setRedIndex] = useState(getRedIndex);
+    // const [redIndex, setRedIndex] = useState(() => getRandomIndex());
+    const [redIndex, setRedIndex] = useState(getRandomIndex);
 
     function updateScore(delta)
     {
@@ -21,13 +21,14 @@ const RedGame = ({ numberOfElements }) => {
   // getRandomIndex()
   // because you already have redIndex as a state variable
   // so getRedIndex is a bit misleading
-    function getRedIndex() {
+        // Fixed
+    function getRandomIndex() {
         return Math.floor(Math.random()*numberOfElements)
     }
 
     function getNewRedIndex()
     {
-        let newRedIndex = getRedIndex()
+        let newRedIndex = getRandomIndex()
         if (newRedIndex === redIndex) {
             newRedIndex = (newRedIndex + 1) % numberOfElements
         }
