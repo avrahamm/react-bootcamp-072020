@@ -41,6 +41,7 @@ export default function SelectCountryAndCity(props) {
   const { countriesAndCities } = props;
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
+  const [count, setCount] = useState(0)
 
   const countries = Object.keys(countriesAndCities)
   const cities = countriesAndCities[selectedCountry]
@@ -50,6 +51,7 @@ export default function SelectCountryAndCity(props) {
     // debugger
     setSelectedCountry(country);
     setSelectedCity(null)
+    setCount(x => x + 1)
   }
 
   return (
@@ -61,7 +63,7 @@ export default function SelectCountryAndCity(props) {
     />
 
         {cities &&
-        <SelectCity
+        <SelectCity key={count}
             cities={cities}
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
