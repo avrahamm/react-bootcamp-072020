@@ -4,17 +4,41 @@ import { useState } from "react";
 
 function SelectableList(props) {
   const { items } = props;
+  const [activeItems, setActiveItems] = useState(items);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+    function reset()
+    {
+        setActiveItems(items);
+        setSelectedItems([])
+    }
+
+    function deleteItems()
+    {
+        setActiveItems(activeItems.filter( item => !selectedItems.includes(item)));
+    }
+
+    function toggleItem(add, item)
+    {
+        if(add) {
+            setSelectedItems([...selectedItems, item]);
+        } else {
+            setSelectedItems(selectedItems.filter( x=> x !== item));
+        }
+    }
 
   return (
     <>
-      <button>Delete</button>
-      <button>Reset</button>
+      <button onClick={deleteItems}>Delete</button>
+      <button onClick={reset}>Reset</button>
       <ul>
-        {items.map(item => (
+        {activeItems.map(item => (
           <li key={item}>
             <label>
               <input
-                type="checkbox"
+                  type="checkbox"
+                  onChange={e => toggleItem(e.target.checked, item)}
+                  checked={selectedItems.includes(item)}
               />
               {item}
             </label>
