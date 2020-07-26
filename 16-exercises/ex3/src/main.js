@@ -21,32 +21,37 @@ const App = () => {
     setCurFormIndex( x => x + delta);
   }
 
-    let curForm = <FormZero
-        updateCurFormIndex={updateCurFormIndex}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-    />
+  let curForm = '';
 
-  if (curFormIndex === FORM_ONE) {
-        curForm = <FormOne
-            updateCurFormIndex={updateCurFormIndex}
-            country={country}
-            setCountry={setCountry}
-            city={city}
-            setCity={setCity}
-        />;
-    }
-    else if (curFormIndex === FORM_TWO) {
-        curForm = <FormTwo
-            updateCurFormIndex={updateCurFormIndex}
-            username={username}
-            password={password}
-            country={country}
-            city={city}
-        />;
-    }
+  switch(curFormIndex) {
+    case FORM_ONE:
+      curForm = <FormOne
+          updateCurFormIndex={updateCurFormIndex}
+          country={country}
+          setCountry={setCountry}
+          city={city}
+          setCity={setCity}
+      />;
+      break;
+    case FORM_TWO:
+      curForm = <FormTwo
+          updateCurFormIndex={updateCurFormIndex}
+          username={username}
+          password={password}
+          country={country}
+          city={city}
+      />;
+      break;
+    default:
+      curForm = <FormZero
+          updateCurFormIndex={updateCurFormIndex}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+      />
+  }
+
   return (
     <>
         {curForm}
