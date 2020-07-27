@@ -1,9 +1,9 @@
 import React from 'react';
 import {useState} from "react";
+import {ASC_ORDER,DESC_ORDER,sortRows} from './Sorter'
 
 export default function SortableTable(props) {
-    const ASC_ORDER = 0;
-    const DESC_ORDER = 1;
+
     const ID_COL = 0
     const NAME_COL = 1
     const COUNTRY_COL = 2
@@ -20,22 +20,7 @@ export default function SortableTable(props) {
     const [sortingColumn, setSortingColumn] = useState(ID_COL);
     const [sortingOrder, setSortingOrder] = useState(ASC_ORDER);
     const header = (data.slice(0,1))[0]
-    const dataRows  = data.slice(1)
-
-    function compareRowsByColumn(row1, row2) {
-        let res = 0;
-        if (row1[sortingColumn] < row2[sortingColumn])
-            res = -1;
-        else if (row1[sortingColumn] > row2[sortingColumn])
-            res = 1;
-        else
-            return 0;
-
-        if ( sortingOrder === ASC_ORDER)
-            return res;
-        else
-            return res*(-1);
-    }
+    const sortedDataRows  = sortRows( data.slice(1), sortingColumn, sortingOrder);
 
     function toggleSortingOrder()
     {
@@ -68,7 +53,7 @@ export default function SortableTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {dataRows.sort(compareRowsByColumn).map(row => (
+                {sortedDataRows.map(row => (
                     <tr key={row[0]}>
                         {row.map((column, index) => (
                             <td key={index}>{column}</td>
