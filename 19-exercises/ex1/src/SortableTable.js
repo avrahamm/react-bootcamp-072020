@@ -1,25 +1,14 @@
 import React from 'react';
 import {useState} from "react";
-import {ASC_ORDER,DESC_ORDER,sortRows} from './Sorter'
+import {ASC_ORDER,DESC_ORDER,buildColumnIndexesMap,sortRows} from './Sorter'
 
 export default function SortableTable(props) {
 
-    const ID_COL = 0
-    const NAME_COL = 1
-    const COUNTRY_COL = 2
-    const EMAIL_COL = 3
-
-    const columnIndexes = {
-        'id': ID_COL,
-        'Name': NAME_COL,
-        'Country': COUNTRY_COL,
-        'Email': EMAIL_COL
-    }
-
     const {data} = props;
-    const [sortingColumn, setSortingColumn] = useState(ID_COL);
+    const [sortingColumn, setSortingColumn] = useState(0);
     const [sortingOrder, setSortingOrder] = useState(ASC_ORDER);
     const header = (data.slice(0,1))[0]
+    const columnsIndexesMap = buildColumnIndexesMap(header);
     const sortedDataRows  = sortRows( data.slice(1), sortingColumn, sortingOrder);
 
     function toggleSortingOrder()
@@ -44,9 +33,9 @@ export default function SortableTable(props) {
                 <thead>
                 <tr key={header[0]}>
                     {
-                        header.map( (column, index) => (
+                        header.map( (column) => (
                             <th key={column}
-                                onClick={() => toggleSortingColumn(columnIndexes[column])}
+                                onClick={() => toggleSortingColumn(columnsIndexesMap[column])}
                             >{column}</th>
                         ))
                     }

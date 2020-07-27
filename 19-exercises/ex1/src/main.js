@@ -5,11 +5,11 @@ import SortableTable from "./SortableTable";
 
 const App = () => {
     const data = [
-        ['id', 'Name', 'Country', 'Email'],
-        [0, 'dan', 'Israel', 'dan@gmail.com'],
-        [1, 'dana', 'Israel', 'dana@gmail.com'],
-        [2, 'anna', 'Israel', 'anna@gmail.com'],
-        [3, 'zina', 'UK', 'zina@gmail.com'],
+        ['id', 'Name', 'Country', 'Email','Education'],
+        [0, 'dan', 'Israel', 'dan@gmail.com','Bsc'],
+        [1, 'dana', 'Israel', 'dana@gmail.com','Bsc'],
+        [2, 'anna', 'Israel', 'anna@gmail.com','Msc'],
+        [3, 'zina', 'UK', 'zina@gmail.com','Phd'],
     ];
 
     return (
