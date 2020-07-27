@@ -5,10 +5,10 @@ import {ASC_ORDER,DESC_ORDER,buildColumnIndexesMap,sortRows} from './Sorter'
 export default function SortableTable(props) {
 
     const {data} = props;
-    const [sortingColumn, setSortingColumn] = useState(0);
-    const [sortingOrder, setSortingOrder] = useState(ASC_ORDER);
     const header = (data.slice(0,1))[0]
     const columnsIndexesMap = buildColumnIndexesMap(header);
+    const [sortingColumn, setSortingColumn] = useState(0);
+    const [sortingOrder, setSortingOrder] = useState(ASC_ORDER);
     const sortedDataRows  = sortRows( data.slice(1), sortingColumn, sortingOrder);
 
     function toggleSortingOrder()
@@ -35,6 +35,10 @@ export default function SortableTable(props) {
                     {
                         header.map( (column) => (
                             <th key={column}
+                                className={ columnsIndexesMap[column] ===   sortingColumn ?
+                                    // 'ascending'
+                                    (sortingOrder === ASC_ORDER ? 'headerSortDown' : 'headerSortUp')
+                                    : 'col'}
                                 onClick={() => toggleSortingColumn(columnsIndexesMap[column])}
                             >{column}</th>
                         ))
