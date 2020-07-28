@@ -3,6 +3,45 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { useState, useEffect } from 'react';
 
+function ShowFilmTitles(props)
+{
+    const {films} = props;
+    const [titles, setTitles] = useState([])
+
+    useEffect(function() {
+        fetchFilms();
+    }, [films]);
+
+    function fetchFilms()
+    {
+        let promiseArr = []
+        films.forEach( (url, index) => {
+            const p = new Promise((resolve, reject) => {
+                resolve($.getJSON(url));
+            });
+            promiseArr.push(p);
+        });
+
+        Promise.all(promiseArr).then((films) => {
+            const titles = films.map( film => film.title);
+            console.log(titles);
+            setTitles(titles);
+        });
+
+    }
+
+    return (
+        <div>
+            <h4>Film titles</h4>
+            <ul>
+                { titles.map( ( title, index) => (
+                   <li key={index}>{title}</li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
 function ShowCharacterInfo(props)
 {
     const {data} = props;
@@ -11,6 +50,13 @@ function ShowCharacterInfo(props)
         <>
             <p><b>Name:</b> {data.name}</p>
             <p><b>Hair Color:</b> {data.hair_color}</p>
+            <h4>Films</h4>
+            <ul>
+                {data.films.map( (url, index) => (
+                    <li key={index}>{url}</li>
+                ))}
+            </ul>
+            <ShowFilmTitles films={data.films} />
         </>
     );
 }
