@@ -1,49 +1,52 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useState, useRef } from 'react';
+import {useState, useRef} from 'react';
 
 const MultiSelectAndDeleteList = (props) => {
-  const { items } = props;
-  const [ visibleItems, setVisibleItems ] = useState(items);  
+    const {items} = props;
+    const [visibleItems, setVisibleItems] = useState(items);
+    const ul = useRef(null)
 
-  function reset() {
-    setVisibleItems(items);
-  }
+    function reset() {
+        setVisibleItems(items);
+    }
 
-  function deleteSelected() {
-    // TODO
-  }
+    function deleteSelected() {
+        const selectedInputs = ul.current.querySelectorAll('input:checked');
+        const selectedItems = Array.from(selectedInputs).map(inp => inp.parentElement.textContent);
+        setVisibleItems(v => v.filter(x => !selectedItems.includes(x)));
+    }
 
-  return (
-    <div>
-      <button onClick={reset}>Reset</button>
-      <button onClick={deleteSelected}>Delete</button>
-      <ul>
-        {visibleItems.map(item => (
-          <li key={item}>
-            <label>
-              <input type="checkbox" />
-              {item}
-            </label>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div>
+            <button onClick={reset}>Reset</button>
+            <button onClick={deleteSelected}>Delete</button>
+            <ul ref={ul}>
+                {visibleItems.map(item => (
+                    <li key={item}>
+                        <label>
+                            <input type="checkbox"/>
+                            {item}
+                        </label>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 
 }
 
 
 const App = () => {
-  const items = ['one', 'two', 'three', 'four', 'five'];
-  return (
-    <div>
-      <MultiSelectAndDeleteList items={items} />
-    </div>
-  )
+    const items = ['one', 'two', 'three', 'four', 'five'];
+    return (
+        <div>
+            <MultiSelectAndDeleteList items={items}/>
+        </div>
+    )
 };
 
 
 // main.js
 const root = document.querySelector('main');
-ReactDOM.render(<App />, root);
+ReactDOM.render(<App/>, root);
