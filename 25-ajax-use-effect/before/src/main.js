@@ -3,44 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { useState, useEffect } from 'react';
 
-function ShowFilmTitles(props)
-{
-    const {films} = props;
-    const [titles, setTitles] = useState([])
-
-    useEffect(function() {
-        fetchFilms();
-    }, [films]);
-
-    function fetchFilms()
-    {
-        let promiseArr = []
-        films.forEach( (url, index) => {
-            const p = new Promise((resolve, reject) => {
-                resolve($.getJSON(url));
-            });
-            promiseArr.push(p);
-        });
-
-        Promise.all(promiseArr).then((films) => {
-            const titles = films.map( film => film.title);
-            console.log(titles);
-            setTitles(titles);
-        });
-
-    }
-
-    return (
-        <div>
-            <h4>Film titles</h4>
-            <ul>
-                { titles.map( ( title, index) => (
-                   <li key={index}>{title}</li>
-                ))}
-            </ul>
-        </div>
-    )
-}
+import FilmList from './FilmList'
 
 function ShowCharacterInfo(props)
 {
@@ -56,7 +19,7 @@ function ShowCharacterInfo(props)
                     <li key={index}>{url}</li>
                 ))}
             </ul>
-            <ShowFilmTitles films={data.films} />
+            <FilmList films={data.films} />
         </>
     );
 }
