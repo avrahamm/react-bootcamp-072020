@@ -5,6 +5,19 @@ import { useState, useEffect } from 'react';
 function Timer(props) {
   const [ticks, setTicks] = useState(0);
 
+  useEffect(function() {
+    const timer = setInterval(function() {
+      console.log("ouch");
+      setTicks(t => t + 1)
+    }, 1000 );
+
+    return function abort()
+    {
+      clearInterval(timer);
+    }
+
+  }, []);
+
   function tick() {
     setTicks(val => val + 1);
   }
