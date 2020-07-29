@@ -13,7 +13,6 @@ export default function Film(props)
         setTitle(null);
         const $xhr = $.getJSON(filmUrl,
             (filmData) => {
-                console.log(filmData);
                 setTitle(filmData.title)
                 setEpisodeId(filmData.episode_id)
             }

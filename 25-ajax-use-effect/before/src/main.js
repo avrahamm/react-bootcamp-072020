@@ -13,12 +13,6 @@ function ShowCharacterInfo(props)
         <>
             <p><b>Name:</b> {data.name}</p>
             <p><b>Hair Color:</b> {data.hair_color}</p>
-            <h4>Films</h4>
-            <ul>
-                {data.films.map( (url, index) => (
-                    <li key={index}>{url}</li>
-                ))}
-            </ul>
             <FilmList films={data.films} />
         </>
     );
