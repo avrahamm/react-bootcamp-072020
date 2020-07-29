@@ -6,6 +6,7 @@ import './main.css'
 
 function YoutubePlayer(props) {
     const [videoId, setVideoId] = useState('-B8Q7Nv0yDQ'); // 'RJ1SuQVopjE'
+    const [isPlaying, setIsPlaying] = useState(false);
     const playerDivRef = useRef(null);
     const playerRef = useRef(null);
 
@@ -16,8 +17,17 @@ function YoutubePlayer(props) {
     useEffect(function () {
         const player = playerRef.current;
         player.loadVideoById(videoId);
-        player.playVideo();
     }, [videoId]);
+
+    useEffect(function () {
+        const player = playerRef.current;
+        if ( isPlaying) {
+            player.playVideo();
+        }
+        else {
+            player.stopVideo();
+        }
+    }, [isPlaying]);
 
     return (
         <div>
@@ -25,6 +35,10 @@ function YoutubePlayer(props) {
                 <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)}/>
             </div>
             <div className='player-div' ref={playerDivRef}/>
+            <div>
+                <button onClick={() => setIsPlaying(true)}>Start</button>
+                <button onClick={() => setIsPlaying(false)}>Stop</button>
+            </div>
         </div>
     );
 }
