@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {useState, useEffect, useRef} from 'react';
 import YouTubePlayer from 'youtube-player';
-import './main.css'
 
 function YoutubePlayer(props) {
     const [videoId, setVideoId] = useState('-B8Q7Nv0yDQ'); // 'RJ1SuQVopjE'
