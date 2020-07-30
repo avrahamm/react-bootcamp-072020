@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-react": "^7.6.3",
+    "@vimeo/player": "^2.12.2",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",
     "bootstrap": "^4.5.0",
