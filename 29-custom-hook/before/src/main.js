@@ -2,21 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useState, useEffect } from 'react';
 
-function NewsTicker(props) {
-  const { items } = props;
-  const [itemIndex, setItemIndex] = useState(0);
-
-  function tick() {
-    setItemIndex(val => (val + 1) % items.length);
-  }
+function useClock()
+{
+  const [ticks, setTicks] = useState(0);
 
   useEffect(function() {
-    const timer = setInterval(tick, 1000);
+    const timer = setInterval(function() {
+      setTicks(x => x+1)
+    }, 1000);
 
     return function cancel() {
       clearInterval(timer);
     }
   }, []);
+
+  return ticks
+}
+
+function NewsTicker(props) {
+  const { items } = props;
+  const ticks = useClock();
+  const itemIndex = ticks % items.length;
 
   return (
     <p>{items[itemIndex]}</p>
@@ -25,19 +31,7 @@ function NewsTicker(props) {
 
 
 function Clock(props) {
-  const [ticks, setTicks] = useState(0);
-
-  function tick() {
-    setTicks(val => val + 1);
-  }
-
-  useEffect(function() {
-    const timer = setInterval(tick, 1000);
-
-    return function cancel() {
-      clearInterval(timer);
-    }
-  }, []);
+  const ticks = useClock();
 
   return (
     <div>
