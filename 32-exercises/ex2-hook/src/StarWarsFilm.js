@@ -1,5 +1,6 @@
 import React from 'react';
-import {useRemoteData, getNoDataMessage} from './RemoteDataHook'
+import {useRemoteData } from './RemoteDataHook';
+import {getNoDataMessage} from './StarWarsMessages';
 
 
 function ShowFilmInfo(props) {
