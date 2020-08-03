@@ -18,12 +18,22 @@ export default function StarWarsCharacter(props) {
     const {id} = props;
     const SWAPI_API_URL = 'https://swapi.dev/api/';
     const remoteUrl = `${SWAPI_API_URL}people/${id}/`;
-    const data = useRemoteData(remoteUrl, [id]);
-
+    const [data, isLoading, error] = useRemoteData(remoteUrl, [id]);
+    let noDataMessage = '';
+    if( !data ) {
+        if(isLoading)
+        {
+            noDataMessage = 'Loading, please wait..';
+        }
+        if( error) {
+            noDataMessage = error;
+        }
+    }
+    // console.log(isLoading, error, noDataMessage);
     return (
         <div>
             <pre>Debug: id = {id}</pre>
-            {data ? <ShowCharacterInfo data={data}/> : 'Loading, please wait..'}
+            {data ? <ShowCharacterInfo data={data}/> : noDataMessage}
         </div>
     );
 }

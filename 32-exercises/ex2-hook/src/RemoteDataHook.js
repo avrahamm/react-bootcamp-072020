@@ -3,10 +3,24 @@ import $ from "jquery";
 
 export default function useRemoteData(remoteUrl, dependencies) {
     const [data, setData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect( function() {
         setData(null);
-        const $xhr = $.getJSON(remoteUrl, setData);
+        setIsLoading(true);
+        setError(null);
+        const $xhr = $.getJSON(remoteUrl,
+            (data) => {
+                setData(data);
+                setIsLoading(false);
+                setError(null);
+            })
+            .fail(function( jqxhr, textStatus ) {
+                setData(null);
+                setIsLoading(false);
+                setError(textStatus);
+            });
 
         return function abort()
         {
@@ -14,5 +28,5 @@ export default function useRemoteData(remoteUrl, dependencies) {
         }
     }, dependencies);
 
-    return data;
+    return [data, isLoading, error];
 }

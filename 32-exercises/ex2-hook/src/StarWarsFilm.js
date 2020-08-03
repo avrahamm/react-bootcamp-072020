@@ -19,11 +19,21 @@ export default function StarWarsFilm(props) {
     const SWAPI_API_URL = 'https://swapi.dev/api/';
     const remoteUrl = `${SWAPI_API_URL}films/${id}/`;
 
-    const data = useRemoteData(remoteUrl, [id]);
-
+    const [data, isLoading, error] = useRemoteData(remoteUrl, [id]);
+    let noDataMessage = '';
+    if( !data ) {
+        if(isLoading)
+        {
+            noDataMessage = 'Loading, please wait..';
+        }
+        if( error) {
+            noDataMessage = error;
+        }
+    }
+    console.log(data === null ,isLoading, error, noDataMessage);
     return (
         <div>
-            {data ? <ShowFilmInfo data={data}/> : 'Loading, please wait..'}
+            {data ? <ShowFilmInfo data={data}/> : noDataMessage}
         </div>
     );
 }
