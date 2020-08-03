@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {useState} from 'react';
 import StarWarsFilm from './StarWarsFilm';
 import StarWarsCharacter from "./StarWarsCharacter";
+import StarWarsPlanet from "./StarWarsPlanet";
 
 const App = () => {
     const [filmId, setFilmId] = useState(1);
@@ -26,6 +27,16 @@ const App = () => {
                        onChange={(e) => setCharacterId(e.target.value)}/>
             </span>
             <StarWarsCharacter
+                id={characterId}
+            />
+
+            <hr/>
+
+            <span style={{margin:10}}>
+                <input type="number" value={characterId}
+                       onChange={(e) => setCharacterId(e.target.value)}/>
+            </span>
+            <StarWarsPlanet
                 id={characterId}
             />
         </div>

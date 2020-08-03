@@ -1,10 +1,9 @@
 import React from 'react';
-import useRemoteData from './RemoteDataHook'
+import {useRemoteData, getNoDataMessage} from './RemoteDataHook'
 
 
 function ShowCharacterInfo(props) {
     const {data} = props;
-    // console.log(data);
     return (
         <>
             <p><b>Name:</b> {data.name}</p>
@@ -19,17 +18,8 @@ export default function StarWarsCharacter(props) {
     const SWAPI_API_URL = 'https://swapi.dev/api/';
     const remoteUrl = `${SWAPI_API_URL}people/${id}/`;
     const [data, isLoading, error] = useRemoteData(remoteUrl, [id]);
-    let noDataMessage = '';
-    if( !data ) {
-        if(isLoading)
-        {
-            noDataMessage = 'Loading, please wait..';
-        }
-        if( error) {
-            noDataMessage = error;
-        }
-    }
-    // console.log(isLoading, error, noDataMessage);
+    const noDataMessage = getNoDataMessage(data, isLoading, error);
+
     return (
         <div>
             <pre>Debug: id = {id}</pre>
