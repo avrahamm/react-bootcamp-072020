@@ -8,9 +8,9 @@ const App = () => {
   return (
     <div>
         <Carousel>
-            <img  src="../images/apple.jpg" alt="Apple"/>
-            <img  src="../images/avocado.jpg" alt="Avocado"/>
-            <img  src="../images/lemon.jpg" alt="Lemon"/>
+            <img src="../images/la.jpg" alt="Los Angeles"/>
+            <img src="../images/chicago.jpg" alt="Chicago"/>
+            <img src="../images/ny.jpg" alt="New York"/>
         </Carousel>
     </div>
   )
