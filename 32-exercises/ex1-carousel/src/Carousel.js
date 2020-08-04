@@ -8,7 +8,7 @@ export function Carousel(props) {
     function pageComponent(pageIndex) {
         const pages = React.Children.toArray(props.children);
         const page = pages[pageIndex];
-        return React.cloneElement(page);
+        return page;
     }
 
     return (
