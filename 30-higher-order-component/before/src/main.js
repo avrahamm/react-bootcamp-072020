@@ -1,79 +1,74 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {useState, useEffect} from 'react';
 
-class NewsTicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { itemIndex: 0 };
-  }
+function withClock(Component)
+{
+  return function WithClock(props)
+  {
+    const [ticks, setTicks] = useState(0);
 
-  componentDidMount() {
-    this.timer = setInterval(this.tick.bind(this), 1000);
-  }
+    function tick() {
+      setTicks(t => t + 1);
+    }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
+    useEffect(function() {
+      const timer = setInterval(tick, 1000);
 
-  tick() {
-    const { items } = this.props;
+      return function abort() {
+        clearInterval(timer);
+      }
+    }, []);
 
-    this.setState(state => ({ itemIndex: (state.itemIndex + 1) % items.length }));
-  }
-
-  render() {
-    const { items } = this.props;
-    const { itemIndex } = this.state;
-
-    return (
-      <p>{items[itemIndex]}</p>
-    );
+    return <Component {...props} ticks={ticks} />
   }
 }
 
-
-class Clock extends React.Component {  
-  constructor(props) {
-    super(props);
-    this.state = { ticks: 0 };
-  }
-
-  componentDidMount() {
-    this.timer = setInterval(this.tick.bind(this), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
-  tick() {
-    this.setState(state => ({ ticks: state.ticks + 1 }))
-  }
+const NewsTicker = withClock(class NewsTicker extends React.Component {
 
   render() {
-    const { ticks } = this.state;
+    const { items, ticks } = this.props;
+    const itemIndex = ticks % items.length ;
+    // console.log(`NewsTicker render ${itemIndex}`)
 
     return (
-      <p>Ticks... {ticks}</p>
+        <p>{items[itemIndex]}</p>
     );
   }
-}
+});
+
+
+const Clock = withClock(class Clock extends React.Component {
+  render() {
+    const { ticks } = this.props;
+
+    return (
+        <p>Ticks... {ticks}</p>
+    );
+  }
+});
+
+const DoubleClock = withClock(function DoubleClock(props) {
+  const {ticks} = props;
+  return <p>Double {2 * ticks}</p>
+});
 
 
 const App = () => {
 
   const items = [
-"I lit up from Reno",
-"I was trailed by twenty hounds",
-"Didn't get to sleep that night",
-"Till the morning came around",
+    "I lit up from Reno",
+    "I was trailed by twenty hounds",
+    "Didn't get to sleep that night",
+    "Till the morning came around",
   ];
 
   return (
-    <div>
-      <Clock />
-      <NewsTicker items={items} />
-    </div>
+      <div>
+        <Clock />
+        <NewsTicker items={items} />
+        <DoubleClock />
+      </div>
   )
 };
 
