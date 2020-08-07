@@ -21,7 +21,7 @@ class Textbox extends React.Component {
   render() {
     const initialText = this.props.text;
     const { text } = this.state;
-    const borderBottom = (text === initialText) ? '1px solid green' : '1px solid red';
+    const borderBottom = (text === initialText) ? '2px solid green' : '2px solid red';
 
     return (
       <input
