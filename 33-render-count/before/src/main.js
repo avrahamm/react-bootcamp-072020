@@ -6,6 +6,7 @@ import { useState } from 'react';
 function ColorBox(props) {
   const { start, spin, onClick, id } = props;
   const color = tinycolor(start).spin(spin).toString();
+    console.log("ColorBox render");
 
   return (
     <div
@@ -25,6 +26,7 @@ function ColorBox(props) {
 function ColorPalette(props) {
   const { start } = props;
   const [deletedBoxes, setDeletedBoxes] = useState(new Set());
+    console.log("ColorPalette render");
 
   function removeBox(e) {
     const id = e.target.dataset.id;
@@ -48,18 +50,29 @@ function ColorPalette(props) {
   return colors;
 }
 
+function Ticker(props)
+{
+    const [ticks, setTicks] = useState(0);
+    console.log("Ticker render");
+    return (
+        <div>
+            <button onClick={() => setTicks(v => v + 1)}>Click Me ... {ticks}</button>
+        </div>
+    )
+}
+
 function ColorSelector(props) {
-  const [ticks, setTicks] = useState(0);
   const [color, setColor] = useState('#000000');
+    console.log("ColorSelector render");
 
   return (
-    <div>
-      <button onClick={() => setTicks(v => v + 1)}>Click Me ... {ticks}</button>
       <div>
-        <input type="color" value={color} onChange={(e) => setColor(e.target.value) } />
+          <Ticker />
+          <div>
+              <input type="color" value={color} onChange={(e) => setColor(e.target.value)}/>
+          </div>
+          <ColorPalette start={color}/>
       </div>
-      <ColorPalette start={color} />
-    </div>
   );
 }
 
