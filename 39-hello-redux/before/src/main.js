@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { createStore } from 'redux';
 
 const initialState = {
   rooms: [
@@ -39,4 +40,6 @@ const reducer = produce((state, action) => {
       break;
   }
 }, initialState);
+
+window.store = createStore(reducer);
 
