@@ -14,6 +14,10 @@ export function receivedMessage(message) {
   return { type: 'RECEIVED_MESSAGE', payload: message };
 }
 
+export function deleteMessage(messageId) {
+  return { type: 'DELETE_MESSAGE', payload: messageId };
+}
+
 export function setUsername(newUsername) {
   return { type: 'SET_USERNAME', payload: newUsername };
 }

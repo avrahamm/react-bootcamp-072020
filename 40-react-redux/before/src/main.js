@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import Header from './header';
 import Banner from './banner';
+import MessagesList from './messages-list';
+import MessagesCounter from './messages-counter';
+import AddMessage from './add-message';
 import ActiveRoom from './active-room'
 
 const App = (props) => (
@@ -12,6 +15,9 @@ const App = (props) => (
         <Header />
         <Banner />
         <ActiveRoom />
+        <MessagesCounter />
+        <MessagesList />
+        <AddMessage />
     </Provider>
 );
 

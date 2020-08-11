@@ -9,6 +9,8 @@ const initialState = {
   activeRoomId: 0,
   messages: [
     { id: 0, from: 'ynon', text: 'Hello Everyone' },
+    { id: 1, from: 'eli', text: 'Good Morning' },
+    { id: 2, from: 'sarah', text: 'Hey' },
   ],
   username: "guest",
 };
@@ -23,8 +25,15 @@ const reducer = produce((state, action) => {
       state.username = action.payload;
       break;
 
-    case 'RECEIVED_MESSAGE':      
-      state.messages.push(action.payload);
+    case 'DELETE_MESSAGE':
+      const messageId = action.payload;
+      state.messages = state.messages.filter( message => message.id !== messageId )
+      break;
+
+    case 'RECEIVED_MESSAGE':
+      state.messages.push(
+          {id: nextId(state.messages), from: state.username, text: action.payload}
+      );
       break;
 
     case 'CREATE_ROOM':
