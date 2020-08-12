@@ -4,7 +4,7 @@ import { setUsername } from './redux/actions';
 
 function mapStateToProps(state) {
   return {
-    username: state.username,
+    username: state.account.username,
   };
 }
 
