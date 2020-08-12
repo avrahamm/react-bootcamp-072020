@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
     return {
-        messages: state.messages
+        messagesLength: state.messages.length
     }
 }
 
 function MessagesCounter(props) {
-    const { messages } = props;
+    const { messagesLength } = props;
 
     return (
         <div className='banner'>
             <h4>Messages Counter</h4>
-            <p>{messages.length}</p>
+            <p>{messagesLength}</p>
 
         </div>
     )
