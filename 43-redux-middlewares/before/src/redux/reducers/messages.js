@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { nextId } from './utils';
 
 const initialState = {
     messages: [
@@ -13,7 +14,10 @@ export default produce((state, action) => {
       break;
 
     case 'SET_USERNAME':
-      state.messages.push({ from: 'SYSTEM', text: `A user has changed its name to: ${action.payload}` });
+      state.messages.push({
+          id: nextId(state.messages),
+          from: 'SYSTEM',
+          text: `A user has changed its name to: ${action.payload}` });
   }
 }, initialState);
 
