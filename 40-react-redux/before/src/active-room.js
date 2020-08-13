@@ -1,19 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setActiveRoom } from './redux/actions';
 
-function mapStateToProps(state) {
-    return {
-        activeRoomId: state.activeRoomId
-    }
-}
+export default function ActiveRoom( ) {
+    const dispatch = useDispatch();
+    const activeRoomId = useSelector( state => state.activeRoomId);
 
-export default connect(mapStateToProps)( function ActiveRoom(props) {
-    const { activeRoomId, dispatch } = props;
-
-    function handleChangeEvent(e) {
+    const handleChangeEvent = (e) => {
         dispatch(setActiveRoom(e.target.value));
     }
+
     return (
         <div className='banner'>
             <p>Active room id: {activeRoomId}</p>
@@ -23,4 +19,4 @@ export default connect(mapStateToProps)( function ActiveRoom(props) {
             </label>
         </div>
     )
-});
+}

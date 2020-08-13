@@ -1,15 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { deleteMessage } from './redux/actions';
 
-function mapStateToProps(state) {
-    return {
-        messages: state.messages
-    }
-}
 
-function MessagesList(props) {
-    const { messages, dispatch } = props;
+function MessagesList( ) {
+    const messages = useSelector(state => state.messages);
+    const dispatch = useDispatch();
 
     function removeMessage(messageId)
     {
@@ -37,4 +33,4 @@ function MessagesList(props) {
     )
 }
 
-export default connect(mapStateToProps)(MessagesList);
+export default MessagesList;

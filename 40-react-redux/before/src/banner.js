@@ -1,18 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-function mapStateToProps(state) {
-    return {
-        username: state.username
-    }
-}
-
-export default connect(mapStateToProps)( function Header(props) {
-    const { username } = props;
+export default function Header( ) {
+    const username = useSelector(state => state.username );
 
     return (
         <div className='banner'>
             <p>Hello {username}</p>
         </div>
     )
-});
+};

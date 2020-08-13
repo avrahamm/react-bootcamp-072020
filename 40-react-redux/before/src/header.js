@@ -1,15 +1,10 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setUsername } from './redux/actions';
 
-function mapStateToProps(state) {
-    return {
-        username: state.username
-    }
-}
-
-export default connect(mapStateToProps)( function Header(props) {
-    const { username, dispatch } = props;
+export default function Header( ) {
+    const username = useSelector(state => state.username );
+    const dispatch = useDispatch();
 
     function handleChangeEvent(e) {
         dispatch(setUsername(e.target.value));
@@ -23,4 +18,4 @@ export default connect(mapStateToProps)( function Header(props) {
             </label>
         </div>
     )
-});
+}

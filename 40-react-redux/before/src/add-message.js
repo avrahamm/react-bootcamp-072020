@@ -1,16 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { receivedMessage } from './redux/actions';
 
-function mapStateToProps(state) {
-    return {
-        messages: state.messages
-    }
-}
 
-function AddMessage(props) {
-    const { dispatch } = props;
+function AddMessage( ) {
+    const dispatch = useDispatch();
     const [ message, setMessage ] = useState('');
 
     function saveNewMessage(e)
@@ -35,4 +30,4 @@ function AddMessage(props) {
     )
 }
 
-export default connect(mapStateToProps)(AddMessage);
+export default AddMessage;
