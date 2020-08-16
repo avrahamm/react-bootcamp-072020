@@ -1,38 +1,18 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import messages from './reducers/messages';
 import rooms from './reducers/rooms';
 import account from './reducers/account';
+import suspender from './middlewares/suspender';
+import logger from './middlewares/logger';
+import changeWords from './middlewares/changeWords';
 
-// { type: 'ALERT', payload: 'hello world', meta: { delay: 1000 } }
-const suspender = store => next => action => {
-    if( action.hasOwnProperty('meta') && action.meta.hasOwnProperty('delay')) {
-        console.log('meta', action.meta);
-        setTimeout(() => {
-            console.log("suspender completed");
-            return next(action);
-        }, action.meta.delay )
-    }
-    else {
-        return next(action);
-    }
-}
-
-const logger = store => next => action => {
-    console.log('Action:', action)
-    return next(action);
-}
-
-const changeWords = store => next => action => {
-    if (action.type === 'RECEIVED_MESSAGE') {
-        console.log('changeWords');
-        action.payload.text = action.payload.text.replace(/angular/g, 'react');
-    }
-    return next(action);
-}
 
 const reducer = combineReducers({ messages, rooms, account });
 
-const store = createStore(reducer, applyMiddleware(suspender, logger, changeWords));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
+    applyMiddleware(suspender, logger, changeWords))
+);
 window.store = store;
 export default store;
 
