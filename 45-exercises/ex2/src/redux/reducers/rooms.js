@@ -24,6 +24,10 @@ export default produce((state, action) => {
     case 'RECEIVED_ROOMS':
       state.rooms = action.payload;
       break;
+
+    case 'UNDO':
+      state.rooms = action.payload.rooms.rooms;
+      break;
   }
 }, initialState);
 

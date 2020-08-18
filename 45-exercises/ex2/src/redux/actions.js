@@ -18,4 +18,8 @@ export function setUsername(newUsername) {
   return { type: 'SET_USERNAME', payload: newUsername };
 }
 
+export function undo() {
+  return { type: 'UNDO'};
+}
+
 
