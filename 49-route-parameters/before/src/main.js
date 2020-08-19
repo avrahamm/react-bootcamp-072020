@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {useState, useEffect} from 'react';
+import $ from 'jquery';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
+    useParams,
 } from "react-router-dom";
 
 
@@ -19,7 +22,7 @@ export default function App() {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/users">
+          <Route path="/users/:id">
             <Users />
           </Route>
           <Route path="/">
@@ -59,13 +62,20 @@ function About() {
 }
 
 const Users = function Users() {
-  const id = 1;
-  const users = {
-    1: 'brad',
-    2: 'anna',
-    3: 'clair'
-  };
-  return <h2>Users: {users[id]}</h2>;
+  const [SWCharacter, setSWCharacter] = useState(null);
+  const {id} = useParams();
+
+  useEffect( function() {
+    setSWCharacter(null);
+    const $xhr = $.getJSON(`https://swapi.dev/api/people/${id}/`, setSWCharacter);
+
+    return function abort() {
+      $xhr.abort();
+    }
+  }, [id]);
+
+  const content = SWCharacter ? SWCharacter.name : "Loading..";
+  return  content;
 };
 
 
