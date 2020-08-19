@@ -74,7 +74,7 @@ const Users = function Users() {
     }
   }, [id]);
 
-  const content = SWCharacter ? SWCharacter.name : "Loading..";
+  const content = SWCharacter ? <h2>{SWCharacter.name}</h2> : "Loading..";
   return  content;
 };
 
