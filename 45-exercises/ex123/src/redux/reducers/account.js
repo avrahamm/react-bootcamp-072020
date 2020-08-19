@@ -10,10 +10,6 @@ export default produce((state, action) => {
       // debugger
       state.username = action.payload;
       break;
-    case 'UNDO':
-      // debugger
-      state.username = action.payload.account.username ;
-      break;
   }
 
 

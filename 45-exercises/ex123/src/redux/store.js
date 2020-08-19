@@ -8,8 +8,17 @@ import changeWords from './middlewares/changeWords';
 import undo from './middlewares/undo';
 import stateToLocalStorage from './middlewares/stateToLocalStorage';
 
+function horUndoReducer(originalReducer) {
+    return function(state, action) {
+        let relevantState = state;
+        if ( action.type === 'UNDO' ) {
+            relevantState = action.payload;
+        }
+        return originalReducer(relevantState, action);
+    }
+}
 
-const reducer = combineReducers({ messages, rooms, account});
+const reducer = horUndoReducer(combineReducers({ messages, rooms, account}));
 let preloadedState = window.localStorage.getItem('state');
 preloadedState = preloadedState ? JSON.parse(preloadedState) : {};
 

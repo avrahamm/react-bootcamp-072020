@@ -26,10 +26,6 @@ export default produce((state, action) => {
                 text: `A user has changed its name to: ${action.payload}`
             });
             break;
-
-        case 'UNDO':
-            state.messages = action.payload.messages.messages;
-            break;
     }
 }, initialState);
 
