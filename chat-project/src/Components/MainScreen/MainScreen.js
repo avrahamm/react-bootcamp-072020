@@ -1,5 +1,5 @@
 import React from "react";
-// import './MainScreen.css'
+import './MainScreen.css'
 
 export default function MainScreen(props) {
 
@@ -21,7 +21,7 @@ export default function MainScreen(props) {
                                 </div>
                             </div>
                             <div className="card-body contacts_body">
-                                <ui className="contacts">
+                                <ul className="contacts">
                                     <li className="active">
                                         <div className="d-flex bd-highlight">
                                             <div className="img_cont">
@@ -91,7 +91,7 @@ export default function MainScreen(props) {
                                             </div>
                                         </div>
                                     </li>
-                                </ui>
+                                </ul>
                             </div>
                             <div className="card-footer"></div>
                         </div>
