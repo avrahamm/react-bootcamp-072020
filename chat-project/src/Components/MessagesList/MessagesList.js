@@ -4,7 +4,7 @@ import OtherUserMessage from "../Message/OtherUserMessage";
 import CurrentUserMessage from "../Message/CurrentUserMessage";
 
 export default function MessagesList(props) {
-    const curUsername = 2;
+    const curUserId = 2;
     const initialState = {
         messages: [
             {
