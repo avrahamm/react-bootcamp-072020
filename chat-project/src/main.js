@@ -13,7 +13,7 @@ const App = () => {
         <div>
             { user ?
                 <MainScreen /> :
-                <Login />
+                <Login setUser={setUser}/>
             }
         </div>
     )

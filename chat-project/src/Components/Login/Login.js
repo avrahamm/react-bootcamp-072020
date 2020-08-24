@@ -1,31 +1,33 @@
 import React from "react";
+import { useState } from "react";
 import './Login.css'
 
 export default function Login(props) {
+    const {setUser} = props;
+    const [username, setUsername] = useState('');
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setUser(username);
+        console.log("Login:handleSubmit");
+    }
 
     return (
         <div className='app'>
             <div className="wrapper fadeInDown">
                 <div id="formContent">
-                    {/*Tabs Titles */}
-
-                    {/* Icon */}
-                    <div className="fadeIn first">
-                        <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon"/>
-                    </div>
-
                     {/* Login Form */}
-                    <form>
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="login" />
-                        <input type="text" id="password" className="fadeIn third" name="login" placeholder="password" />
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            id="login"
+                            className="fadeIn second"
+                            name="login"
+                            placeholder="login"
+                            onChange={(e) => setUsername((e.target.value))}
+                        />
                         <input type="submit" className="fadeIn fourth" value="Log In" />
                     </form>
-
-                    {/* Remind Passowrd */}
-                    <div id="formFooter">
-                        <a className="underlineHover" href="#">Forgot Password?</a>
-                    </div>
-
                 </div>
             </div>
         </div>
