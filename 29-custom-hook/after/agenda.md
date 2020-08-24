@@ -2,7 +2,7 @@
 
 1. Sharing JSX Code is Easy
 
-function Header(props) {
+function RoomHeader(props) {
     return (
             <div>
                 <h1>My Cool App</h1>
@@ -14,7 +14,7 @@ function Header(props) {
 function Page1(props) {
     return (
         <>
-            <Header />
+            <RoomHeader />
             <p>Page 1</p>
         </>
     )
@@ -23,7 +23,7 @@ function Page1(props) {
 function Page2(props) {
     return (
         <>
-            <Header /> 
+            <RoomHeader /> 
             <p>Page 2</p>
         </>
     )
