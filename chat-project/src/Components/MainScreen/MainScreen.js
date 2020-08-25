@@ -29,5 +29,5 @@ export default function MainScreen(props) {
                 </div>
             </div>
         </div>
-)
+    )
 }
