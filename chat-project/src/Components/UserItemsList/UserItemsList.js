@@ -21,6 +21,21 @@ export default function UserItemsList(props) {
             username: "user3",
             active: false,
         },
+        {
+            id: 4,
+            username: "user4",
+            active: true,
+        },
+        {
+            id: 5,
+            username: "user5",
+            active: false,
+        },
+        {
+            id: 6,
+            username: "user6",
+            active: false,
+        },
     ];
 
     const userItemsList = userItems.map((userItem) => (
