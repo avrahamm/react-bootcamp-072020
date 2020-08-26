@@ -2,30 +2,39 @@ import React from "react";
 import { useState } from "react";
 import './Login.css'
 
+// 1. The form is missing a label
+// (placeholder does not appear everywhere)
+//
+// 2. Don't user onChange without value - they always come together
+//
+// 3. We can implement the same functionality without state easily by modifying the event handler
+// 
+// See my inline modifications here
+
 export default function Login(props) {
     const {setUser} = props;
-    const [username, setUsername] = useState('');
 
     function handleSubmit(e) {
         e.preventDefault();
+        const username = e.target.querySelector('[name="login"]').value
         setUser(username);
         console.log("Login:handleSubmit");
     }
-
     return (
         <div className='app'>
             <div className="wrapper fadeInDown">
                 <div id="formContent">
                     {/* Login Form */}
                     <form onSubmit={handleSubmit}>
+                      <label>Select Username:
                         <input
                             type="text"
                             id="login"
                             className="fadeIn second"
                             name="login"
                             placeholder="login"
-                            onChange={(e) => setUsername((e.target.value))}
                         />
+                      </label>
                         <input type="submit" className="fadeIn fourth" value="Log In" />
                     </form>
                 </div>
