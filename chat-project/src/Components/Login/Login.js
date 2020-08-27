@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { setUsername } from "../../redux/actions";
 import './Login.css'
 
 // 1. The form is missing a label
@@ -11,13 +12,13 @@ import './Login.css'
 // 
 // See my inline modifications here
 
-export default function Login(props) {
-    const {setUser} = props;
+export default function Login() {
+    const dispatch = useDispatch();
 
     function handleSubmit(e) {
         e.preventDefault();
         const username = e.target.querySelector('[name="login"]').value
-        setUser(username);
+        dispatch(setUsername(username));
         console.log("Login:handleSubmit");
     }
     return (

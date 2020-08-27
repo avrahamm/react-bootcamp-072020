@@ -1,22 +1,21 @@
 import ReactDOM from 'react-dom';
-import React, { useState } from 'react';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "jquery";
-import Login from './Components/Login/Login'
-import MainScreen from "./Components/MainScreen/MainScreen";
+import Switcher from "./switcher";
 
 const App = () => {
-    // const [user, setUser] = useState(null);
-    const [user, setUser] = useState(null);
 
     return (
-        <div>
-            { user ?
-                <MainScreen /> :
-                <Login setUser={setUser}/>
-            }
-        </div>
+        <Provider store={store}>
+            <div>
+                {
+                    <Switcher />
+                }
+            </div>
+        </Provider>
     )
 };
 
