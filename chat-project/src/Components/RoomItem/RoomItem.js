@@ -1,12 +1,23 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+
+import { setActiveRoom } from "../../redux/actions"
 
 export default function RoomItem(props) {
-    const {active} = props;
+    const dispatch = useDispatch();
+    const {activeRoomId, id, name} = props;
+
+
+    function handleClick(e) {
+        activeRoomId !== id ? dispatch(setActiveRoom(id)) : "";
+    }
 
     return (
-        <li className={active ? "active" : ""}>
+        <li className={ (activeRoomId === id) ? "active" : ""}
+            onClick={handleClick}
+        >
             <div className="d-flex bd-highlight">
-                <div className="user_info">Room 1</div>
+                <div role='button' className="user_info">{name}</div>
             </div>
         </li>
     )

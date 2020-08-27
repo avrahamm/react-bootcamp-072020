@@ -1,10 +1,25 @@
 import React, {useState} from "react";
+import { useDispatch } from "react-redux";
 
-export default function RoomSearch(props) {
+import { setSearchRoomPattern } from "../../redux/actions";
+
+export default function RoomSearch() {
+    const dispatch = useDispatch();
+    /**
+     * I use state to enable submitting form by clicking on 'Search" icon.
+     * As otherwise, clicking on icon event doesn't contain
+     * e.target.querySelector('[name="searchPattern"]').value;
+     */
+    const [ searchPattern, setSearchPattern ] = useState("");
+
+    function handleChange(e) {
+        setSearchPattern(e.target.value);
+    }
     function handleSubmit(e) {
         e.preventDefault();
-        // console.log(e.target.value);
-        console.log(e.target.querySelector('[name="pattern"]').value);
+        // const searchPattern = e.target.querySelector('[name="searchPattern"]').value;
+        dispatch(setSearchRoomPattern(searchPattern));
+        console.log('RoomSearch searchPattern', searchPattern);
     }
 
     return (
@@ -12,7 +27,8 @@ export default function RoomSearch(props) {
             <form onSubmit={handleSubmit} >
                 <div className="input-group">
                     <input type="text" placeholder="Search..."
-                           name="pattern" className="form-control search"
+                           name="searchPattern" className="form-control search"
+                           onChange={handleChange}
                     />
                     <div className="input-group-prepend">
                         <span className="input-group-text search_btn"
