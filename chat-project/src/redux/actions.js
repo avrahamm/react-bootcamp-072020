@@ -12,8 +12,12 @@ export function setActiveRoom(roomId) {
     return {type: 'SET_ACTIVE_ROOM', payload: roomId};
 }
 
-export function setSearchRoomPattern(searchPattern) {
+export function setFilterRoomPattern(searchPattern) {
     return {type: 'SET_SEARCH_ROOM_PATTERN', payload: searchPattern};
+}
+
+export function setFilterRoomUsersPattern(searchPattern) {
+    return {type: 'SET_SEARCH_ROOM_USERS_PATTERN', payload: searchPattern};
 }
 
 export function receivedMessage(from, message) {

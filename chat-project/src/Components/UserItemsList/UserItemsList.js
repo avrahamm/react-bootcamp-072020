@@ -1,42 +1,18 @@
 import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
+
 import UserItem from "../UserItem/UserItem";
 
 
-export default function UserItemsList(props) {
-
-    //Todo! to pull from Redux
-    const userItems = [
-        {
-            id: 1,
-            username: "user1",
-            active: true,
-        },
-        {
-            id: 2,
-            username: "user2",
-            active: false,
-        },
-        {
-            id: 3,
-            username: "user3",
-            active: false,
-        },
-        {
-            id: 4,
-            username: "user4",
-            active: true,
-        },
-        {
-            id: 5,
-            username: "user5",
-            active: false,
-        },
-        {
-            id: 6,
-            username: "user6",
-            active: false,
-        },
-    ];
+export default function UserItemsList() {
+    const userItems = useSelector( state => {
+        const searchPattern = state.users.searchPattern.toLowerCase();
+        const activeRoomId = useSelector( state => state.rooms.activeRoomId);
+        return state.users.users.filter(
+            (userItem) =>
+                userItem.roomId === activeRoomId &&
+                userItem.name.toLowerCase().includes(searchPattern) );
+    }, shallowEqual);
 
     const userItemsList = userItems.map((userItem) => (
         <UserItem

@@ -2,7 +2,7 @@ import React from "react";
 import './MainScreen.css'
 import RoomsContainer from "../RoomsContainer/RoomsContainer";
 import RoomsContent from "../RoomsContent/RoomsContent";
-import RoomUsersList from "../RoomUsersList/RoomUsersList";
+import RoomUsersContainer from "../RoomUsersContainer/RoomUsersContainer";
 
 export default function MainScreen() {
 
@@ -12,7 +12,7 @@ export default function MainScreen() {
                 <div className="row justify-content-center h-100">
                     <RoomsContainer />
                     <RoomsContent />
-                    <RoomUsersList />
+                    <RoomUsersContainer />
                 </div>
             </div>
         </div>
