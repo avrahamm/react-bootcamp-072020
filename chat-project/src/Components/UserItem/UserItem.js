@@ -1,5 +1,6 @@
 import React from "react";
 
+// Todo! UserItemList and RoomItemList, UserItem and RoomItem
 export default function UserItem(props) {
     const {active, name } = props;
     const online_icon = <span className="online_icon"></span>;

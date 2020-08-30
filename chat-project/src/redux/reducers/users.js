@@ -12,6 +12,7 @@ const initialState = {
     {id: 5, name: 'u5', roomId: 1, active: false,},
   ],
   searchPattern: "",
+  curUserId: null,
 };
 
 export default produce((state, action) => {
@@ -19,6 +20,7 @@ export default produce((state, action) => {
     case 'SET_USERNAME':
       const username = action.payload;
       const userId = nextId(state.users);
+      state.curUserId = userId;
       state.users.push({ id: userId, name: username, roomId: 0, active: true});
       break;
 
@@ -26,7 +28,11 @@ export default produce((state, action) => {
       state.searchPattern = action.payload;
       break;
 
-  }
+    case 'SET_ACTIVE_ROOM':
+      const activeRoomId = action.payload;
+      state.users[state.curUserId].roomId = activeRoomId;
+      break;
 
+  }
 
 }, initialState);

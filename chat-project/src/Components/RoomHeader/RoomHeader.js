@@ -1,9 +1,9 @@
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 
 export default function RoomHeader(props) {
     const {roomName, messagesCount} = props;
-    const [actionsDisplay, setActionsDisplay ] = useState(false);
+    const [ actionsDisplay, setActionsDisplay ] = useState(false);
 
     return (
         <div className="card-header msg_head">

@@ -5,11 +5,11 @@ import Login from './Components/Login/Login'
 import MainScreen from "./Components/MainScreen/MainScreen";
 
 const Switcher = () => {
-    const username = useSelector( state => state.account.username);
+    const curUserId = useSelector( state => state.users.curUserId);
 
     return (
         <div>
-            { username ?
+            { curUserId !== null ?
                 <MainScreen /> :
                 <Login />
             }

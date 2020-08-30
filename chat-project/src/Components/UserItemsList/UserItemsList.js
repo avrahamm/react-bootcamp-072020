@@ -7,7 +7,7 @@ import UserItem from "../UserItem/UserItem";
 export default function UserItemsList() {
     const userItems = useSelector( state => {
         const searchPattern = state.users.searchPattern.toLowerCase();
-        const activeRoomId = useSelector( state => state.rooms.activeRoomId);
+        const activeRoomId = state.rooms.activeRoomId;
         return state.users.users.filter(
             (userItem) =>
                 userItem.roomId === activeRoomId &&

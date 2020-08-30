@@ -1,11 +1,10 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import messages from './reducers/messages';
 import rooms from './reducers/rooms';
-import account from './reducers/account';
 import users from './reducers/users';
 import logger from './middlewares/logger';
 
-const reducer = combineReducers({ messages, rooms, account, users});
+const reducer = combineReducers({ messages, rooms, users});
 let preloadedState = window.localStorage.getItem('state');
 preloadedState = preloadedState ? JSON.parse(preloadedState) : {};
 

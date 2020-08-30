@@ -11,7 +11,7 @@ const initialState = {
       { id: 4, name: 'Coffee room', },
       { id: 5, name: 'Chess fans', },
     ],
-    activeRoomId: 1,
+    activeRoomId: null,
     searchPattern: "",
 };
 
