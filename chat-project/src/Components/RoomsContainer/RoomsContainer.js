@@ -1,19 +1,36 @@
 import React from "react";
 
-import FilterBox from "../FilterBox/FilterBox";
-import AddNewRoom from "../FilterBox/AddNewRoom";
 import RoomItemsList from "../RoomItemsList/RoomItemsList";
 
-import { setFilterRoomPattern } from "../../redux/actions";
+import { setFilterRoomPattern, createRoom } from "../../redux/actions";
+import InputBox from "../InputBox/InputBox";
 
 export default function RoomsContainer() {
 
     return (
         <div className="col-md-2 col-xl-3 chat">
             <div className="card mb-sm-2 mb-md-0 contacts_card">
-                <FilterBox setFilterAction={setFilterRoomPattern}/>
+                <InputBox {
+                              ...{
+                                  dispatchAction: setFilterRoomPattern,
+                                  title: "Filter Room",
+                                  filedName: "filterPattern",
+                                  iconClass: "fas fa-search"
+                              }
+                          }
+                />
+
                 <RoomItemsList />
-                <AddNewRoom />
+
+                <InputBox {
+                              ...{
+                                  dispatchAction: createRoom,
+                                  title: "Create Room",
+                                  filedName: "newRoom",
+                                  iconClass: "fas fa-plus"
+                              }
+                          }
+                />
             </div>
         </div>
     )
