@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { nextId } from "./utils"
+import { nextId, initUserIdToNameMap } from "./utils"
 
 //Todo! to fetch from firebase server.
 const initialState = {
@@ -15,6 +15,8 @@ const initialState = {
   curUserId: null,
 };
 
+initialState.userIdToNameMap = initUserIdToNameMap(initialState.users);
+
 export default produce((state, action) => {
   switch (action.type) {
     case 'SET_USERNAME':
@@ -22,6 +24,7 @@ export default produce((state, action) => {
       const userId = nextId(state.users);
       state.curUserId = userId;
       state.users.push({ id: userId, name: username, roomId: 0, active: true});
+      state.userIdToNameMap.set(userId, username);
       break;
 
     case 'SET_SEARCH_ROOM_USERS_PATTERN':

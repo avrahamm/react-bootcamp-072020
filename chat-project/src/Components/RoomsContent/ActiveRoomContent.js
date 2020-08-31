@@ -22,10 +22,17 @@ export default function ActiveRoomContent(props) {
             (message) => message.roomId === activeRoom.id);
     }, shallowEqual);
 
+    const userIdToNameMap = useSelector(
+        state => state.users.userIdToNameMap, shallowEqual);
+
     return (
         <div className="card">
             <RoomHeader messagesCount={curRoomMessages.length} roomName={activeRoom.name}/>
-            <MessagesList messages={curRoomMessages} curUserId={curUser.id}  />
+            <MessagesList
+                messages={curRoomMessages}
+                curUserId={curUser.id}
+                userIdToNameMap={userIdToNameMap}
+            />
             <NewMessage curUserId={curUser.id} activeRoomId={activeRoom.id} />
         </div>
     );

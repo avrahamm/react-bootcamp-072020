@@ -7,7 +7,6 @@ const initialState = {
         {
             id: 0,
             userId: 1,
-            username: "user1",
             roomId: 0,
             imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
             text: "Hello?",
@@ -16,7 +15,6 @@ const initialState = {
         {
             id: 1,
             userId: 1,
-            username: "user1",
             roomId: 0,
             imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
             text: "Hi, how are you samim?",
@@ -25,7 +23,6 @@ const initialState = {
         {
             id: 2,
             userId: 2,
-            username: "user2",
             roomId: 0,
             imgUrl: "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg",
             text: "blaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ?",
@@ -34,7 +31,6 @@ const initialState = {
         {
             id: 3,
             userId: 3,
-            username: "user3",
             roomId: 0,
             imgUrl: "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg",
             text: "blinnnnnnn ?",
@@ -43,7 +39,6 @@ const initialState = {
         {
             id: 4,
             userId: 4,
-            username: "user4",
             roomId: 1,
             imgUrl: "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg",
             text: "Nuuuuuuuuuu ?",
@@ -52,7 +47,6 @@ const initialState = {
         {
             id: 5,
             userId: 2,
-            username: "user2",
             roomId: 1,
             imgUrl: "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg",
             text: "Hi Dear friend !!! ?",
@@ -61,7 +55,6 @@ const initialState = {
         {
             id: 6,
             userId: 3,
-            username: "user3",
             roomId: 1,
             imgUrl: "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg",
             text: "Adios, OHOHOHOHOHOOHOH !!! ?",

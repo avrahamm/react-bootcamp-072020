@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function CurrentUserMessage(props) {
-    const { text, time, imgUrl } = props;
+    const { text, time, imgUrl, username } = props;
     return (
     <div className="d-flex justify-content-end mb-4">
         <div className="msg_cotainer_send">
@@ -12,6 +12,7 @@ export default function CurrentUserMessage(props) {
             <img
                 src={imgUrl}
                 className="rounded-circle user_img_msg"/>
+            <span>{username}</span>
         </div>
     </div>
     )

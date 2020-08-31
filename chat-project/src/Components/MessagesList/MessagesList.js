@@ -4,8 +4,7 @@ import OtherUserMessage from "../Message/OtherUserMessage";
 import CurrentUserMessage from "../Message/CurrentUserMessage";
 
 export default function MessagesList(props) {
-    const { messages, curUserId} = props;
-
+    const { messages, curUserId, userIdToNameMap } = props;
     const messagesList = messages.sort(function(m1, m2) {
         let res = 0;
         let date1 = Date.parse(m1.time);
@@ -22,11 +21,13 @@ export default function MessagesList(props) {
                  ?
                  <CurrentUserMessage
                      key={message.id}
+                     username={userIdToNameMap.get(message.userId)}
                      {...message}
                  />
                  :
                  <OtherUserMessage
                      key={message.id}
+                     username={userIdToNameMap.get(message.userId)}
                      {...message}
                  />
         )
