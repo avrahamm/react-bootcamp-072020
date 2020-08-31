@@ -8,7 +8,7 @@ export default function OtherUserMessage(props) {
             <div className="img_cont_msg">
                 <img src={imgUrl}
                      className="rounded-circle user_img_msg" />
-                     <span>{username}</span>
+                     <div>{username}</div>
             </div>
             <div className="msg_cotainer">
                 {text}

@@ -12,7 +12,7 @@ export default function CurrentUserMessage(props) {
             <img
                 src={imgUrl}
                 className="rounded-circle user_img_msg"/>
-            <span>{username}</span>
+            <div>{username}</div>
         </div>
     </div>
     )
