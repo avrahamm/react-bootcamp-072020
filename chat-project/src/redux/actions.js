@@ -20,8 +20,11 @@ export function setFilterRoomUsersPattern(searchPattern) {
     return {type: 'SET_SEARCH_ROOM_USERS_PATTERN', payload: searchPattern};
 }
 
-export function receivedMessage(from, message) {
-    return {type: 'RECEIVED_MESSAGE', payload: {from: from, text: message}};
+export function receivedMessage(userId, roomId, text, time) {
+    return {type: 'RECEIVED_MESSAGE', payload: {
+            userId, roomId, text, time
+        }
+    };
 }
 
 export function setUsername(newUsername) {

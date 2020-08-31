@@ -7,7 +7,7 @@ body, html {
 }
 
 .chat {
-    margin-top: auto;
+    margin-top: 5%;
     margin-bottom: auto;
 }
 
@@ -50,7 +50,7 @@ body, html {
 
 .search:focus {
     box-shadow: none !important;
-    outline: 0px !important;
+    outline: 0 !important;
 }
 
 .type_msg {
@@ -63,7 +63,7 @@ body, html {
 
 .type_msg:focus {
     box-shadow: none !important;
-    outline: 0px !important;
+    outline: 0 !important;
 }
 
 .attach_btn {

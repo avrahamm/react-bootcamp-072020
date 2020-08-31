@@ -16,7 +16,7 @@ export default function MessagesList(props) {
             res = -1;
         }
         return res;
-        })
+    })
         .map( (message) => (
              message.userId === curUserId
                  ?
@@ -36,5 +36,5 @@ export default function MessagesList(props) {
         <div className="card-body msg_card_body">
             {messagesList}
         </div>
-)
+    )
 }

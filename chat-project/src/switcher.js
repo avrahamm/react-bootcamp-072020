@@ -8,12 +8,12 @@ const Switcher = () => {
     const curUserId = useSelector( state => state.users.curUserId);
 
     return (
-        <div>
+        <>
             { curUserId !== null ?
                 <MainScreen /> :
                 <Login />
             }
-        </div>
+        </>
     )
 };
 

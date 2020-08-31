@@ -1,18 +1,26 @@
 import React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import dateFormat from "dateformat";
+
+import { receivedMessage } from "../../redux/actions";
 
 export default function NewMessage(props) {
-
+    const dispatch = useDispatch();
+    const { curUserId, activeRoomId } = props;
     const [ message, setMessage ] = useState("");
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        console.log(message);
-        setMessage('');
-    }
 
     function handleChange(e) {
         setMessage(e.target.value);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const now = new Date();
+        const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
+        console.log(message, sentTime);
+        dispatch(receivedMessage(curUserId, activeRoomId, message, sentTime));
+        setMessage('');
     }
 
     return (
