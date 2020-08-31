@@ -2,39 +2,38 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function FilterBox(props) {
+import { createRoom } from "../../redux/actions";
+
+export default function AddNewRoom() {
     const dispatch = useDispatch();
-    const { setFilterAction } = props;
-    /**
-     * I use state to enable submitting form by clicking on 'Search" icon.
-     * As otherwise, clicking on icon event doesn't contain
-     * e.target.querySelector('[name="filterPattern"]').value;
-     */
-    const [ filterPattern, setFilterPattern ] = useState("");
+    const [ newRoomName, setNewRoomName ] = useState("");
 
     function handleChange(e) {
-        setFilterPattern(e.target.value);
+        setNewRoomName(e.target.value);
     }
+
     function handleSubmit(e) {
         e.preventDefault();
-        dispatch(setFilterAction(filterPattern));
-        console.log('FilterBox searchPattern', filterPattern);
+        dispatch(createRoom(newRoomName));
+        console.log('AddNewRoom newRoomName', newRoomName);
+        setNewRoomName("");
     }
 
     return (
         <div className="card-header">
-            <h4>Filter Room</h4>
+            <h4>Create Room</h4>
             <form onSubmit={handleSubmit} >
                 <div className="input-group">
-                    <input type="text" placeholder="Search..."
-                           name="filterPattern" className="form-control search"
+                    <input type="text" placeholder="New Room..."
+                           name="newRoom" className="form-control search"
+                           value={newRoomName}
                            onChange={handleChange}
                     />
                     <div className="input-group-prepend">
                         <span className="input-group-text search_btn"
                               onClick={handleSubmit}
                         >
-                            <i className="fas fa-search"></i>
+                           <i className="fas fa-plus"></i>
                         </span>
                     </div>
                 </div>
