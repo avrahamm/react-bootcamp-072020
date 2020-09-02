@@ -46,4 +46,15 @@ const curRoomFilledMessagesSelector = createSelector(
     }
 );
 
-export { curRoomFilledMessagesSelector };
+const usersSearchPatternSelector = state => state.users.searchPattern.toLowerCase();
+
+const userItemsSelector = createSelector(
+    [ activeRoomIdSelector, usersSearchPatternSelector, usersSelector ],
+    ( activeRoomId, usersSearchPattern, users ) =>
+        users.filter(
+            (userItem) =>
+                userItem.roomId === activeRoomId &&
+                userItem.name.toLowerCase().includes( usersSearchPattern ) )
+);
+
+export { curRoomFilledMessagesSelector, userItemsSelector };
