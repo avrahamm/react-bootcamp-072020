@@ -18,8 +18,9 @@ export default function NewMessage(props) {
         e.preventDefault();
         const now = new Date();
         const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
-        console.log(message, sentTime);
-        dispatch(receivedMessage(curUserId, activeRoomId, message, sentTime));
+        message ?
+            dispatch(receivedMessage(curUserId, activeRoomId, message, sentTime))
+        : null ;
         setMessage('');
     }
 
