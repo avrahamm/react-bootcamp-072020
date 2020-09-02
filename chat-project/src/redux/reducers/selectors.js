@@ -52,9 +52,22 @@ const userItemsSelector = createSelector(
     [ activeRoomIdSelector, usersSearchPatternSelector, usersSelector ],
     ( activeRoomId, usersSearchPattern, users ) =>
         users.filter(
-            (userItem) =>
+            userItem =>
                 userItem.roomId === activeRoomId &&
                 userItem.name.toLowerCase().includes( usersSearchPattern ) )
 );
 
-export { curRoomFilledMessagesSelector, userItemsSelector };
+const roomsSearchPatternSelector = state => state.rooms.searchPattern.toLowerCase();
+
+const roomItemsSelector = createSelector(
+    [ activeRoomIdSelector, roomsSearchPatternSelector, roomsSelector],
+    ( activeRoomId, roomsSearchPattern, rooms ) =>
+        rooms.filter(
+            roomItem => roomItem.name.toLowerCase().includes(roomsSearchPattern) )
+)
+
+export {
+    curRoomFilledMessagesSelector,
+    userItemsSelector,
+    roomItemsSelector
+};

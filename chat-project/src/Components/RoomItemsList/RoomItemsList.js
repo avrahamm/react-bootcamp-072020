@@ -1,14 +1,11 @@
 import React from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import RoomItem from "../RoomItem/RoomItem";
+import { roomItemsSelector } from "../../redux/reducers/selectors"
 
 export default function RoomItemsList() {
-    const roomItems = useSelector( state => {
-        const searchPattern = state.rooms.searchPattern.toLowerCase();
-        return state.rooms.rooms.filter(
-            (roomItem) => roomItem.name.toLowerCase().includes(searchPattern) );
-    }, shallowEqual);
+    const roomItems = useSelector( roomItemsSelector );
     const activeRoomId = useSelector( state => state.rooms.activeRoomId);
 
     const roomItemsList = roomItems
