@@ -1,5 +1,6 @@
 import {createSelector} from "reselect";
 
+const activeRoomIdSelector = state => state.rooms.activeRoomId;
 const activeRoomIdByPropsSelector = (_, props) => props.activeRoomId;
 const roomsSelector = state => state.rooms.rooms;
 const activeRoomSelector = createSelector(
