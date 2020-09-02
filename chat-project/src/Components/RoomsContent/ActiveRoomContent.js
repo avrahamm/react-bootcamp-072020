@@ -1,37 +1,50 @@
 import React from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 
 import RoomHeader from "../RoomHeader/RoomHeader";
 import MessagesList from "../MessagesList/MessagesList";
 import NewMessage from "../NewMessage/NewMessage";
 
+const activeRoomSelector = ( state ) =>
+    state.rooms.rooms.find((room) => room.id === state.rooms.activeRoomId);
+
+const curUserSelector = state => {
+    const curUserId = state.users.curUserId;
+    return state.users.users.find((user) => user.id === curUserId);
+};
+
+const messagesSelector = state => state.messages.messages;
+
+const userIdToNameMapSelector = state => state.users.userIdToNameMap;
+
 export default function ActiveRoomContent(props) {
     const { activeRoomId } = props;
 
-    const activeRoom = useSelector(state => {
-        return state.rooms.rooms.find((room) => room.id === activeRoomId);
-    }, shallowEqual);
+    const { activeRoom, curUser, curRoomMessages }  = useSelector( createSelector(
+        [activeRoomSelector, curUserSelector, messagesSelector, userIdToNameMapSelector] ,
+        ( activeRoom, curUser, messages, userIdToNameMap )  => {
+            // debugger
+         const curRoomMessages = messages
+             .filter( message => message.roomId === activeRoom.id)
+             .map( message => {
+                 return {...message, username: userIdToNameMap.get(message.userId) }
+                }
+             );
 
-    const curUser = useSelector(state => {
-        const curUserId = state.users.curUserId;
-        return state.users.users.find((user) => user.id === curUserId);
-    }, shallowEqual);
-
-    const curRoomMessages = useSelector(state => {
-        return state.messages.messages.filter(
-            (message) => message.roomId === activeRoom.id);
-    }, shallowEqual);
-
-    const userIdToNameMap = useSelector(
-        state => state.users.userIdToNameMap, shallowEqual);
+            return {activeRoom, curUser,curRoomMessages }
+        }
+    ))
+    ;
 
     return (
         <div className="card">
+            {/*{console.log("ActiveRoomContent render")}*/}
             <RoomHeader messagesCount={curRoomMessages.length} roomName={activeRoom.name}/>
             <MessagesList
                 messages={curRoomMessages}
                 curUserId={curUser.id}
-                userIdToNameMap={userIdToNameMap}
+                // userIdToNameMap={userIdToNameMap}
             />
             <NewMessage curUserId={curUser.id} activeRoomId={activeRoom.id} />
         </div>
