@@ -1,4 +1,5 @@
 import {createSelector, defaultMemoize, createSelectorCreator} from "reselect";
+import isEqual from 'lodash.isEqual';
 
 const activeRoomIdSelector = state => state.rooms.activeRoomId;
 const activeRoomIdByPropsSelector = (_, props) => props.activeRoomId;
@@ -26,37 +27,12 @@ const curRoomMessagesSelector = createSelector(
 
 const userIdToNameMapSelector = state => state.users.userIdToNameMap;
 
-/**
- * To extend default === to compare curRoomMessages arrays.
- * @param previousVal
- * @param currentVal
- * @returns {boolean}
- */
-const isEqualish = function (previousVal, currentVal) {
-    if (previousVal === currentVal) {
-        console.log("==isEqualish", previousVal === currentVal, previousVal, "###", currentVal);
-        return true;
-    }
-
-    if (Array.isArray(previousVal) && Array.isArray(currentVal)) {
-        if (previousVal.length !== currentVal.length) {
-            return false;
-        }
-        console.log("*** isEqualish - in messages", previousVal, "###", currentVal);
-        return previousVal.every(function (item, ix) {
-            return currentVal[ix].id === item.id;
-        });
-    }
-
-    return false;
-};
-
-const createEqualishSelector = createSelectorCreator(
+const createDeepEqualSelector = createSelectorCreator(
     defaultMemoize,
-    isEqualish
+    isEqual
 );
 
-const curRoomFilledMessagesSelector = createEqualishSelector(
+const curRoomFilledMessagesSelector = createDeepEqualSelector(
     [activeRoomByPropsSelector, curUserSelector, userIdToNameMapSelector, curRoomMessagesSelector],
     ( activeRoom, curUser, userIdToNameMap, curRoomMessages )  => {
         const curRoomFilledMessages = curRoomMessages
