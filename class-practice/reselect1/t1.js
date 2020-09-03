@@ -83,7 +83,8 @@ console.log('Are denorm result 1 and denorm result 2 the same reference?', resul
 
 console.log('\n\nUSING CUSTOM EQUALITY CHECK\n');
 
-var isEqualish = function (v1, v2) {
+var isEqualish1 = function (v1, v2) {
+    console.log("==isEqualish1", v1, "###", v2);
     if (v1 === v2) {
         return true;
     }
@@ -103,21 +104,20 @@ var isEqualish = function (v1, v2) {
 
 var createEqualishSelector = reselect.createSelectorCreator(
     reselect.defaultMemoize,
-    isEqualish
+    isEqualish1
 );
 
-var selectDenormCustom = createEqualishSelector(
-    selectObjectsById,
-    selectIds,
-    calcDenorm
+var selectDenormWrap = createEqualishSelector(
+    selectDenorm,
+    function (v) { return v; }
 );
 
 state = state1;
 
 console.log('Returning to initial state:', state, '\n');
 
-console.log('Calling selectDenormCustom for the first time');
-var resultDenorm1 = selectDenormCustom(state);
+console.log('Calling selectDenormWrap for the first time');
+var resultDenorm1 = selectDenormWrap(state);
 console.log('Denorm result 1:', resultDenorm1);
 
 
@@ -130,8 +130,8 @@ console.log('What about its properties?');
 console.log('objectsById:', state.objectsById === state1.objectsById);
 console.log('ids:', state.ids === state1.ids);
 
-console.log('\nCalling selectDenormCustom for the second time');
-var resultDenorm2 = selectDenormCustom(state);
+console.log('\nCalling selectDenormWrap for the second time');
+var resultDenorm2 = selectDenormWrap(state);
 console.log('Denorm Result 2:', resultDenorm2, '\n');
 
 console.log('Are denorm result 1 and denorm result 2 the same reference?', resultDenorm1 === resultDenorm2);
