@@ -24,27 +24,27 @@ const curRoomMessagesSelector = createSelector(
         messages.filter( message => message.roomId === activeRoomId)
 );
 
-const curRoomMessagesCountSelector = createSelector(
-    [activeRoomIdByPropsSelector, messagesSelector],
-    (activeRoomId, messages) =>
-        messages.filter( message => message.roomId === activeRoomId).length
-);
-
 const userIdToNameMapSelector = state => state.users.userIdToNameMap;
 
-const isEqualish = function (v1, v2) {
-    console.log("==isEqualish", v1, "###", v2);
-    if (v1 === v2) {
+/**
+ * To extend default === to compare curRoomMessages arrays.
+ * @param previousVal
+ * @param currentVal
+ * @returns {boolean}
+ */
+const isEqualish = function (previousVal, currentVal) {
+    if (previousVal === currentVal) {
+        console.log("==isEqualish", previousVal === currentVal, previousVal, "###", currentVal);
         return true;
     }
 
-    if (Array.isArray(v1) && Array.isArray(v2)) {
-        if (v1.length !== v2.length) {
+    if (Array.isArray(previousVal) && Array.isArray(currentVal)) {
+        if (previousVal.length !== currentVal.length) {
             return false;
         }
-
-        return v1.every(function (v, ix) {
-            return v2[ix] === v;
+        console.log("*** isEqualish - in messages", previousVal, "###", currentVal);
+        return previousVal.every(function (item, ix) {
+            return currentVal[ix].id === item.id;
         });
     }
 
@@ -56,7 +56,7 @@ const createEqualishSelector = createSelectorCreator(
     isEqualish
 );
 
-const curRoomFilledMessagesSelector = createSelector(
+const curRoomFilledMessagesSelector = createEqualishSelector(
     [activeRoomByPropsSelector, curUserSelector, userIdToNameMapSelector, curRoomMessagesSelector],
     ( activeRoom, curUser, userIdToNameMap, curRoomMessages )  => {
         const curRoomFilledMessages = curRoomMessages
