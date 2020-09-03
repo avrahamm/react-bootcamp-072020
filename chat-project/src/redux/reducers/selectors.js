@@ -1,9 +1,9 @@
-import {createSelector} from "reselect";
+import {createSelector, defaultMemoize, createSelectorCreator} from "reselect";
 
 const activeRoomIdSelector = state => state.rooms.activeRoomId;
 const activeRoomIdByPropsSelector = (_, props) => props.activeRoomId;
 const roomsSelector = state => state.rooms.rooms;
-const activeRoomSelector = createSelector(
+const activeRoomByPropsSelector = createSelector(
     [activeRoomIdByPropsSelector, roomsSelector],
     (activeRoomId, rooms) =>
         rooms.find((room) => room.id === activeRoomId)
@@ -32,8 +32,32 @@ const curRoomMessagesCountSelector = createSelector(
 
 const userIdToNameMapSelector = state => state.users.userIdToNameMap;
 
+const isEqualish = function (v1, v2) {
+    console.log("==isEqualish", v1, "###", v2);
+    if (v1 === v2) {
+        return true;
+    }
+
+    if (Array.isArray(v1) && Array.isArray(v2)) {
+        if (v1.length !== v2.length) {
+            return false;
+        }
+
+        return v1.every(function (v, ix) {
+            return v2[ix] === v;
+        });
+    }
+
+    return false;
+};
+
+const createEqualishSelector = createSelectorCreator(
+    defaultMemoize,
+    isEqualish
+);
+
 const curRoomFilledMessagesSelector = createSelector(
-    [activeRoomSelector, curUserSelector, userIdToNameMapSelector, curRoomMessagesSelector],
+    [activeRoomByPropsSelector, curUserSelector, userIdToNameMapSelector, curRoomMessagesSelector],
     ( activeRoom, curUser, userIdToNameMap, curRoomMessages )  => {
         const curRoomFilledMessages = curRoomMessages
             .filter( message => message.roomId === activeRoom.id)
@@ -42,7 +66,7 @@ const curRoomFilledMessagesSelector = createSelector(
                 }
             );
 
-        return {activeRoom, curUser, curRoomFilledMessages }
+        return curRoomFilledMessages;
     }
 );
 
@@ -67,6 +91,8 @@ const roomItemsSelector = createSelector(
 )
 
 export {
+    activeRoomByPropsSelector,
+    curUserSelector,
     curRoomFilledMessagesSelector,
     userItemsSelector,
     roomItemsSelector
