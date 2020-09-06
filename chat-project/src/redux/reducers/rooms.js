@@ -3,14 +3,8 @@ import { nextId } from './utils';
 
 //Todo! to fetch from firebase
 const initialState = {
-    rooms: [
-      { id: 0, name: 'Loby',},
-      { id: 1, name: 'JavaScript Chats', },
-      { id: 2, name: 'Java Chats', },
-      { id: 3, name: 'Python Chats', },
-      { id: 4, name: 'Coffee room', },
-      { id: 5, name: 'Chess fans', },
-    ],
+    //
+    rooms: [],
     activeRoomId: null,
     searchPattern: "",
 };
