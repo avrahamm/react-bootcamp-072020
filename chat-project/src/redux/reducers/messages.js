@@ -1,4 +1,6 @@
 import produce from 'immer';
+
+import * as actions from "../consts/action-types";
 import dateFormat from "dateformat";
 import {nextId} from './utils';
 
@@ -66,7 +68,7 @@ const initialState = {
 
 export default produce((state, action) => {
     switch (action.type) {
-        case 'RECEIVED_MESSAGE':
+        case actions.RECEIVED_MESSAGE:
             state.messages.push({
                 id: nextId(state.messages),
                 userId: action.payload.userId,
@@ -77,7 +79,7 @@ export default produce((state, action) => {
             });
             break;
 
-        case 'SET_USERNAME':
+        case actions.SET_USERNAME:
             const now = new Date();
             const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
             state.messages.push({

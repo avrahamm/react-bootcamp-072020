@@ -1,37 +1,52 @@
 import * as actions from "../consts/action-types";
 const firebase = window.firebase;
 
-const firebaseApi = ({dispatch}) => next => action => {
+import {
+    initReceiveDataFromFirebase,
+    addObjToFirebaseCollection
+} from "./utils/firebase"
+
+// @link:https://www.youtube.com/watch?v=DqWiuvuK_78
+// 30th minute
+const firebaseApi = ({getState,dispatch}) => next => action => {
     const apiActions = [
         actions.FIREBASE_INIT,
         actions.CREATE_ROOM,
+        actions.SET_ACTIVE_ROOM,
         // actions.RECEIVED_MESSAGE,
-        // actions.SET_USERNAME
+        actions.SET_USERNAME
     ];
 
     if ( !apiActions.includes(action.type)) {
         return next(action);
     }
 
-    if (action.type === actions.FIREBASE_INIT) {
-        // Read From Firebase
-        firebase.firestore().collection('rooms')
-            .orderBy('name')
-            .onSnapshot(function (qs) {
-                    const batch = [];
-                    qs.forEach(function (doc) {
-                        batch.push({id: doc.id, ...doc.data()});
-                    });
-                    /// we have the new messages in batch
-                    dispatch({type: actions.RECEIVED_ROOMS, payload: batch});
-                }
-            )
+    if ( action.type === actions.FIREBASE_INIT ) {
+        initReceiveDataFromFirebase(dispatch);
         return;
     }
 
-    const firebaseCollection = firebase.firestore().collection(action.payload.collection);
-    const {collection, ...obj} = action.payload;
-    firebaseCollection.add(obj);
+    switch(action.type) {
+        case actions.CREATE_ROOM:
+        case actions.SET_USERNAME:
+            addObjToFirebaseCollection(action)
+                .then( () => next(action));
+            break;
+
+        case actions.SET_ACTIVE_ROOM:
+            const firebaseCollection = firebase.firestore().collection(action.payload.collection);
+            const {collection, ...updateData} = action.payload;
+            const curUserId = getState().users.curUserId;
+            let curUserRef = firebaseCollection.doc(curUserId);
+            curUserRef.update(updateData)
+                .then( () => next(action))
+                .catch(function(error) {
+                    // The document probably doesn't exist.
+                    console.error("Error updating document: ", error);
+                });
+
+            break;
+    }
 }
 
 export default firebaseApi;

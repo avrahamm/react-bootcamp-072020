@@ -3,9 +3,9 @@ export function nextId(items) {
 }
 
 export function initUserIdToNameMap(users) {
-  let userIdToNameMap = new Map();
+  let userIdToNameMap = {};
   users.forEach(user => {
-    userIdToNameMap.set( user.id, user.name);
+    userIdToNameMap[user.id] = user.name;
   })
   return userIdToNameMap;
 }

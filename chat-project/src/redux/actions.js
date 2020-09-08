@@ -15,7 +15,12 @@ export function createRoom(roomName) {
 }
 
 export function setActiveRoom(roomId) {
-    return {type: actions.SET_ACTIVE_ROOM, payload: roomId};
+    return {type: actions.SET_ACTIVE_ROOM,
+        payload: {
+            collection: "users",
+            roomId,
+        }
+    };
 }
 
 export function setFilterRoomPattern(searchPattern) {
@@ -34,7 +39,15 @@ export function receivedMessage(userId, roomId, text, time) {
 }
 
 export function setUsername(newUsername) {
-    return {type: actions.SET_USERNAME, payload: newUsername};
+    return {
+        type: actions.SET_USERNAME,
+        payload: {
+            collection: "users",
+            name: newUsername,
+            active: true,
+            roomId: null
+        }
+    };
 }
 
 export function undo() {

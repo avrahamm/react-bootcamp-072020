@@ -1,41 +1,32 @@
 import produce from 'immer';
-import { nextId, initUserIdToNameMap } from "./utils"
 
-//Todo! to fetch from firebase server.
+import * as actions from "../consts/action-types";
+import { initUserIdToNameMap } from "./utils"
+
 const initialState = {
-  users: [
-    {id: 0, name: 'ynon', roomId: 0, active: true,},
-    {id: 1, name: 'u1', roomId: 0, active: false,},
-    {id: 2, name: 'u2', roomId: 0, active: false,},
-    {id: 3, name: 'u3', roomId: 0, active: true,},
-    {id: 4, name: 'u4', roomId: 1, active: true,},
-    {id: 5, name: 'u5', roomId: 1, active: false,},
-  ],
+  users: [],
   searchPattern: "",
   curUserId: null,
+  // Do not use Map( not serializable) in Redux state, use plain JS object!
+  // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
+  userIdToNameMap: {}
 };
-
-initialState.userIdToNameMap = initUserIdToNameMap(initialState.users);
 
 export default produce((state, action) => {
   switch (action.type) {
-    case 'SET_USERNAME':
-      const username = action.payload;
-      const userId = nextId(state.users);
+    case actions.SET_USERNAME:
+      const userId = action.meta.userId;
       state.curUserId = userId;
-      state.users.push({ id: userId, name: username, roomId: 0, active: true});
-      state.userIdToNameMap.set(userId, username);
       break;
 
-    case 'SET_SEARCH_ROOM_USERS_PATTERN':
+    case actions.SET_SEARCH_ROOM_USERS_PATTERN:
       state.searchPattern = action.payload;
       break;
 
-    case 'SET_ACTIVE_ROOM':
-      const activeRoomId = action.payload;
-      state.users[state.curUserId].roomId = activeRoomId;
+    case actions.RECEIVED_USERS:
+      state.users = action.payload;
+      state.userIdToNameMap = initUserIdToNameMap(state.users);
       break;
-
   }
 
 }, initialState);

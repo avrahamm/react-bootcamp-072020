@@ -1,4 +1,5 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+
 import messages from './reducers/messages';
 import rooms from './reducers/rooms';
 import users from './reducers/users';

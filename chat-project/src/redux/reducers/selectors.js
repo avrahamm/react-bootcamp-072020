@@ -53,6 +53,7 @@ const userItemsSelector = createSelector(
     ( activeRoomId, usersSearchPattern, users ) =>
         users.filter(
             userItem =>
+                activeRoomId &&
                 userItem.roomId === activeRoomId &&
                 userItem.name.toLowerCase().includes( usersSearchPattern ) )
 );
