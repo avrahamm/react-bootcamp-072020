@@ -13,7 +13,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         actions.FIREBASE_INIT,
         actions.CREATE_ROOM,
         actions.SET_ACTIVE_ROOM,
-        // actions.RECEIVED_MESSAGE,
+        actions.RECEIVED_MESSAGE,
         actions.SET_USERNAME
     ];
 
@@ -29,8 +29,14 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     switch(action.type) {
         case actions.CREATE_ROOM:
         case actions.SET_USERNAME:
+        case actions.RECEIVED_MESSAGE:
             addObjToFirebaseCollection(action)
-                .then( () => next(action));
+                .then( (docId) => {
+                    action.meta = {
+                        docId
+                    }
+                    next(action)
+                });
             break;
 
         case actions.SET_ACTIVE_ROOM:
@@ -44,7 +50,6 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     // The document probably doesn't exist.
                     console.error("Error updating document: ", error);
                 });
-
             break;
     }
 }

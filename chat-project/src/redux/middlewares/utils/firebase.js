@@ -4,12 +4,13 @@ const firebase = window.firebase;
 function initReceiveDataFromFirebase(dispatch) {
     // Read From Firebase
     const collectionsData = [
-        { collection: 'rooms', action: actions.RECEIVED_ROOMS },
-        { collection: 'users', action: actions.RECEIVED_USERS }
+        { collection: 'rooms', orderColumn: "name", action: actions.RECEIVED_ROOMS },
+        { collection: 'users', orderColumn: "name", action: actions.RECEIVED_USERS },
+        { collection: 'messages', orderColumn: "time", action: actions.RECEIVED_MESSAGES },
     ];
     collectionsData.forEach( collectionData => {
         firebase.firestore().collection(collectionData.collection)
-            .orderBy('name')
+            .orderBy(collectionData.orderColumn)
             .onSnapshot(function (qs) {
                     const batch = [];
                     qs.forEach(function (doc) {
@@ -27,10 +28,8 @@ function addObjToFirebaseCollection(action) {
     const {collection, ...obj} = action.payload;
     return firebaseCollection.add(obj)
         .then(function (docRef) {
-            console.log("User written with ID: ", docRef.id);
-            action.meta = {
-                userId: docRef.id
-            }
+            console.log(`addObjToFirebaseCollection to ${action.payload.collection}, docRef.id: `, docRef.id);
+            return docRef.id;
         });
 }
 

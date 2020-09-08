@@ -32,20 +32,27 @@ export function setFilterRoomUsersPattern(searchPattern) {
 }
 
 export function receivedMessage(userId, roomId, text, time) {
-    return {type: actions.RECEIVED_MESSAGE, payload: {
-            userId, roomId, text, time
+    return {type: actions.RECEIVED_MESSAGE,
+        payload: {
+        collection: "messages",
+            userId, roomId, text, time,
         }
     };
 }
 
 export function setUsername(newUsername) {
+    const imgUrl = Math.random*10 > 5
+        ? "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
+        : "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg";
+
     return {
         type: actions.SET_USERNAME,
         payload: {
             collection: "users",
             name: newUsername,
             active: true,
-            roomId: null
+            roomId: null,
+            imgUrl,
         }
     };
 }

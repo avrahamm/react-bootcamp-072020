@@ -25,7 +25,7 @@ const curRoomMessagesSelector = createSelector(
         messages.filter( message => message.roomId === activeRoomId)
 );
 
-const userIdToNameMapSelector = state => state.users.userIdToNameMap;
+const userIdToUserDataSelector = state => state.users.userIdToUserData;
 
 const createDeepEqualSelector = createSelectorCreator(
     defaultMemoize,
@@ -33,12 +33,15 @@ const createDeepEqualSelector = createSelectorCreator(
 );
 
 const curRoomFilledMessagesSelector = createDeepEqualSelector(
-    [activeRoomByPropsSelector, curUserSelector, userIdToNameMapSelector, curRoomMessagesSelector],
-    ( activeRoom, curUser, userIdToNameMap, curRoomMessages )  => {
+    [activeRoomByPropsSelector, curUserSelector, userIdToUserDataSelector, curRoomMessagesSelector],
+    ( activeRoom, curUser, userIdToUserData, curRoomMessages )  => {
         const curRoomFilledMessages = curRoomMessages
             .filter( message => message.roomId === activeRoom.id)
             .map( message => {
-                    return {...message, username: userIdToNameMap.get(message.userId) }
+                    return {...message,
+                        username: userIdToUserData[message.userId].name,
+                        imgUrl: userIdToUserData[message.userId].imgUrl,
+                    }
                 }
             );
 

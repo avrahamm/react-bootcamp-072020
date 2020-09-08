@@ -35,8 +35,11 @@ function sendRoomsToFirebase() {
                 const username = `user${Math.floor(Math.random()*100*(index + 1))}`;
                 const roomId = docRef.id;
                 const active = Math.random()*10 > 5;
+                const imgUrl = Math.random*10 > 5
+                    ? "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
+                    : "https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg";
                 return users.add(
-                    {name: username, roomId, active},
+                    {name: username, roomId, active, imgUrl},
                 )
             })
             .catch(function(error) {

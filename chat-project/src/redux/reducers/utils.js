@@ -2,11 +2,11 @@ export function nextId(items) {
   return Math.max(...items.map(i => i.id)) + 1;
 }
 
-export function initUserIdToNameMap(users) {
-  let userIdToNameMap = {};
+export function initUserIdToUserData(users) {
+  let userIdToUserData = {};
   users.forEach(user => {
-    userIdToNameMap[user.id] = user.name;
+    userIdToUserData[user.id] = user;
   })
-  return userIdToNameMap;
+  return userIdToUserData;
 }
 
