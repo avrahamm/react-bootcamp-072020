@@ -7,6 +7,7 @@ export default function RoomHeader(props) {
 
     return (
         <div className="card-header msg_head">
+            {console.log("RoomHeader render")}
             <div className="d-flex bd-highlight">
                 <div className="user_info">
                     <span>{roomName}</span>

@@ -5,7 +5,8 @@ export function nextId(items) {
 export function initUserIdToUserData(users) {
   let userIdToUserData = {};
   users.forEach(user => {
-    userIdToUserData[user.id] = user;
+    const {name, imgUrl} = user
+    userIdToUserData[user.id] = {name, imgUrl};
   })
   return userIdToUserData;
 }

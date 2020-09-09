@@ -9,6 +9,7 @@ export default function RoomsContent() {
 
     return (
         <div className="col-md-8 col-xl-6 chat">
+            {console.log("RoomsContent render")}
             { activeRoomId !== null
                 ? <ActiveRoomContent activeRoomId={activeRoomId} />
                 : <NotSelectedRoom />

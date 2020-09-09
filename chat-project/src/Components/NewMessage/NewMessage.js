@@ -26,6 +26,7 @@ export default function NewMessage(props) {
 
     return (
         <div className="card-footer">
+            {console.log("NewMessage render")}
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
                     <div className="input-group-append">
