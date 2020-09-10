@@ -8,8 +8,15 @@ const initialState = {
 
 export default produce((state, action) => {
     switch (action.type) {
+        case actions.ROOM_MODIFIED:
+            action.payload.forEach(modifiedItem => {
+                const index = state.messages.findIndex( item => item.id === modifiedItem.id);
+                state.messages[index] = modifiedItem;
+            });
+            break;
+
         case actions.RECEIVED_MESSAGES:
-            state.messages = action.payload;
+            state.messages = state.messages.concat(action.payload);
             break;
     }
 }, initialState);

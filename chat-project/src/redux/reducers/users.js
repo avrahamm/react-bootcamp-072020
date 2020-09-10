@@ -23,8 +23,15 @@ export default produce((state, action) => {
       state.searchPattern = action.payload;
       break;
 
+    case actions.USER_MODIFIED:
+      action.payload.forEach(modifiedItem => {
+          const index = state.users.findIndex( item => item.id === modifiedItem.id);
+          state.users[index] = modifiedItem;
+      });
+      break;
+
     case actions.RECEIVED_USERS:
-      state.users = action.payload;
+      state.users = state.users.concat(action.payload);
       state.userIdToUserData = initUserIdToUserData(state.users);
       break;
   }

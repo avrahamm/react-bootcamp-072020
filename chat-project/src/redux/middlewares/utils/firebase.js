@@ -4,22 +4,60 @@ const firebase = window.firebase;
 function initReceiveDataFromFirebase(dispatch) {
     // Read From Firebase
     const collectionsData = [
-        { collection: 'rooms', orderColumn: "name", action: actions.RECEIVED_ROOMS },
-        { collection: 'users', orderColumn: "name", action: actions.RECEIVED_USERS },
-        { collection: 'messages', orderColumn: "time", action: actions.RECEIVED_MESSAGES },
+        {
+            collection: 'rooms', orderColumn: "name",
+            action: {
+                add: actions.RECEIVED_ROOMS,
+                modify: actions.ROOM_MODIFIED,
+            }
+        },
+        {
+            collection: 'users', orderColumn: "name",
+            action: {
+                add: actions.RECEIVED_USERS,
+                modify: actions.USER_MODIFIED,
+            }
+        },
+        {
+            collection: 'messages', orderColumn: "time",
+            action: {
+                add: actions.RECEIVED_MESSAGES,
+                modify: actions.MESSAGE_MODIFIED,
+            }
+        },
     ];
+
     collectionsData.forEach( collectionData => {
         firebase.firestore().collection(collectionData.collection)
             .orderBy(collectionData.orderColumn)
             .onSnapshot(function (qs) {
-                    const batch = [];
-                    qs.forEach(function (doc) {
-                        batch.push({id: doc.id, ...doc.data()});
-                    });
-                    /// we have the new items in batch
-                    dispatch({type: collectionData.action, payload: batch});
+                const addedDocsBatch = [];
+                const modifiedDocsBatch = [];
+                qs.docChanges().forEach(function(change) {
+                    //@link:https://firebase.google.com/docs/firestore/query-data/listen
+                    if (change.type === "added") {
+                        console.log(`change.type === "added". New ${collectionData.collection}: `, change.doc.data());
+                        addedDocsBatch.push({id: change.doc.id, ...change.doc.data()});
+                    }
+                    if (change.type === "modified") {
+                        console.log(`Modified ${collectionData.collection}: `, change.doc.data());
+                        modifiedDocsBatch.push({id: change.doc.id, ...change.doc.data()});
+                    }
+                    if (change.type === "removed") {
+                        console.log(`Removed ${collectionData.collection}: `, change.doc.data());
+                    }
+                });
+
+                if( addedDocsBatch.length) {
+                    /// we have the new item/s in batch
+                    dispatch({type: collectionData.action.add, payload: addedDocsBatch});
                 }
-            )
+                if( modifiedDocsBatch.length) {
+                    /// modified item/s in batch
+                    dispatch({type: collectionData.action.modify, payload: modifiedDocsBatch});
+                }
+            }
+        )
     })
 }
 

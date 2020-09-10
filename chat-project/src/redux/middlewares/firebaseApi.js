@@ -6,8 +6,8 @@ import {
     addObjToFirebaseCollection
 } from "./utils/firebase"
 
-// @link:https://www.youtube.com/watch?v=DqWiuvuK_78
-// 30th minute
+// @link:https://www.youtube.com/watch?v=DqWiuvuK_78 30th minute
+//https://github.com/500tech/middleware-lecture
 const firebaseApi = ({getState,dispatch}) => next => action => {
     const apiActions = [
         actions.FIREBASE_INIT,
@@ -35,7 +35,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     action.meta = {
                         docId
                     }
-                    next(action)
+                    return next(action)
                 });
             break;
 
