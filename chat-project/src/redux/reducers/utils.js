@@ -1,7 +1,3 @@
-export function nextId(items) {
-  return Math.max(...items.map(i => i.id)) + 1;
-}
-
 export function initUserIdToUserData(users) {
   let userIdToUserData = {};
   users.forEach(user => {
@@ -11,3 +7,10 @@ export function initUserIdToUserData(users) {
   return userIdToUserData;
 }
 
+export function createReducer(cases) {
+  return ((state, action) => {
+    if (cases[action.type]) {
+      return cases[action.type](state, action);
+    }
+  });
+}

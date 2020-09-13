@@ -1,22 +1,26 @@
 import produce from 'immer';
 
 import * as actions from "../consts/action-types";
+import {createReducer} from "./utils";
 
 const initialState = {
     messages: []
 };
 
-export default produce((state, action) => {
-    switch (action.type) {
-        case actions.ROOM_MODIFIED:
-            action.payload.forEach(modifiedItem => {
-                const index = state.messages.findIndex( item => item.id === modifiedItem.id);
-                state.messages[index] = modifiedItem;
-            });
-            break;
+function roomModified(state, action) {
+    action.payload.forEach(modifiedItem => {
+        const index = state.messages.findIndex( item => item.id === modifiedItem.id);
+        state.messages[index] = modifiedItem;
+    });
+}
 
-        case actions.RECEIVED_MESSAGES:
-            state.messages.push(...action.payload);
-            break;
-    }
-}, initialState);
+function receivedMessages(state, action) {
+    state.messages.push(...action.payload);
+}
+
+const cases = {
+    [actions.ROOM_MODIFIED]: roomModified,
+    [actions.RECEIVED_MESSAGES]: receivedMessages,
+}
+
+export default produce(createReducer(cases), initialState);

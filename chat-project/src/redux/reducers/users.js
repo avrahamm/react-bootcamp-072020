@@ -1,7 +1,7 @@
 import produce from 'immer';
 
 import * as actions from "../consts/action-types";
-import { initUserIdToUserData } from "./utils"
+import { initUserIdToUserData, createReducer } from "./utils"
 
 const initialState = {
   users: [],
@@ -12,28 +12,31 @@ const initialState = {
   userIdToUserData: {}
 };
 
-export default produce((state, action) => {
-  switch (action.type) {
-    case actions.SET_USERNAME:
-      const userId = action.meta.docId;
-      state.curUserId = userId;
-      break;
+function setUsername(state, action) {
+  state.curUserId = action.meta.docId;
+}
 
-    case actions.SET_SEARCH_ROOM_USERS_PATTERN:
-      state.searchPattern = action.payload;
-      break;
+function setSearchRoomUsersPattern(state, action) {
+  state.searchPattern = action.payload;
+}
 
-    case actions.USER_MODIFIED:
-      action.payload.forEach(modifiedItem => {
-          const index = state.users.findIndex( item => item.id === modifiedItem.id);
-          state.users[index] = modifiedItem;
-      });
-      break;
+function userModified(state, action) {
+  action.payload.forEach(modifiedItem => {
+    const index = state.users.findIndex( item => item.id === modifiedItem.id);
+    state.users[index] = modifiedItem;
+  });
+}
 
-    case actions.RECEIVED_USERS:
-      state.users.push(...action.payload);
-      state.userIdToUserData = initUserIdToUserData(state.users);
-      break;
-  }
+function receivedUsers(state, action) {
+  state.users.push(...action.payload);
+  state.userIdToUserData = initUserIdToUserData(state.users);
+}
 
-}, initialState);
+const cases = {
+  [actions.SET_USERNAME]: setUsername,
+  [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
+  [actions.USER_MODIFIED]: userModified,
+  [actions.RECEIVED_USERS]: receivedUsers,
+}
+
+export default produce(createReducer(cases), initialState);
