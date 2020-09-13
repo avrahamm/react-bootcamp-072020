@@ -1,22 +1,12 @@
 import React from "react";
-import * as isDeepEqual from "lodash.isequal";
 
+import {sortMessages} from "../Utils";
 import OtherUserMessage from "../Message/OtherUserMessage";
 import CurrentUserMessage from "../Message/CurrentUserMessage";
 
-export default React.memo(function MessagesList(props) {
+export default function MessagesList(props) {
     const { messages, curUserId } = props;
-    const messagesList = messages.sort(function(m1, m2) {
-        let res = 0;
-        let date1 = Date.parse(m1.time);
-        let date2 = Date.parse(m2.time);
-        if ( date1 > date2 ) {
-            res = 1;
-        } else if ( date1 < date2 ) {
-            res = -1;
-        }
-        return res;
-    })
+    const messagesList = messages.sort(sortMessages)
         .map( (message) => (
              message.userId === curUserId
                  ?
@@ -38,9 +28,4 @@ export default React.memo(function MessagesList(props) {
             {messagesList}
         </div>
     )
-},
-    function isEqual(prevProps, nextProps) {
-        return isDeepEqual(prevProps.messages, nextProps.messages) &&
-            isDeepEqual(prevProps.curUserId, nextProps.curUserId);
-    }
-)
+}
