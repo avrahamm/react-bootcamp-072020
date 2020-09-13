@@ -16,7 +16,7 @@ export default produce((state, action) => {
             break;
 
         case actions.RECEIVED_MESSAGES:
-            state.messages = state.messages.concat(action.payload);
+            state.messages.push(...action.payload);
             break;
     }
 }, initialState);

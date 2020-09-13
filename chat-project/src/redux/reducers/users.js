@@ -31,7 +31,7 @@ export default produce((state, action) => {
       break;
 
     case actions.RECEIVED_USERS:
-      state.users = state.users.concat(action.payload);
+      state.users.push(...action.payload);
       state.userIdToUserData = initUserIdToUserData(state.users);
       break;
   }

@@ -23,8 +23,8 @@ export default produce((state, action) => {
           break;
 
     case actions.RECEIVED_ROOMS:
-      state.rooms = state.rooms.concat(action.payload);
-      break;
+        state.rooms.push(...action.payload);
+        break;
 
     case actions.SET_SEARCH_ROOM_PATTERN:
       state.searchPattern = action.payload;
