@@ -12,9 +12,10 @@ export default connect(mapStateToProps)(function Messages(props) {
 
   return (
     <>
-    <ul>
+      <h3>Messages</h3>
+    <ul role="messages-list">
       {messages.map(msg => (
-        <li key={msg.id}>
+        <li role="message-item" key={msg.id}>
           <b>{msg.from}</b> {msg.text}
         </li>
       ))}

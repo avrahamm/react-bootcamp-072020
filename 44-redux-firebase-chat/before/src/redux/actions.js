@@ -1,4 +1,4 @@
-const firebase = window.firebase;
+import firebase from "./firebase";
 
 export function sendToFirebase(from, text) {
   const msgs = firebase.firestore().collection('messages');
