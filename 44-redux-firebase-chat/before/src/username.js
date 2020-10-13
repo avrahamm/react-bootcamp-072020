@@ -17,9 +17,9 @@ export default connect(mapStateToProps)(function Username(props) {
 
   return (
     <div className='username'>
-      <label>
+      <label htmlFor={"username"}>
         User Name:
-        <input type="text" value={username} onChange={handleChange} />
+        <input id={"username"} type="text" value={username} onChange={handleChange} />
       </label>
     </div>
   );

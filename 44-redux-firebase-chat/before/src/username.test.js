@@ -1,15 +1,18 @@
 import React from 'react';
 import {createStore} from 'redux'
 import {Provider} from 'react-redux';
+import faker from "faker";
 
 import {screen, render} from '@testing-library/react'
-import Messages from './messages.js'
+import userEvent from '@testing-library/user-event'
+import Username from './username.js'
 import reducer from './redux/reducers/index';
 
-describe('Messages component', () => {
-    it('assure messages in the dom',
-        async () => {
+describe('Username component', () => {
+    it('Username component',
 
+        async () => {
+            const username = "www" ; //faker.internet.userName();
             const initialState = {
                 messages: {
                     messages: [
@@ -26,26 +29,33 @@ describe('Messages component', () => {
                     ]
                 },
                 rooms: {rooms: [], activeRoomId: 0},
-                account: {username: 'guest'}
+                account: {username }
             };
 
             const myStore = createStore(reducer, initialState);
 
             const {
-                getByText,
-                findByText, findAllByRole
+                getByText, getByLabelText
             } = render(
                 <Provider store={myStore}>
-                    <Messages/>
+                    <Username/>
                 </Provider>
             );
 
-            expect(getByText(/messages/i))
-                .toBeInTheDocument();
-            const messagesByRole = await findAllByRole("message-item");
-            expect(messagesByRole).toHaveLength(2);
-            const messageByText = await findByText(/ha1/i);
-            expect(messageByText).toBeInTheDocument();
+            const usernameLabel = getByText(/user/i);
+            expect(usernameLabel).toBeInTheDocument();
+
+            const usernameInput = getByLabelText(/user/i);
+            expect(getByLabelText(/user/i)).toHaveValue(username);
+
+            userEvent.clear(usernameInput);
+            const username2 = faker.internet.userName();
+            userEvent.type(usernameInput, username2)
+            expect(usernameInput).toHaveValue(username2);
+            expect(myStore.getState().account.username).toBe(username2);
         })
 
 })
+
+
+
