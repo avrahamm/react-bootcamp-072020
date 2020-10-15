@@ -6,7 +6,7 @@ const initialState = {
 
 export default produce((state, action) => {
   switch(action.type) {
-    case 'NEW_MESSAGE':
+    case 'RECEIVED_MESSAGE':
       state.messages.push(action.payload);
       break;
 

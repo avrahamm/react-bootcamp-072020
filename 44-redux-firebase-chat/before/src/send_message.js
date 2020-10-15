@@ -21,9 +21,9 @@ function SendMessage( ) {
 
     return (
         <div className='banner'>
-            <label htmlFor="">
+            <label htmlFor="addMessage">
                 <h4>Add Message</h4>
-                <input type="text" value={message} onChange={saveNewMessage}/>
+                <input id={"addMessage"} type="text" value={message} onChange={saveNewMessage}/>
             </label>
             <button onClick={sendMessage} >Add</button>
         </div>
