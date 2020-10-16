@@ -11,7 +11,7 @@ describe('Username component', () => {
 
         async () => {
             const {
-                getByText, getByLabelText, store
+                getByText, getByLabelText
             } = render(<Username/>, {initialState});
 
             const usernameLabel = getByText(/user/i);
@@ -24,7 +24,6 @@ describe('Username component', () => {
             const username2 = faker.internet.userName();
             userEvent.type(usernameInput, username2)
             expect(usernameInput).toHaveValue(username2);
-            expect(store.getState().account.username).toBe(username2);
         })
 
 })

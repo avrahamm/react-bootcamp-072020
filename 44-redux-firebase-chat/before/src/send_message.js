@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { sendToFirebase } from './redux/actions';
+import { sendToFirebase } from './redux/firebase_actions';
 
 
 function SendMessage( ) {

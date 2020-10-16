@@ -6,14 +6,13 @@ import render from "./redux/utils/rtl_render_with_providers";
 import userEvent from '@testing-library/user-event'
 import SendMessage from "./send_message";
 import initialState from "./__mocks__/initialState";
-import * as actions from './redux/actions';
+import * as firebaseActions from './redux/firebase_actions';
 
 describe('SendMessage component', () => {
     it('SendMessage component',
 
         async () => {
-            actions.sendToFirebase = jest.fn();
-
+            firebaseActions.sendToFirebase = jest.fn();
             const {
                 getByLabelText, store
             } = render( <SendMessage/>, {initialState});
@@ -30,7 +29,7 @@ describe('SendMessage component', () => {
 
             const addMessageButton = screen.getByRole("button", { name: /add/i})
             await userEvent.click(addMessageButton);
-            expect(actions.sendToFirebase).toHaveBeenCalledTimes(1);
+            expect(firebaseActions.sendToFirebase).toHaveBeenCalledTimes(1);
         })
 
 })

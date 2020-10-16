@@ -1,8 +1,11 @@
 import React from "react"
-import {createStore} from "redux";
+import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import {render as rtlRender} from "@testing-library/react"
 import reducer from '../reducers/index';
+import mockFirebaseMessages from "../middlewares/firebaseMessages";
+
+jest.mock("../middlewares/firebaseMessages");
 
 /**
 // this is a handy function that I normally make available for all my tests
@@ -14,7 +17,7 @@ export default function render(
     ui,
     {
         initialState,
-        store = createStore(reducer, initialState),
+        store = createStore(reducer, initialState, applyMiddleware(mockFirebaseMessages)),
         ...renderOptions
     } = {},
 ) {

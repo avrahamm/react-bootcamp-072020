@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducer from "./reducers/index"
 import firebaseMessages from "./middlewares/firebaseMessages"
 
