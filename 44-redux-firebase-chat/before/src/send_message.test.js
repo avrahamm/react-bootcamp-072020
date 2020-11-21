@@ -8,6 +8,13 @@ import SendMessage from "./send_message";
 import initialState from "./__mocks__/initialState";
 import * as firebaseActions from './redux/firebase_actions';
 
+/**
+ * App works fine, but is not testable once include firestore - Couldn't fix.
+ * https://github.com/firebase/firebase-js-sdk/issues/315
+ * https://github.com/facebook/create-react-app/issues/2590
+ *
+ * Jest fails with firebase write operation.
+ */
 describe('SendMessage component', () => {
     it('SendMessage component',
 
