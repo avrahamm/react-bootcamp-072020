@@ -1,6 +1,4 @@
 import React, {useState } from "react";
-import { useDispatch} from 'react-redux';
-import { setUsername } from "../../redux/actions";
 import './Login.css'
 
 import LoginForm from "./LoginForm";
@@ -14,6 +12,10 @@ const components = {
 };
 
 
+/**
+ * bootstrap template comes from
+ * @link:https://bootsnipp.com/snippets/GavAo
+ */
 export default function Login() {
     const [curForm, setCurForm] = useState('login');
 
