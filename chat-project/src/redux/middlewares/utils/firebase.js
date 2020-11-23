@@ -61,9 +61,9 @@ function initReceiveDataFromFirebase(dispatch) {
     })
 }
 
-function addObjToFirebaseCollection(action) {
-    const firebaseCollection = firebase.firestore().collection(action.payload.collection);
-    const {collection, ...obj} = action.payload;
+function addObjToFirebaseCollection(collectionName, data={}) {
+    const firebaseCollection = firebase.firestore().collection(collectionName);
+    const {collection, ...obj} = {...data};
     return firebaseCollection.add(obj)
         .then(function (docRef) {
             console.log(`addObjToFirebaseCollection to ${action.payload.collection}, docRef.id: `, docRef.id);

@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from 'react-redux';
-
-const firebase = window.firebase;
+import * as actions from "../../redux/actions";
 
 export default function SignUpForm({setCurForm}) {
     const dispatch = useDispatch();
@@ -14,36 +13,10 @@ export default function SignUpForm({setCurForm}) {
     function handleSubmit(e) {
         e.preventDefault();
         if ( password !== repeatPassword) {
-            setError("Passwords must be equal")
+            setError("Passwords must be equal");
+            return;
         }
-        // const email = "papaabram@hotmail.com";
-        // const password = "123456";
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((user) => {
-                // Signed in
-                console.log(`Signed up!`);
-                console.log(user)
-            })
-            .then( () => {
-                const user = firebase.auth().currentUser;
-                console.log(`firebase.auth().currentUser = `);
-                console.log(user);
-                return user.updateProfile({
-                    displayName: username,
-                    photoURL: "https://example.com/jane-q-user/profile.jpg"
-                })
-            })
-            .then(function() {
-                // Update successful.
-                console.log("Update successful.");
-                const user = firebase.auth().currentUser;
-                const username = user.displayName;
-                dispatch(setUsername(username));
-            })
-            .catch((error) => {
-                console.log(`Sign up failed`);
-                console.log(error);
-            });
+        dispatch(actions.userSignUp(username,email,password));
     }
 
     return (

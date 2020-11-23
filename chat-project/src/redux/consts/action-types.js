@@ -13,6 +13,10 @@ export const RECEIVED_USER = 'RECEIVED_USER';
 export const RECEIVED_USERS = 'RECEIVED_USERS';
 export const USER_MODIFIED = 'USER_MODIFIED';
 export const SET_USERNAME = 'SET_USERNAME';
+export const USER_SIGN_UP = 'USER_SIGN_UP';
+export const USER_SIGN_IN = 'USER_SIGN_IN';
+export const USER_RESET_PASSWORD = 'USER_RESET_PASSWORD';
+export const USER_SIGN_OUT = 'USER_SIGN_OUT';
 
 export const FIREBASE_INIT = 'FIREBASE_INIT';
 

@@ -16,6 +16,10 @@ function setUsername(state, action) {
   state.curUserId = action.meta.docId;
 }
 
+function userSignUp(state, action) {
+  state.curUserId = action.meta.authUid;
+}
+
 function setSearchRoomUsersPattern(state, action) {
   state.searchPattern = action.payload;
 }
@@ -34,6 +38,7 @@ function receivedUsers(state, action) {
 
 const cases = {
   [actions.SET_USERNAME]: setUsername,
+  [actions.USER_SIGN_UP]: userSignUp,
   [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
   [actions.USER_MODIFIED]: userModified,
   [actions.RECEIVED_USERS]: receivedUsers,

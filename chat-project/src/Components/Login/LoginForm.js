@@ -14,9 +14,15 @@ export default function LoginForm({setCurForm}) {
         // const password = "123456";
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
-                // Signed in
                 console.log("Signed in");
+                console.log("user = ");
                 console.log(user);
+                console.log(user.user.uid);
+
+                const currentUser = firebase.auth().currentUser;
+                console.log(`firebase.auth().currentUser = `);
+                console.log(currentUser);
+                console.log(currentUser.uid);
                 dispatch(setUsername("username"));
 
             })

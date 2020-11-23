@@ -61,4 +61,12 @@ export function undo() {
     return {type: actions.UNDO};
 }
 
+export function userSignUp(username, email, password) {
 
+    return {
+        type: actions.USER_SIGN_UP,
+        payload: {
+            username,email, password,
+        }
+    };
+}

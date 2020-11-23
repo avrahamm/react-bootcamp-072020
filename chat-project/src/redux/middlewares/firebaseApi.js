@@ -14,7 +14,8 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         actions.CREATE_ROOM,
         actions.SET_ACTIVE_ROOM,
         actions.RECEIVED_MESSAGE,
-        actions.SET_USERNAME
+        actions.SET_USERNAME,
+        actions.USER_SIGN_UP
     ];
 
     if ( !apiActions.includes(action.type)) {
@@ -29,28 +30,70 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     switch(action.type) {
         case actions.CREATE_ROOM:
         case actions.SET_USERNAME:
-        case actions.RECEIVED_MESSAGE:
-            addObjToFirebaseCollection(action)
-                .then( (docId) => {
+        case actions.RECEIVED_MESSAGE: {
+            const {collection, ...data} = action.payload;
+            addObjToFirebaseCollection(action.payload.collection, data)
+                .then((docId) => {
                     action.meta = {
                         docId
                     }
                     return next(action)
                 });
             break;
+        }
 
-        case actions.SET_ACTIVE_ROOM:
+        case actions.SET_ACTIVE_ROOM: {
             const firebaseCollection = firebase.firestore().collection(action.payload.collection);
-            const {collection, ...updateData} = action.payload;
+            const {collection, ...data} = action.payload;
             const curUserId = getState().users.curUserId;
             let curUserRef = firebaseCollection.doc(curUserId);
-            curUserRef.update(updateData)
-                .then( () => next(action))
-                .catch(function(error) {
+            curUserRef.update(data)
+                .then(() => next(action))
+                .catch(function (error) {
                     // The document probably doesn't exist.
                     console.error("Error updating document: ", error);
                 });
             break;
+        }
+
+        case actions.USER_SIGN_UP: {
+            const {username, email, password} = action.payload;
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((user) => {
+                    // Signed in
+                    console.log(`Signed up!`);
+                    const currentUser = firebase.auth().currentUser;
+                    return currentUser.updateProfile({
+                        displayName: username,
+                    })
+                })
+                .then(function () {
+                    // Update successful.
+                    console.log("updateProfile successful.");
+                    action.meta = {
+                        authUid: firebase.auth().currentUser.uid
+                    }
+                    // temporary, to confirm to existing code
+                    action.payload.collection = "users";
+                    return addObjToFirebaseCollection(action, {
+                        active: true,
+                        roomId: null,
+                        imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
+                    })
+
+                })
+                .then(() => {
+                    return next(action)
+                })
+                .catch((error) => {
+                    console.log(`Sign up failed`);
+                    console.log(error);
+                });
+            break;
+        }
+
+        default:
+            return;
     }
 }
 
