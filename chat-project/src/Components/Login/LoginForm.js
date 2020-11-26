@@ -1,6 +1,7 @@
 import React from "react";
 import {setUsername} from "../../redux/actions";
 import {useDispatch} from "react-redux";
+import * as actions from "../../redux/actions";
 const firebase = window.firebase;
 
 export default function LoginForm({setCurForm}) {
@@ -10,8 +11,8 @@ export default function LoginForm({setCurForm}) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        // const email = "papaabram@hotmail.com";
-        // const password = "123456";
+        dispatch(actions.userSignIn(email,password));
+
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
                 console.log("Signed in");

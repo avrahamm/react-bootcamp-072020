@@ -66,7 +66,7 @@ function addObjToFirebaseCollection(collectionName, data={}) {
     const {collection, ...obj} = {...data};
     return firebaseCollection.add(obj)
         .then(function (docRef) {
-            console.log(`addObjToFirebaseCollection to ${action.payload.collection}, docRef.id: `, docRef.id);
+            console.log(`addObjToFirebaseCollection to ${collectionName}, docRef.id: `, docRef.id);
             return docRef.id;
         });
 }

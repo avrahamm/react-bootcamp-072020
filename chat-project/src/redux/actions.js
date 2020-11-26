@@ -70,3 +70,13 @@ export function userSignUp(username, email, password) {
         }
     };
 }
+
+export function userSignIn(email, password) {
+
+    return {
+        type: actions.USER_SIGN_IN,
+        payload: {
+            email, password,
+        }
+    };
+}

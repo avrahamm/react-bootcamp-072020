@@ -15,7 +15,8 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         actions.SET_ACTIVE_ROOM,
         actions.RECEIVED_MESSAGE,
         actions.SET_USERNAME,
-        actions.USER_SIGN_UP
+        actions.USER_SIGN_UP,
+        actions.USER_SIGN_IN,
     ];
 
     if ( !apiActions.includes(action.type)) {
@@ -87,6 +88,42 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                 })
                 .catch((error) => {
                     console.log(`Sign up failed`);
+                    console.log(error);
+                    throw error;
+                });
+            break;
+        }
+
+        case actions.USER_SIGN_IN: {
+            const {email, password} = action.payload;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((user) => {
+                    console.log("Signed in");
+                    const authUid = firebase.auth().currentUser.uid;
+                    firebase.firestore().collection("users")
+                        .where("authUid", "==", authUid)
+                        .get()
+                        .then(function(querySnapshot) {
+                            querySnapshot.forEach(function(doc) {
+                                // doc.data() is never undefined for query doc snapshots
+                                console.log(doc.id, " => ", doc.data());
+                            });
+                        })
+                    let userRef = firebase.firestore().collection('users').doc(authUid);
+                    console.log("userRef = ");
+                    console.log(userRef);
+                    return userRef.set({
+                        active: true
+                    }, { merge: true });
+                })
+                .then(function (userRef) {
+                    console.log("userRef = ");
+                    console.log(userRef);
+                    console.log("Signed in");
+                    return next(action)
+                })
+                .catch((error) => {
+                    console.log(`Sign in failed`);
                     console.log(error);
                 });
             break;

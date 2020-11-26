@@ -16,7 +16,13 @@ export default function SignUpForm({setCurForm}) {
             setError("Passwords must be equal");
             return;
         }
-        dispatch(actions.userSignUp(username,email,password));
+
+        Promise.resolve(dispatch(actions.userSignUp(username, email, password)))
+            .catch((error) => {
+                console.log("userSignUp failed");
+                console.log(error.I.message);
+                setError(error.message);
+            })
     }
 
     return (
