@@ -1,4 +1,5 @@
-import * as actions from "../consts/action-types";
+import * as actionTypes from "../consts/action-types";
+import * as actions from "../actions";
 const firebase = window.firebase;
 
 import {
@@ -10,28 +11,28 @@ import {
 //https://github.com/500tech/middleware-lecture
 const firebaseApi = ({getState,dispatch}) => next => action => {
     const apiActions = [
-        actions.FIREBASE_INIT,
-        actions.CREATE_ROOM,
-        actions.SET_ACTIVE_ROOM,
-        actions.RECEIVED_MESSAGE,
-        actions.SET_USERNAME,
-        actions.USER_SIGN_UP,
-        actions.USER_SIGN_IN,
+        actionTypes.FIREBASE_INIT,
+        actionTypes.CREATE_ROOM,
+        actionTypes.SET_ACTIVE_ROOM,
+        actionTypes.RECEIVED_MESSAGE,
+        actionTypes.SET_USERNAME,
+        actionTypes.USER_SIGN_UP,
+        actionTypes.USER_SIGN_IN,
     ];
 
     if ( !apiActions.includes(action.type)) {
         return next(action);
     }
 
-    if ( action.type === actions.FIREBASE_INIT ) {
+    if ( action.type === actionTypes.FIREBASE_INIT ) {
         initReceiveDataFromFirebase(dispatch);
         return;
     }
 
     switch(action.type) {
-        case actions.CREATE_ROOM:
-        case actions.SET_USERNAME:
-        case actions.RECEIVED_MESSAGE: {
+        case actionTypes.CREATE_ROOM:
+        case actionTypes.SET_USERNAME:
+        case actionTypes.RECEIVED_MESSAGE: {
             const {collection, ...data} = action.payload;
             addObjToFirebaseCollection(action.payload.collection, data)
                 .then((docId) => {
@@ -43,7 +44,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
             break;
         }
 
-        case actions.SET_ACTIVE_ROOM: {
+        case actionTypes.SET_ACTIVE_ROOM: {
             const firebaseCollection = firebase.firestore().collection(action.payload.collection);
             const {collection, ...data} = action.payload;
             const curUserId = getState().users.curUserId;
@@ -57,7 +58,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
             break;
         }
 
-        case actions.USER_SIGN_UP: {
+        case actionTypes.USER_SIGN_UP: {
             const {username, email, password} = action.payload;
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((user) => {
@@ -74,9 +75,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     action.meta = {
                         authUid: firebase.auth().currentUser.uid
                     }
-                    // temporary, to confirm to existing code
-                    action.payload.collection = "users";
-                    return addObjToFirebaseCollection(action, {
+                    return addObjToFirebaseCollection("users", {
                         active: true,
                         roomId: null,
                         imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
@@ -89,15 +88,19 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                 .catch((error) => {
                     console.log(`Sign up failed`);
                     console.log(error);
-                    throw error;
-                });
+                    return error;
+                })
+                .then( error => {
+                    dispatch(actions.userSignUpError(error.message))
+                })
             break;
         }
 
-        case actions.USER_SIGN_IN: {
+        case actionTypes.USER_SIGN_IN: {
             const {email, password} = action.payload;
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
+                    throw({message: "Test error"});
                     console.log("Signed in");
                     const authUid = firebase.auth().currentUser.uid;
                     firebase.firestore().collection("users")
@@ -125,6 +128,10 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                 .catch((error) => {
                     console.log(`Sign in failed`);
                     console.log(error);
+                    return error;
+                })
+                .then( error => {
+                    dispatch(actions.userSignInError(error.message));
                 });
             break;
         }

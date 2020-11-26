@@ -1,9 +1,11 @@
 import React from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from "../../redux/actions";
 
 export default function SignUpForm({setCurForm}) {
     const dispatch = useDispatch();
+    const signUpErrorMessage = useSelector( state => state.users.signUpErrorMessage);
+
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -16,13 +18,7 @@ export default function SignUpForm({setCurForm}) {
             setError("Passwords must be equal");
             return;
         }
-
-        Promise.resolve(dispatch(actions.userSignUp(username, email, password)))
-            .catch((error) => {
-                console.log("userSignUp failed");
-                console.log(error.I.message);
-                setError(error.message);
-            })
+        dispatch(actions.userSignUp(username, email, password));
     }
 
     return (
@@ -39,6 +35,7 @@ export default function SignUpForm({setCurForm}) {
             <p style={{textAlign: "center"}}>OR</p>
 
             { Boolean(error) ? <p style={{color:"red"}}>{error}</p> : ""}
+            { Boolean(signUpErrorMessage) ? <p style={{color:"red"}}>{signUpErrorMessage}</p> : ""}
 
             <input type="text" id="user-name" className="form-control" placeholder="Full name" required=""
                    autoFocus=""

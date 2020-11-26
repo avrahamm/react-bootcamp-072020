@@ -7,6 +7,8 @@ const initialState = {
   users: [],
   searchPattern: "",
   curUserId: null,
+  signUpErrorMessage: null,
+  signInErrorMessage: null,
   // Do not use Map( not serializable) in Redux state, use plain JS object!
   // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
   userIdToUserData: {}
@@ -18,6 +20,18 @@ function setUsername(state, action) {
 
 function userSignUp(state, action) {
   state.curUserId = action.meta.authUid;
+}
+
+function userSignUpError(state, action) {
+  state.signUpErrorMessage = action.payload.errorMessage;
+}
+
+function userSignIn(state, action) {
+  state.curUserId = action.meta.authUid;
+}
+
+function userSignInError(state, action) {
+  state.signInErrorMessage = action.payload.errorMessage;
 }
 
 function setSearchRoomUsersPattern(state, action) {
@@ -39,6 +53,9 @@ function receivedUsers(state, action) {
 const cases = {
   [actions.SET_USERNAME]: setUsername,
   [actions.USER_SIGN_UP]: userSignUp,
+  [actions.USER_SIGN_UP_ERROR]: userSignUpError,
+  [actions.USER_SIGN_IN]: userSignIn,
+  [actions.USER_SIGN_IN_ERROR]: userSignInError,
   [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
   [actions.USER_MODIFIED]: userModified,
   [actions.RECEIVED_USERS]: receivedUsers,

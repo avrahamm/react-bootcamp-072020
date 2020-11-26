@@ -71,12 +71,32 @@ export function userSignUp(username, email, password) {
     };
 }
 
+export function userSignUpError(errorMessage) {
+
+    return {
+        type: actions.USER_SIGN_UP_ERROR,
+        payload: {
+            errorMessage
+        }
+    };
+}
+
 export function userSignIn(email, password) {
 
     return {
         type: actions.USER_SIGN_IN,
         payload: {
             email, password,
+        }
+    };
+}
+
+export function userSignInError(errorMessage) {
+
+    return {
+        type: actions.USER_SIGN_IN_ERROR,
+        payload: {
+            errorMessage
         }
     };
 }

@@ -1,36 +1,17 @@
 import React from "react";
-import {setUsername} from "../../redux/actions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import * as actions from "../../redux/actions";
-const firebase = window.firebase;
 
 export default function LoginForm({setCurForm}) {
     const dispatch = useDispatch();
+    const signInErrorMessage = useSelector( state => state.users.signInErrorMessage);
+
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
     function handleSubmit(e) {
         e.preventDefault();
         dispatch(actions.userSignIn(email,password));
-
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((user) => {
-                console.log("Signed in");
-                console.log("user = ");
-                console.log(user);
-                console.log(user.user.uid);
-
-                const currentUser = firebase.auth().currentUser;
-                console.log(`firebase.auth().currentUser = `);
-                console.log(currentUser);
-                console.log(currentUser.uid);
-                dispatch(setUsername("username"));
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        console.log("LoginForm:handleSubmit");
     }
 
     return (
@@ -43,6 +24,7 @@ export default function LoginForm({setCurForm}) {
                     <i className="fab fa-google-plus-g" /> Sign in with Google+</span></button>
             </div>
             <p style={{textAlign: "center"}}> OR </p>
+            { Boolean(signInErrorMessage) ? <p style={{color:"red"}}>{signInErrorMessage}</p> : ""}
             <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required=""
                    autoFocus=""
                 onChange={ (e) => { setEmail(e.target.value)}}
