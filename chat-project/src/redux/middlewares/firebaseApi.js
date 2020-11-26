@@ -15,9 +15,9 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         actionTypes.CREATE_ROOM,
         actionTypes.SET_ACTIVE_ROOM,
         actionTypes.RECEIVED_MESSAGE,
-        actionTypes.SET_USERNAME,
         actionTypes.USER_SIGN_UP,
         actionTypes.USER_SIGN_IN,
+        actionTypes.USER_SIGN_OUT,
     ];
 
     if ( !apiActions.includes(action.type)) {
@@ -31,7 +31,6 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
 
     switch(action.type) {
         case actionTypes.CREATE_ROOM:
-        case actionTypes.SET_USERNAME:
         case actionTypes.RECEIVED_MESSAGE: {
             const {collection, ...data} = action.payload;
             addObjToFirebaseCollection(action.payload.collection, data)
@@ -72,25 +71,21 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                 .then(function () {
                     // Update successful.
                     console.log("updateProfile successful.");
-                    action.meta = {
-                        authUid: firebase.auth().currentUser.uid
-                    }
-                    return addObjToFirebaseCollection("users", {
-                        active: true,
-                        roomId: null,
-                        imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
+                    const authUid = firebase.auth().currentUser.uid;
+                    return firebase.firestore().collection("users").doc(authUid).set({
+                            authUid,
+                            displayName: username,
+                            active: true,
+                            roomId: null,
+                            imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
+                        })
                     })
-
-                })
                 .then(() => {
-                    return next(action)
+                    dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
                 })
                 .catch((error) => {
                     console.log(`Sign up failed`);
                     console.log(error);
-                    return error;
-                })
-                .then( error => {
                     dispatch(actions.userSignUpError(error.message))
                 })
             break;
@@ -100,18 +95,9 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
             const {email, password} = action.payload;
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
-                    throw({message: "Test error"});
+                    // throw({message: "Test error"});
                     console.log("Signed in");
                     const authUid = firebase.auth().currentUser.uid;
-                    firebase.firestore().collection("users")
-                        .where("authUid", "==", authUid)
-                        .get()
-                        .then(function(querySnapshot) {
-                            querySnapshot.forEach(function(doc) {
-                                // doc.data() is never undefined for query doc snapshots
-                                console.log(doc.id, " => ", doc.data());
-                            });
-                        })
                     let userRef = firebase.firestore().collection('users').doc(authUid);
                     console.log("userRef = ");
                     console.log(userRef);
@@ -123,16 +109,34 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     console.log("userRef = ");
                     console.log(userRef);
                     console.log("Signed in");
-                    return next(action)
+                    dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
                 })
                 .catch((error) => {
                     console.log(`Sign in failed`);
                     console.log(error);
-                    return error;
-                })
-                .then( error => {
                     dispatch(actions.userSignInError(error.message));
                 });
+            break;
+        }
+
+        case actionTypes.USER_SIGN_OUT: {
+            const authUid = firebase.auth().currentUser.uid;
+            let userRef = firebase.firestore().collection('users').doc(authUid);
+            userRef.set({
+                active: false
+            }, {merge: true})
+                .then(() => {
+                    return firebase.auth().signOut()
+                })
+                .then(() => {
+                    // Sign out
+                    console.log("Signed out");
+                    dispatch(actions.setCurrentUserId(null));
+                })
+                .catch((error) => {
+                    console.log(error);
+                    dispatch(actions.setCurrentUserId(null));
+                })
             break;
         }
 

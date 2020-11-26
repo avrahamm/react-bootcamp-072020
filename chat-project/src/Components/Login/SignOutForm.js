@@ -1,5 +1,5 @@
 import React from "react";
-import {setUsername} from "../../redux/actions";
+import * as actions from "../../redux/actions";
 import {useDispatch} from "react-redux";
 const firebase = window.firebase;
 
@@ -9,16 +9,7 @@ export default function SignOutForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        firebase.auth().signOut()
-            .then(() => {
-                // Sign out
-                console.log("Signed out");
-                dispatch(setUsername(null));
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        console.log("SignOut:handleSubmit");
+        dispatch(actions.userSignOut())
     }
 
     return (

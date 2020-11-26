@@ -14,20 +14,12 @@ const initialState = {
   userIdToUserData: {}
 };
 
-function setUsername(state, action) {
-  state.curUserId = action.meta.docId;
-}
-
-function userSignUp(state, action) {
-  state.curUserId = action.meta.authUid;
+function setCurrentUserId(state, action) {
+  state.curUserId = action.payload.authUid;
 }
 
 function userSignUpError(state, action) {
   state.signUpErrorMessage = action.payload.errorMessage;
-}
-
-function userSignIn(state, action) {
-  state.curUserId = action.meta.authUid;
 }
 
 function userSignInError(state, action) {
@@ -51,10 +43,8 @@ function receivedUsers(state, action) {
 }
 
 const cases = {
-  [actions.SET_USERNAME]: setUsername,
-  [actions.USER_SIGN_UP]: userSignUp,
+  [actions.SET_CURRENT_USER_ID]: setCurrentUserId,
   [actions.USER_SIGN_UP_ERROR]: userSignUpError,
-  [actions.USER_SIGN_IN]: userSignIn,
   [actions.USER_SIGN_IN_ERROR]: userSignInError,
   [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
   [actions.USER_MODIFIED]: userModified,
