@@ -5,6 +5,7 @@ export default function ResetForm({setCurForm}) {
     const [email, setEmail] = React.useState('');
     function handleSubmit(e) {
         e.preventDefault();
+        //TODO! move to middleware
         const auth = firebase.auth();
         auth.sendPasswordResetEmail(email).then(function() {
             console.log("Reset Email sent.");

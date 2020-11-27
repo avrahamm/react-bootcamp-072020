@@ -27,24 +27,44 @@ export default function LoginForm({setCurForm}) {
             { Boolean(signInErrorMessage) ? <p style={{color:"red"}}>{signInErrorMessage}</p> : ""}
             <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required=""
                    autoFocus=""
-                onChange={ (e) => { setEmail(e.target.value)}}
+                   onChange={(e) => {
+                       if (signInErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setEmail(e.target.value)
+                   }}
             />
             <input type="password" id="inputPassword" className="form-control" placeholder="Password"
                    required=""
-                   onChange={ (e) => { setPassword(e.target.value)}}
+                   onChange={(e) => {
+                       if (signInErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setPassword(e.target.value)
+                   }}
             />
 
             <button className="btn btn-success btn-block" type="submit"><i
                 className="fas fa-sign-in-alt" /> Sign in
             </button>
             <a href="#" id="forgot_pswd"
-               onClick={() => {setCurForm('reset')}}
+               onClick={() => {
+                   if (signInErrorMessage) {
+                       dispatch(actions.resetAuthErrors())
+                   }
+                   setCurForm('reset')
+               }}
             >Forgot password?</a>
             <hr/>
             {/*<p>Don't have an account!</p>*/}
             <button className="btn btn-primary btn-block" type="button"
                     id="btn-signup"
-                    onClick={() => {setCurForm('signUp')}}
+                    onClick={() => {
+                        if (signInErrorMessage) {
+                            dispatch(actions.resetAuthErrors())
+                        }
+                        setCurForm('signUp')
+                    }}
             >
                 <i className="fas fa-user-plus" /> Sign up New Account
             </button>

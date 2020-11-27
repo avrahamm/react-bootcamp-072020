@@ -14,6 +14,11 @@ const initialState = {
   userIdToUserData: {}
 };
 
+function resetAuthErrors(state, action) {
+    state.signUpErrorMessage = null;
+    state.signInErrorMessage = null;
+}
+
 function setCurrentUserId(state, action) {
   state.curUserId = action.payload.authUid;
 }
@@ -46,6 +51,7 @@ const cases = {
   [actions.SET_CURRENT_USER_ID]: setCurrentUserId,
   [actions.USER_SIGN_UP_ERROR]: userSignUpError,
   [actions.USER_SIGN_IN_ERROR]: userSignInError,
+  [actions.RESET_AUTH_ERRORS]: resetAuthErrors,
   [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
   [actions.USER_MODIFIED]: userModified,
   [actions.RECEIVED_USERS]: receivedUsers,

@@ -84,6 +84,13 @@ export function userSignInError(errorMessage) {
     };
 }
 
+export function resetAuthErrors() {
+    return {
+        type: actionTypes.RESET_AUTH_ERRORS
+    };
+}
+
+
 export function setCurrentUserId(authUid) {
 
     return {

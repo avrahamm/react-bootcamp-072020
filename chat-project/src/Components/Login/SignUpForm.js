@@ -39,19 +39,39 @@ export default function SignUpForm({setCurForm}) {
 
             <input type="text" id="user-name" className="form-control" placeholder="Full name" required=""
                    autoFocus=""
-                   onChange={ (e) => { setUsername(e.target.value)}}
+                   onChange={(e) => {
+                       if (signUpErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setUsername(e.target.value)
+                   }}
             />
             <input type="email" id="user-email" className="form-control" placeholder="Email address" required
                    autoFocus=""
-                   onChange={ (e) => { setEmail(e.target.value)}}
+                   onChange={(e) => {
+                       if (signUpErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setEmail(e.target.value)
+                   }}
             />
             <input type="password" id="user-pass" className="form-control" placeholder="Password" required
                    autoFocus=""
-                   onChange={ (e) => { setPassword(e.target.value)}}
+                   onChange={(e) => {
+                       if (signUpErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setPassword(e.target.value)
+                   }}
             />
             <input type="password" id="user-repeatpass" className="form-control"
                    placeholder="Repeat Password" required autoFocus=""
-                   onChange={ (e) => { setRepeatPassword(e.target.value)}}
+                   onChange={(e) => {
+                       if (signUpErrorMessage) {
+                           dispatch(actions.resetAuthErrors())
+                       }
+                       setRepeatPassword(e.target.value)
+                   }}
             />
 
             <button className="btn btn-primary btn-block" type="submit"><i
@@ -59,6 +79,9 @@ export default function SignUpForm({setCurForm}) {
             </button>
             <a href="#" id="cancel_signup"
                onClick={() => {
+                   if (signUpErrorMessage) {
+                       dispatch(actions.resetAuthErrors())
+                   }
                    setCurForm('login')
                }}
             ><i className="fas fa-angle-left" /> Back</a>
