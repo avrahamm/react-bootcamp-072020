@@ -2,6 +2,7 @@ import produce from 'immer';
 
 import * as actions from "../consts/action-types";
 import { initUserIdToUserData, createReducer } from "./utils"
+import * as actionTypes from "../consts/action-types";
 
 const initialState = {
   users: [],
@@ -9,6 +10,7 @@ const initialState = {
   curUserId: null,
   signUpErrorMessage: null,
   signInErrorMessage: null,
+  resetUserPasswordMessage: null,
   // Do not use Map( not serializable) in Redux state, use plain JS object!
   // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
   userIdToUserData: {}
@@ -17,6 +19,7 @@ const initialState = {
 function resetAuthErrors(state, action) {
     state.signUpErrorMessage = null;
     state.signInErrorMessage = null;
+    state.resetUserPasswordMessage = null;
 }
 
 function setCurrentUserId(state, action) {
@@ -29,6 +32,14 @@ function userSignUpError(state, action) {
 
 function userSignInError(state, action) {
   state.signInErrorMessage = action.payload.errorMessage;
+}
+
+function resetUserPassword(state, action) {
+  state.resetUserPasswordMessage = "Success!";
+}
+
+function resetUserPasswordError(state, action) {
+  state.resetUserPasswordMessage = action.payload.errorMessage;
 }
 
 function setSearchRoomUsersPattern(state, action) {
@@ -51,6 +62,8 @@ const cases = {
   [actions.SET_CURRENT_USER_ID]: setCurrentUserId,
   [actions.USER_SIGN_UP_ERROR]: userSignUpError,
   [actions.USER_SIGN_IN_ERROR]: userSignInError,
+  [actionTypes.RESET_USER_PASSWORD]: resetUserPassword,
+  [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actions.RESET_AUTH_ERRORS]: resetAuthErrors,
   [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
   [actions.USER_MODIFIED]: userModified,

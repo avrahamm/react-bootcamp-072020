@@ -60,7 +60,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         case actionTypes.USER_SIGN_UP: {
             const {username, email, password} = action.payload;
             firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((user) => {
+                .then(() => {
                     // Signed in
                     console.log(`Signed up!`);
                     const currentUser = firebase.auth().currentUser;
@@ -81,12 +81,12 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                         })
                     })
                 .then(() => {
-                    dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
+                    return dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
                 })
                 .catch((error) => {
                     console.log(`Sign up failed`);
                     console.log(error);
-                    dispatch(actions.userSignUpError(error.message))
+                    return dispatch(actions.userSignUpError(error.message))
                 })
             break;
         }
@@ -94,7 +94,7 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         case actionTypes.USER_SIGN_IN: {
             const {email, password} = action.payload;
             firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((user) => {
+                .then(() => {
                     // throw({message: "Test error"});
                     console.log("Signed in");
                     const authUid = firebase.auth().currentUser.uid;
@@ -109,12 +109,12 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     console.log("userRef = ");
                     console.log(userRef);
                     console.log("Signed in");
-                    dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
+                    return dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
                 })
                 .catch((error) => {
                     console.log(`Sign in failed`);
                     console.log(error);
-                    dispatch(actions.userSignInError(error.message));
+                    return dispatch(actions.userSignInError(error.message));
                 });
             break;
         }
@@ -137,6 +137,20 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     console.log(error);
                     dispatch(actions.setCurrentUserId(null));
                 })
+            break;
+        }
+
+
+        case actionTypes.RESET_USER_PASSWORD: {
+            const auth = firebase.auth();
+            const {email} = action.payload;
+            auth.sendPasswordResetEmail(email).then(function() {
+                    console.log("Reset Email sent.");
+                    return next(action);
+                })
+                .catch(function(error) {
+                    return dispatch(actions.resetUserPasswordError(error.message));
+            });
             break;
         }
 

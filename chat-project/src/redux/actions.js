@@ -90,6 +90,25 @@ export function resetAuthErrors() {
     };
 }
 
+export function resetUserPassword(email) {
+
+    return {
+        type: actionTypes.RESET_USER_PASSWORD,
+        payload: {
+            email
+        }
+    };
+}
+
+export function resetUserPasswordError(errorMessage) {
+
+    return {
+        type: actionTypes.RESET_USER_PASSWORD_ERROR,
+        payload: {
+            errorMessage
+        }
+    };
+}
 
 export function setCurrentUserId(authUid) {
 
