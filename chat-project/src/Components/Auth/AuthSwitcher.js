@@ -1,12 +1,12 @@
 import React, {useState } from "react";
-import './Login.css'
+import './AuthSwitcher.css'
 
-import LoginForm from "./LoginForm";
+import SignInForm from "./SignInForm";
 import ResetForm from "./ResetForm";
 import SignUpForm from "./SignUpForm";
 
 const components = {
-    login: LoginForm,
+    login: SignInForm,
     reset: ResetForm,
     signUp: SignUpForm
 };
@@ -16,7 +16,7 @@ const components = {
  * bootstrap template comes from
  * @link:https://bootsnipp.com/snippets/GavAo
  */
-export default function Login() {
+export default function AuthSwitcher() {
     const [curForm, setCurForm] = useState('login');
 
     const CurrentForm = components[curForm];

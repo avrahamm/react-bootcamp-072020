@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import * as actions from "../../redux/actions";
 
-export default function LoginForm({setCurForm}) {
+export default function SignInForm({setCurForm}) {
     const dispatch = useDispatch();
     const signInErrorMessage = useSelector( state => state.users.signInErrorMessage);
 

@@ -3,7 +3,7 @@ import './MainScreen.css'
 import RoomsContainer from "../RoomsContainer/RoomsContainer";
 import RoomsContent from "../RoomsContent/RoomsContent";
 import RoomUsersContainer from "../RoomUsersContainer/RoomUsersContainer";
-import SignOutForm from "../Login/SignOutForm";
+import SignOutForm from "../Auth/SignOutForm";
 
 export default function MainScreen() {
 

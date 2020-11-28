@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Login from './Components/Login/Login'
+import AuthSwitcher from './Components/Auth/AuthSwitcher'
 import MainScreen from "./Components/MainScreen/MainScreen";
 
 const Switcher = () => {
@@ -11,7 +11,7 @@ const Switcher = () => {
         <>
             { curUserId !== null ?
                 <MainScreen /> :
-                <Login />
+                <AuthSwitcher />
             }
         </>
     )
