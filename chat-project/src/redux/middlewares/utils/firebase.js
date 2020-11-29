@@ -1,5 +1,5 @@
 import * as actions from "../../consts/action-types";
-const firebase = window.firebase;
+import firebase from "../../../../firebase";
 
 function initReceiveDataFromFirebase(dispatch) {
     // Read From Firebase

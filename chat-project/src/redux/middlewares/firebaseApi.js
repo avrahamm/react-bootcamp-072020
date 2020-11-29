@@ -1,6 +1,6 @@
 import * as actionTypes from "../consts/action-types";
 import * as actions from "../actions";
-const firebase = window.firebase;
+import firebase from "../../../firebase";
 
 import {
     initReceiveDataFromFirebase,

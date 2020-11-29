@@ -1,7 +1,7 @@
 import React from "react";
 import * as actions from "../../redux/actions";
 import {useDispatch} from "react-redux";
-const firebase = window.firebase;
+import firebase from "../../../firebase";
 
 export default function SignOutForm() {
     const dispatch = useDispatch();

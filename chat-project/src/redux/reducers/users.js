@@ -7,6 +7,8 @@ import * as actionTypes from "../consts/action-types";
 const initialState = {
   users: [],
   searchPattern: "",
+  // TODO! probably switch to user instead id
+  currentUser: null,
   curUserId: null,
   signUpErrorMessage: null,
   signInErrorMessage: null,

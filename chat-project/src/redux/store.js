@@ -22,6 +22,7 @@ const store = createStore(reducer,
     )
 );
 store.dispatch({type: actions.FIREBASE_INIT})
+// temporary for local browser console debugging
 window.store = store;
 export default store;
 
