@@ -25,6 +25,12 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     }
 
     if ( action.type === actionTypes.FIREBASE_INIT ) {
+        //TODO! switch npm firebase module
+        firebase.auth().onAuthStateChanged(function(user) {
+            let curUserId = Boolean(user) ? user.uid : null;
+            dispatch(actions.setCurrentUserId(curUserId));
+        });
+
         initReceiveDataFromFirebase(dispatch);
         return;
     }
@@ -93,7 +99,10 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
 
         case actionTypes.USER_SIGN_IN: {
             const {email, password} = action.payload;
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then( () => {
+                    return firebase.auth().signInWithEmailAndPassword(email, password);
+                })
                 .then(() => {
                     // throw({message: "Test error"});
                     console.log("Signed in");

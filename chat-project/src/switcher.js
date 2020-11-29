@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import AuthSwitcher from './Components/Auth/AuthSwitcher'
 import MainScreen from "./Components/MainScreen/MainScreen";
 
