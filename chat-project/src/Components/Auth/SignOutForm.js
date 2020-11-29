@@ -5,6 +5,7 @@ import firebase from "../../../firebase";
 
 export default function SignOutForm() {
     const dispatch = useDispatch();
+    //TODO! switch to get data from users reducer
     const currentUser = firebase.auth().currentUser;
 
     function handleSubmit(e) {

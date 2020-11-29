@@ -9,7 +9,7 @@ const initialState = {
   searchPattern: "",
   // TODO! probably switch to user instead id
   currentUser: null,
-  curUserId: null,
+  curUserId: sessionStorage.getItem("curUserId"),
   signUpErrorMessage: null,
   signInErrorMessage: null,
   resetUserPasswordMessage: null,

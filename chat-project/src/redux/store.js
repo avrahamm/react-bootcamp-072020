@@ -5,6 +5,7 @@ import rooms from './reducers/rooms';
 import users from './reducers/users';
 import logger from './middlewares/logger';
 import firebaseApi from './middlewares/firebaseApi';
+import auth from './middlewares/auth';
 import * as actions from "./consts/action-types";
 
 const reducer = combineReducers({messages, rooms, users});
@@ -17,6 +18,7 @@ const store = createStore(reducer,
     composeEnhancers(
         applyMiddleware(
             logger,
+            auth,
             firebaseApi
         )
     )
