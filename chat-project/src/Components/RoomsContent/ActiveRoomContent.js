@@ -14,6 +14,7 @@ export default function ActiveRoomContent(props) {
 
     const activeRoom = useSelector(state => activeRoomByPropsSelector(state, props));
     const curUser = useSelector(curUserSelector);
+    const curUserId = curUser ? curUser.id : null;
     const curRoomFilledMessages  =
         useSelector( state => curRoomFilledMessagesSelector(state, props));
 
@@ -23,7 +24,7 @@ export default function ActiveRoomContent(props) {
             <RoomHeader messagesCount={curRoomFilledMessages.length} roomName={activeRoom.name}/>
             <MessagesList
                 messages={curRoomFilledMessages}
-                curUserId={curUser.id}
+                curUserId={curUserId}
             />
             <NewMessage curUserId={curUser.id} activeRoomId={activeRoom.id} />
         </div>

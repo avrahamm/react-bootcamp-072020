@@ -11,10 +11,15 @@ const activeRoomByPropsSelector = createSelector(
 );
 
 const curUserIdSelector = ( state => state.users.curUserId );
-const usersSelector = state => state.users.users;
+const usersSelector = state => {
+    return state.users.users
+};
 const curUserSelector = createSelector(
     [curUserIdSelector, usersSelector],
-    (curUserId, users ) => users.find((user) => user.id === curUserId)
+    (curUserId, users ) => users.find(
+        (user) => {
+            return user.id === curUserId
+        })
 )
 
 const messagesSelector = state => state.messages.messages;

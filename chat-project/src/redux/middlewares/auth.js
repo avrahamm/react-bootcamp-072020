@@ -50,10 +50,10 @@ const auth = ({dispatch}) => next => action => {
                 .then(function () {
                     // Update successful.
                     console.log("updateProfile successful.");
-                    const authUid = firebase.auth().currentUser.uid;
-                    return firebase.firestore().collection("users").doc(authUid).set({
-                            authUid,
-                            displayName: username,
+                    const curUserId = firebase.auth().currentUser.uid;
+                    return firebase.firestore().collection("users").doc(curUserId).set({
+                            id:curUserId,
+                            name: username,
                             active: true,
                             roomId: null,
                             imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",

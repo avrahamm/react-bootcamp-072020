@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 
 export default function SignOutForm() {
     const dispatch = useDispatch();
-    //TODO! switch to get data from users reducer
     const currentUser = useSelector(state => state.users.currentUser);
 
     function handleSubmit(e) {
