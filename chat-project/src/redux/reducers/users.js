@@ -8,8 +8,9 @@ const initialState = {
   users: [],
   searchPattern: "",
   // TODO! probably switch to user instead id
-  currentUser: null,
-  curUserId: sessionStorage.getItem("curUserId"),
+  currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
+  curUserId: JSON.parse(sessionStorage.getItem("currentUser")) ?
+      JSON.parse(sessionStorage.getItem("currentUser")).uid : null,
   signUpErrorMessage: null,
   signInErrorMessage: null,
   resetUserPasswordMessage: null,
@@ -18,7 +19,7 @@ const initialState = {
   userIdToUserData: {}
 };
 
-function resetAuthErrors(state, action) {
+function resetAuthErrors(state) {
     state.signUpErrorMessage = null;
     state.signInErrorMessage = null;
     state.resetUserPasswordMessage = null;
@@ -26,6 +27,17 @@ function resetAuthErrors(state, action) {
 
 function setCurrentUserId(state, action) {
   state.curUserId = action.payload.authUid;
+}
+
+function setCurrentUser(state, action) {
+  if( action.payload.user) {
+    state.currentUser = action.payload.user;
+    state.curUserId = action.payload.user.uid;
+  }
+  else {
+    state.currentUser = null;
+    state.curUserId = null;
+  }
 }
 
 function userSignUpError(state, action) {
@@ -36,7 +48,7 @@ function userSignInError(state, action) {
   state.signInErrorMessage = action.payload.errorMessage;
 }
 
-function resetUserPassword(state, action) {
+function resetUserPassword(state) {
   state.resetUserPasswordMessage = "Success!";
 }
 
@@ -62,6 +74,7 @@ function receivedUsers(state, action) {
 
 const cases = {
   [actions.SET_CURRENT_USER_ID]: setCurrentUserId,
+  [actions.SET_CURRENT_USER]: setCurrentUser,
   [actions.USER_SIGN_UP_ERROR]: userSignUpError,
   [actions.USER_SIGN_IN_ERROR]: userSignInError,
   [actionTypes.RESET_USER_PASSWORD]: resetUserPassword,

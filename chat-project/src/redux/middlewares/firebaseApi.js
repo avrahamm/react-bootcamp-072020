@@ -1,5 +1,4 @@
 import * as actionTypes from "../consts/action-types";
-import * as actions from "../actions";
 import firebase from "../../../firebase";
 
 import {
@@ -23,11 +22,6 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
 
     switch(action.type) {
         case actionTypes.FIREBASE_INIT: {
-            firebase.auth().onAuthStateChanged(function(user) {
-                let curUserId = Boolean(user) ? user.uid : null;
-                dispatch(actions.setCurrentUserId(curUserId));
-            });
-
             initReceiveDataFromFirebase(dispatch);
             return;
         }

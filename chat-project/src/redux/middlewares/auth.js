@@ -2,13 +2,13 @@ import * as actionTypes from "../consts/action-types";
 import * as actions from "../actions";
 import firebase from "../../../firebase";
 
-const firebaseApi = ({getState,dispatch}) => next => action => {
+const auth = ({dispatch}) => next => action => {
     const authActions = [
         actionTypes.USER_SIGN_UP,
         actionTypes.USER_SIGN_IN,
         actionTypes.USER_SIGN_OUT,
         actionTypes.RESET_USER_PASSWORD,
-        actionTypes.SET_CURRENT_USER_ID,
+        actionTypes.SET_CURRENT_USER,
     ];
 
     if ( !authActions.includes(action.type)) {
@@ -16,18 +16,29 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     }
 
     switch(action.type) {
-        case actionTypes.SET_CURRENT_USER_ID: {
-            if ( Boolean(action.payload.authUid)) {
-                sessionStorage.setItem("curUserId",action.payload.authUid);
+        case actionTypes.FIREBASE_INIT: {
+            firebase.auth().onAuthStateChanged(function(user) {
+                dispatch(actions.setCurrentUser(user));
+            });
+            return;
+        }
+
+        case actionTypes.SET_CURRENT_USER: {
+            if ( Boolean(action.payload.user)) {
+                sessionStorage.setItem("currentUser", JSON.stringify(action.payload.user));
             }
             else {
-                sessionStorage.removeItem("curUserId");
+                sessionStorage.removeItem("currentUser");
             }
             return next(action);
         }
+
         case actionTypes.USER_SIGN_UP: {
             const {username, email, password} = action.payload;
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then( () => {
+                    return firebase.auth().createUserWithEmailAndPassword(email, password)
+                })
                 .then(() => {
                     // Signed in
                     console.log(`Signed up!`);
@@ -49,19 +60,18 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                         })
                     })
                 .then(() => {
-                    return dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
+                    return dispatch(actions.setCurrentUser(firebase.auth().currentUser));
                 })
                 .catch((error) => {
                     console.log(`Sign up failed`);
                     console.log(error);
                     return dispatch(actions.userSignUpError(error.message))
                 })
-            break;
         }
 
         case actionTypes.USER_SIGN_IN: {
             const {email, password} = action.payload;
-            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
                 .then( () => {
                     return firebase.auth().signInWithEmailAndPassword(email, password);
                 })
@@ -80,49 +90,50 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
                     console.log("userRef = ");
                     console.log(userRef);
                     console.log("Signed in");
-                    return dispatch(actions.setCurrentUserId(firebase.auth().currentUser.uid))
+                    return dispatch(actions.setCurrentUser(firebase.auth().currentUser));
                 })
                 .catch((error) => {
                     console.log(`Sign in failed`);
                     console.log(error);
                     return dispatch(actions.userSignInError(error.message));
                 });
-            break;
         }
 
         case actionTypes.USER_SIGN_OUT: {
-            const authUid = firebase.auth().currentUser.uid;
-            let userRef = firebase.firestore().collection('users').doc(authUid);
-            userRef.set({
-                active: false
-            }, {merge: true})
+            return Promise.resolve()
+                .then( () => {
+                    const authUid = firebase.auth().currentUser.uid;
+                    let userRef = firebase.firestore().collection('users').doc(authUid);
+                    return userRef.set({
+                        active: false
+                    }, {merge: true})
+                })
                 .then(() => {
                     return firebase.auth().signOut()
                 })
                 .then(() => {
                     // Sign out
                     console.log("Signed out");
-                    dispatch(actions.setCurrentUserId(null));
+                    return dispatch(actions.setCurrentUser(null));
                 })
                 .catch((error) => {
                     console.log(error);
-                    dispatch(actions.setCurrentUserId(null));
+                    return dispatch(actions.setCurrentUser(null));
                 })
-            break;
         }
 
 
         case actionTypes.RESET_USER_PASSWORD: {
             const auth = firebase.auth();
             const {email} = action.payload;
-            auth.sendPasswordResetEmail(email).then(function() {
+            return auth.sendPasswordResetEmail(email)
+                .then(function() {
                     console.log("Reset Email sent.");
                     return next(action);
                 })
                 .catch(function(error) {
                     return dispatch(actions.resetUserPasswordError(error.message));
             });
-            break;
         }
 
         default:
@@ -130,4 +141,4 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     }
 }
 
-export default firebaseApi;
+export default auth;

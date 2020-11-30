@@ -120,6 +120,20 @@ export function setCurrentUserId(authUid) {
     };
 }
 
+export function setCurrentUser(currentUser) {
+    let user = null;
+    if( currentUser) {
+        const {uid, displayName, photoURL} = currentUser;
+        user = {uid, displayName, photoURL};
+    }
+    return {
+        type: actionTypes.SET_CURRENT_USER,
+        payload: {
+            user
+        }
+    };
+}
+
 export function userSignOut() {
     return {
         type: actionTypes.USER_SIGN_OUT,
