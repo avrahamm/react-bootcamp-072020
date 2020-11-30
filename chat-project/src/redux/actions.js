@@ -110,16 +110,6 @@ export function resetUserPasswordError(errorMessage) {
     };
 }
 
-export function setCurrentUserId(authUid) {
-
-    return {
-        type: actionTypes.SET_CURRENT_USER_ID,
-        payload: {
-            authUid
-        }
-    };
-}
-
 export function setCurrentUser(currentUser) {
     let user = null;
     if( currentUser) {

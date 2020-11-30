@@ -1,6 +1,5 @@
 import produce from 'immer';
 
-import * as actions from "../consts/action-types";
 import { initUserIdToUserData, createReducer } from "./utils"
 import * as actionTypes from "../consts/action-types";
 
@@ -23,10 +22,6 @@ function resetAuthErrors(state) {
     state.signUpErrorMessage = null;
     state.signInErrorMessage = null;
     state.resetUserPasswordMessage = null;
-}
-
-function setCurrentUserId(state, action) {
-  state.curUserId = action.payload.authUid;
 }
 
 function setCurrentUser(state, action) {
@@ -73,16 +68,15 @@ function receivedUsers(state, action) {
 }
 
 const cases = {
-  [actions.SET_CURRENT_USER_ID]: setCurrentUserId,
-  [actions.SET_CURRENT_USER]: setCurrentUser,
-  [actions.USER_SIGN_UP_ERROR]: userSignUpError,
-  [actions.USER_SIGN_IN_ERROR]: userSignInError,
+  [actionTypes.SET_CURRENT_USER]: setCurrentUser,
+  [actionTypes.USER_SIGN_UP_ERROR]: userSignUpError,
+  [actionTypes.USER_SIGN_IN_ERROR]: userSignInError,
   [actionTypes.RESET_USER_PASSWORD]: resetUserPassword,
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
-  [actions.RESET_AUTH_ERRORS]: resetAuthErrors,
-  [actions.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
-  [actions.USER_MODIFIED]: userModified,
-  [actions.RECEIVED_USERS]: receivedUsers,
+  [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,
+  [actionTypes.SET_SEARCH_ROOM_USERS_PATTERN]: setSearchRoomUsersPattern,
+  [actionTypes.USER_MODIFIED]: userModified,
+  [actionTypes.RECEIVED_USERS]: receivedUsers,
 }
 
 export default produce(createReducer(cases), initialState);
