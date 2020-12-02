@@ -22,10 +22,17 @@ function roomModified(state, action) {
     });
 }
 function setActiveRoom(state, action) {
-    state.activeRoomId = action.payload.roomId;
+    if ( Boolean(action) && Boolean(action.payload) && Boolean(action.payload.roomId)) {
+        state.activeRoomId = action.payload.roomId;
+    }
+    else {
+        state.activeRoomId = null;
+    }
 }
 
 const cases = {
+    [actions.USER_SIGN_IN]: setActiveRoom,
+    [actions.USER_SIGN_OUT]: setActiveRoom,
     [actions.SET_ACTIVE_ROOM]: setActiveRoom,
     [actions.ROOM_MODIFIED]: roomModified,
     [actions.RECEIVED_ROOMS]: receivedRooms,

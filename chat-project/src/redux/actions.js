@@ -84,6 +84,16 @@ export function userSignInError(errorMessage) {
     };
 }
 
+export function userSignOutError(errorMessage) {
+
+    return {
+        type: actionTypes.USER_SIGN_OUT_ERROR,
+        payload: {
+            errorMessage
+        }
+    };
+}
+
 export function resetAuthErrors() {
     return {
         type: actionTypes.RESET_AUTH_ERRORS
@@ -106,20 +116,6 @@ export function resetUserPasswordError(errorMessage) {
         type: actionTypes.RESET_USER_PASSWORD_ERROR,
         payload: {
             errorMessage
-        }
-    };
-}
-
-export function setCurrentUser(currentUser) {
-    let user = null;
-    if( currentUser) {
-        const {uid, displayName, photoURL} = currentUser;
-        user = {uid, displayName, photoURL};
-    }
-    return {
-        type: actionTypes.SET_CURRENT_USER,
-        payload: {
-            user
         }
     };
 }

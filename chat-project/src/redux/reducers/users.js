@@ -1,17 +1,18 @@
 import produce from 'immer';
 
-import { initUserIdToUserData, createReducer } from "./utils"
+import { initUserIdToUserData, createReducer,
+  getAuthenticatedUser, getAuthenticatedUserId, extractAuthUserEssentials } from "./utils"
 import * as actionTypes from "../consts/action-types";
 
 const initialState = {
   users: [],
   searchPattern: "",
   // TODO! probably switch to user instead id
-  currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
-  curUserId: JSON.parse(sessionStorage.getItem("currentUser")) ?
-      JSON.parse(sessionStorage.getItem("currentUser")).uid : null,
+  currentUser: getAuthenticatedUser(),
+  curUserId: getAuthenticatedUserId(),
   signUpErrorMessage: null,
   signInErrorMessage: null,
+  signOutErrorMessage: null,
   resetUserPasswordMessage: null,
   // Do not use Map( not serializable) in Redux state, use plain JS object!
   // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
@@ -24,10 +25,11 @@ function resetAuthErrors(state) {
     state.resetUserPasswordMessage = null;
 }
 
-function setCurrentUser(state, action) {
-  if( action.payload.user) {
-    state.currentUser = action.payload.user;
-    state.curUserId = action.payload.user.uid;
+function setAuthtUser(state, action) {
+  if( Boolean(action.meta) && Boolean(action.meta.currentUser)) {
+    const currentUser = action.meta.currentUser
+    state.currentUser = extractAuthUserEssentials(currentUser);
+    state.curUserId = currentUser.uid;
   }
   else {
     state.currentUser = null;
@@ -40,6 +42,10 @@ function userSignUpError(state, action) {
 }
 
 function userSignInError(state, action) {
+  state.signInErrorMessage = action.payload.errorMessage;
+}
+
+function userSignOutError(state, action) {
   state.signInErrorMessage = action.payload.errorMessage;
 }
 
@@ -68,9 +74,12 @@ function receivedUsers(state, action) {
 }
 
 const cases = {
-  [actionTypes.SET_CURRENT_USER]: setCurrentUser,
+  [actionTypes.USER_SIGN_UP]: setAuthtUser,
+  [actionTypes.USER_SIGN_IN]: setAuthtUser,
+  [actionTypes.USER_SIGN_OUT]: setAuthtUser,
   [actionTypes.USER_SIGN_UP_ERROR]: userSignUpError,
   [actionTypes.USER_SIGN_IN_ERROR]: userSignInError,
+  [actionTypes.USER_SIGN_OUT_ERROR]: userSignOutError,
   [actionTypes.RESET_USER_PASSWORD]: resetUserPassword,
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,

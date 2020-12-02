@@ -29,14 +29,8 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         case actionTypes.CREATE_ROOM:
         case actionTypes.RECEIVED_MESSAGE: {
             const {collection, ...data} = action.payload;
-            addObjToFirebaseCollection(action.payload.collection, data)
-                .then((docId) => {
-                    action.meta = {
-                        docId
-                    }
-                    return next(action)
-                });
-            break;
+            return addObjToFirebaseCollection(action.payload.collection, data);
+            // store will be updated by firestore update
         }
 
         case actionTypes.SET_ACTIVE_ROOM: {

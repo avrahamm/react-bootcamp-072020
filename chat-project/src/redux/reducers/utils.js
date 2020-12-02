@@ -1,3 +1,5 @@
+import {firebaseConfig} from "../../../firebase";
+
 export function initUserIdToUserData(users) {
   let userIdToUserData = {};
   users.forEach(user => {
@@ -25,4 +27,28 @@ export function createReducer(cases) {
       return cases[action.type](state, action);
     }
   });
+}
+
+export function extractAuthUserEssentials(user) {
+  if (user) {
+    const {uid, displayName, photoURL} = user;
+    return {uid, displayName, photoURL};
+  }
+  return null;
+}
+
+export function getAuthenticatedUser() {
+  // debugger
+  const authUser = sessionStorage.getItem(
+      `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  );
+  return extractAuthUserEssentials(JSON.parse(authUser));
+}
+
+export function getAuthenticatedUserId() {
+  const authUser = getAuthenticatedUser();
+  if (authUser) {
+    return authUser.uid;
+  }
+  return null;
 }
