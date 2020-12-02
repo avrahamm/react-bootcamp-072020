@@ -11,25 +11,12 @@ function initReceiveDataFromFirebase(dispatch) {
                 modify: actions.ROOM_MODIFIED,
             }
         },
-        {
-            collection: 'users', orderColumn: "name",
-            action: {
-                add: actions.RECEIVED_USERS,
-                modify: actions.USER_MODIFIED,
-            }
-        },
-        {
-            collection: 'messages', orderColumn: "time",
-            action: {
-                add: actions.RECEIVED_MESSAGES,
-                modify: actions.MESSAGE_MODIFIED,
-            }
-        },
     ];
 
     collectionsData.forEach( collectionData => {
         firebase.firestore().collection(collectionData.collection)
             .orderBy(collectionData.orderColumn)
+            .limit(4)
             .onSnapshot(function (qs) {
                 const addedDocsBatch = [];
                 const modifiedDocsBatch = [];

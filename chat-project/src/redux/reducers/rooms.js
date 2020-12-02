@@ -2,6 +2,7 @@ import produce from 'immer';
 
 import * as actions from "../consts/action-types";
 import {createReducer} from "./utils"
+import * as actionTypes from "../consts/action-types";
 
 const initialState = {
     rooms: [],
@@ -30,9 +31,15 @@ function setActiveRoom(state, action) {
     }
 }
 
+function resetActiveRoom(state) {
+    state.activeRoomId = null;
+}
+
 const cases = {
-    [actions.USER_SIGN_IN]: setActiveRoom,
-    [actions.USER_SIGN_OUT]: setActiveRoom,
+    [actionTypes.USER_SIGN_UP]: resetActiveRoom,
+    [actionTypes.USER_SIGN_IN]: resetActiveRoom,
+    [actionTypes.USER_SIGN_OUT]: resetActiveRoom,
+    [actionTypes.USER_SIGN_OUT_ERROR]: resetActiveRoom,
     [actions.SET_ACTIVE_ROOM]: setActiveRoom,
     [actions.ROOM_MODIFIED]: roomModified,
     [actions.RECEIVED_ROOMS]: receivedRooms,

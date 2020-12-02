@@ -10,7 +10,8 @@ import {
 //https://github.com/500tech/middleware-lecture
 const firebaseApi = ({getState,dispatch}) => next => action => {
     const apiActions = [
-        actionTypes.FIREBASE_INIT,
+        actionTypes.USER_SIGN_UP,
+        actionTypes.USER_SIGN_IN,
         actionTypes.CREATE_ROOM,
         actionTypes.SET_ACTIVE_ROOM,
         actionTypes.RECEIVED_MESSAGE
@@ -21,9 +22,10 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
     }
 
     switch(action.type) {
-        case actionTypes.FIREBASE_INIT: {
+        case actionTypes.USER_SIGN_UP:
+        case actionTypes.USER_SIGN_IN: {
             initReceiveDataFromFirebase(dispatch);
-            return;
+            return next(action);
         }
 
         case actionTypes.CREATE_ROOM:
