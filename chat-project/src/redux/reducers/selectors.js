@@ -16,7 +16,7 @@ const usersSelector = state => {
 };
 const curUserSelector = ( state => state.authUser.currentUser );
 
-const messagesSelector = state => state.messages.messages;
+const messagesSelector = state => state.activeRoomMessages.messages;
 
 const curRoomMessagesSelector = createSelector(
     [activeRoomIdByPropsSelector, messagesSelector],
