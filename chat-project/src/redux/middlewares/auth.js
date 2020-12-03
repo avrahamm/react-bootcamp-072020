@@ -34,7 +34,7 @@ const auth = ({dispatch}) => next => action => {
                     console.log("updateProfile successful.");
                     const authUid = firebase.auth().currentUser.uid;
                     return firebase.firestore().collection("users").doc(authUid).set({
-                            id:authUid,
+                            uid:authUid,
                             name: username,
                             active: true,
                             roomId: null,

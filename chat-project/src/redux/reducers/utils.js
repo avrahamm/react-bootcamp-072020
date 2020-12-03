@@ -4,7 +4,7 @@ export function initUserIdToUserData(users) {
   let userIdToUserData = {};
   users.forEach(user => {
     const {name, imgUrl} = user
-    userIdToUserData[user.id] = {name, imgUrl};
+    userIdToUserData[user.uid] = {name, imgUrl};
   })
   return userIdToUserData;
 }
@@ -38,7 +38,6 @@ export function extractAuthUserEssentials(user) {
 }
 
 export function getAuthenticatedUser() {
-  // debugger
   const authUser = sessionStorage.getItem(
       `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );

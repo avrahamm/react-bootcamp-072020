@@ -4,7 +4,7 @@ import * as actions from "../../redux/actions";
 
 export default function SignInForm({setCurForm}) {
     const dispatch = useDispatch();
-    const signInErrorMessage = useSelector( state => state.users.signInErrorMessage);
+    const signInErrorMessage = useSelector( state => state.authUser.signInErrorMessage);
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');

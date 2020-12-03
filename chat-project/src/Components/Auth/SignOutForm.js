@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 export default function SignOutForm() {
     const dispatch = useDispatch();
-    const currentUser = useSelector(state => state.users.currentUser);
+    const currentUser = useSelector(state => state.authUser.currentUser);
 
     function handleSubmit(e) {
         e.preventDefault();

@@ -10,17 +10,11 @@ const activeRoomByPropsSelector = createSelector(
         rooms.find((room) => room.id === activeRoomId)
 );
 
-const curUserIdSelector = ( state => state.users.curUserId );
+const curUserIdSelector = ( state => state.authUser.curUserId );
 const usersSelector = state => {
-    return state.users.users
+    return state.activeRoomUsers.users
 };
-const curUserSelector = createSelector(
-    [curUserIdSelector, usersSelector],
-    (curUserId, users ) => users.find(
-        (user) => {
-            return user.id === curUserId
-        })
-)
+const curUserSelector = ( state => state.authUser.currentUser );
 
 const messagesSelector = state => state.messages.messages;
 
@@ -35,7 +29,7 @@ const createDeepEqualSelector = createSelectorCreator(
     isEqual
 );
 
-const userIdToUserDataSelector = state => state.users.userIdToUserData;
+const userIdToUserDataSelector = state => state.activeRoomUsers.userIdToUserData;
 const userIdToUserMessagesDataSelector = createDeepEqualSelector(
     [ userIdToUserDataSelector],
     ( userIdToUserData) => {
@@ -65,7 +59,7 @@ const curRoomFilledMessagesSelector = createDeepEqualSelector(
     }
 );
 
-const usersSearchPatternSelector = state => state.users.searchPattern.toLowerCase();
+const usersSearchPatternSelector = state => state.activeRoomUsers.searchPattern.toLowerCase();
 
 const userItemsSelector = createSelector(
     [ activeRoomIdSelector, usersSearchPatternSelector, usersSelector ],

@@ -6,15 +6,14 @@ import MessagesList from "../MessagesList/MessagesList";
 import NewMessage from "../NewMessage/NewMessage";
 import {
     activeRoomByPropsSelector,
-    curUserSelector,
     curRoomFilledMessagesSelector
 } from "../../redux/reducers/selectors"
 
 export default function ActiveRoomContent(props) {
 
+
     const activeRoom = useSelector(state => activeRoomByPropsSelector(state, props));
-    const curUser = useSelector(curUserSelector);
-    const curUserId = curUser ? curUser.id : null;
+    const curUserId = useSelector(state => state.authUser.curUserId);
     const curRoomFilledMessages  =
         useSelector( state => curRoomFilledMessagesSelector(state, props));
 
@@ -26,7 +25,7 @@ export default function ActiveRoomContent(props) {
                 messages={curRoomFilledMessages}
                 curUserId={curUserId}
             />
-            <NewMessage curUserId={curUser.id} activeRoomId={activeRoom.id} />
+            <NewMessage curUserId={curUserId} activeRoomId={activeRoom.id} />
         </div>
     );
 }

@@ -4,7 +4,7 @@ import AuthSwitcher from './Components/Auth/AuthSwitcher'
 import MainScreen from "./Components/MainScreen/MainScreen";
 
 const Switcher = () => {
-    const curUserId = useSelector( state => state.users.curUserId);
+    const curUserId = useSelector( state => state.authUser.curUserId);
 
     return (
         <>

@@ -4,7 +4,7 @@ import * as actions from "../../redux/actions";
 
 export default function ResetForm({setCurForm}) {
     const dispatch = useDispatch();
-    const resetUserPasswordMessage = useSelector(state => state.users.resetUserPasswordMessage);
+    const resetUserPasswordMessage = useSelector(state => state.authUser.resetUserPasswordMessage);
     const [email, setEmail] = React.useState('');
     const color = ( resetUserPasswordMessage === null || resetUserPasswordMessage === "Success!") ?
         "blue" : "red";
