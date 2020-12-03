@@ -5,8 +5,13 @@ import { initUserIdToUserData, createReducer,
 import * as actionTypes from "../consts/action-types";
 
 const initialState = {
+  // TODO! Only active room users should be fetched
   users: [],
   searchPattern: "",
+  // Do not use Map( not serializable) in Redux state, use plain JS object!
+  // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
+  userIdToUserData: {},
+
   // TODO! probably switch to user instead id
   currentUser: getAuthenticatedUser(),
   curUserId: getAuthenticatedUserId(),
@@ -14,9 +19,7 @@ const initialState = {
   signInErrorMessage: null,
   signOutErrorMessage: null,
   resetUserPasswordMessage: null,
-  // Do not use Map( not serializable) in Redux state, use plain JS object!
-  // @link:https://stackoverflow.com/questions/63037513/can-a-redux-toolkit-createslice-use-a-js-map-as-state
-  userIdToUserData: {}
+
 };
 
 function resetAuthErrors(state) {

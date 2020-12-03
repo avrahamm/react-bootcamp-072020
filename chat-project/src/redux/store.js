@@ -6,6 +6,7 @@ import users from './reducers/users';
 import logger from './middlewares/logger';
 import firebaseApi from './middlewares/firebaseApi';
 import auth from './middlewares/auth';
+import session from './middlewares/session';
 
 const reducer = combineReducers({messages, rooms, users});
 let preloadedState = window.localStorage.getItem('state');
@@ -18,7 +19,8 @@ const store = createStore(reducer,
         applyMiddleware(
             logger,
             auth,
-            firebaseApi
+            firebaseApi,
+            session
         )
     )
 );

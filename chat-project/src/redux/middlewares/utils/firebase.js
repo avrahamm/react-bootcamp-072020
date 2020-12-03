@@ -1,4 +1,4 @@
-import * as actions from "../../consts/action-types";
+import * as actionTypes from "../../consts/action-types";
 import firebase from "../../../../firebase";
 
 function initReceiveDataFromFirebase(dispatch) {
@@ -7,8 +7,8 @@ function initReceiveDataFromFirebase(dispatch) {
         {
             collection: 'rooms', orderColumn: "name",
             action: {
-                add: actions.RECEIVED_ROOMS,
-                modify: actions.ROOM_MODIFIED,
+                add: actionTypes.RECEIVED_ROOMS,
+                modify: actionTypes.ROOM_MODIFIED,
             }
         },
     ];
@@ -16,7 +16,7 @@ function initReceiveDataFromFirebase(dispatch) {
     collectionsData.forEach( collectionData => {
         firebase.firestore().collection(collectionData.collection)
             .orderBy(collectionData.orderColumn)
-            .limit(4)
+            .limit(10)
             .onSnapshot(function (qs) {
                 const addedDocsBatch = [];
                 const modifiedDocsBatch = [];

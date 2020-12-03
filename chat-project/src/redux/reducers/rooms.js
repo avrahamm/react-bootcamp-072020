@@ -1,11 +1,11 @@
 import produce from 'immer';
 
 import * as actions from "../consts/action-types";
-import {createReducer} from "./utils"
+import {createReducer, getRooms} from "./utils"
 import * as actionTypes from "../consts/action-types";
 
 const initialState = {
-    rooms: [],
+    rooms: getRooms(),
     activeRoomId: null,
     searchPattern: "",
 };

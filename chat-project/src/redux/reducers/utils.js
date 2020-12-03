@@ -52,3 +52,8 @@ export function getAuthenticatedUserId() {
   }
   return null;
 }
+
+export function getRooms() {
+  const rooms = JSON.parse(sessionStorage.getItem('rooms'));
+  return rooms ? rooms : [];
+}
