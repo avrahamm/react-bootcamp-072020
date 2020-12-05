@@ -1,10 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 export default function UseInput(props) {
-    const dispatch = useDispatch();
-    const { dispatchAction, title, filedName, iconClass } = props;
+    const { updateData, title, filedName, iconClass } = props;
 
     const [ input, setInput ] = useState("");
 
@@ -13,7 +11,7 @@ export default function UseInput(props) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        dispatch(dispatchAction(input));
+        updateData(input);
         // console.log('InputBox searchPattern', input);
         setInput("");
     }

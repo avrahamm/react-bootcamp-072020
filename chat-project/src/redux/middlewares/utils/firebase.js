@@ -1,23 +1,11 @@
 import * as actionTypes from "../../consts/action-types";
 import firebase from "../../../../firebase";
 
-function initReceiveDataFromFirebase(dispatch) {
-    // Read From Firebase
-    const collectionsData = [
-        {
-            collection: 'rooms', orderColumn: "name",
-            action: {
-                add: actionTypes.RECEIVED_ROOMS,
-                modify: actionTypes.ROOM_MODIFIED,
-            }
-        },
-    ];
-
-    collectionsData.forEach( collectionData => {
-        firebase.firestore().collection(collectionData.collection)
-            .orderBy(collectionData.orderColumn)
-            .limit(10)
-            .onSnapshot(function (qs) {
+function fetchCollectionData(collectionData) {
+    firebase.firestore().collection(collectionData.collection)
+        .orderBy(collectionData.orderColumn)
+        .limit(collectionData.limit)
+        .onSnapshot(function (qs) {
                 const addedDocsBatch = [];
                 const modifiedDocsBatch = [];
                 qs.docChanges().forEach(function(change) {
@@ -45,7 +33,21 @@ function initReceiveDataFromFirebase(dispatch) {
                 }
             }
         )
-    })
+}
+
+function initReceiveDataFromFirebase(dispatch) {
+    // Read From Firebase
+    const collectionsData = [
+        {
+            collection: 'rooms', orderColumn: "name", limit: 10,
+            action: {
+                add: actionTypes.RECEIVED_ROOMS,
+                modify: actionTypes.ROOM_MODIFIED,
+            }
+        },
+    ];
+
+    collectionsData.forEach( fetchCollectionData) ;
 }
 
 function addObjToFirebaseCollection(collectionName, data={}) {
@@ -59,6 +61,7 @@ function addObjToFirebaseCollection(collectionName, data={}) {
 }
 
 export {
+    fetchCollectionData,
     initReceiveDataFromFirebase,
     addObjToFirebaseCollection
 }

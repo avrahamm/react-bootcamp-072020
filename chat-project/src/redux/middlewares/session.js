@@ -2,7 +2,8 @@ import * as actionTypes from "../consts/action-types";
 
 const session = store => next => action => {
     const sessionActions = [
-        actionTypes.RECEIVED_ROOMS,
+        actionTypes.SET_ACTIVE_ROOM,
+        actionTypes.USER_SIGN_OUT
     ];
 
     if ( !sessionActions.includes(action.type)) {
@@ -10,14 +11,13 @@ const session = store => next => action => {
     }
 
     switch(action.type) {
-        case actionTypes.RECEIVED_ROOMS: {
-            sessionStorage.setItem('rooms',
-                JSON.stringify(action.payload));
+        case actionTypes.SET_ACTIVE_ROOM: {
+            sessionStorage.setItem('activeRoomId', action.payload.roomId);
             return next(action);
         }
 
         case actionTypes.USER_SIGN_OUT: {
-            sessionStorage.removetem('rooms');
+            sessionStorage.removeItem('activeRoomId');
             return next(action);
         }
 

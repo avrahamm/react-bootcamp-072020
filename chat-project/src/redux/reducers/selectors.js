@@ -35,8 +35,8 @@ const userIdToUserMessagesDataSelector = createDeepEqualSelector(
     ( userIdToUserData) => {
         const userIdToUserMessagesData = {};
         for (const [userId, user] of Object.entries(userIdToUserData)) {
-            const {name, imgUrl} = user;
-            userIdToUserMessagesData[userId] = {name, imgUrl};
+            const {displayName, photoUrl} = user;
+            userIdToUserMessagesData[userId] = {displayName, photoUrl};
         }
         return userIdToUserMessagesData;
     }
@@ -49,8 +49,8 @@ const curRoomFilledMessagesSelector = createDeepEqualSelector(
             .filter( message => message.roomId === activeRoom.id)
             .map( message => {
                     return {...message,
-                        username: userIdToUserMessagesData[message.userId].name,
-                        imgUrl: userIdToUserMessagesData[message.userId].imgUrl,
+                        username: userIdToUserMessagesData[message.userId].displayName,
+                        photoUrl: userIdToUserMessagesData[message.userId].photoUrl,
                     }
                 }
             );
@@ -68,7 +68,7 @@ const userItemsSelector = createSelector(
             userItem =>
                 activeRoomId &&
                 userItem.roomId === activeRoomId &&
-                userItem.name.toLowerCase().includes( usersSearchPattern ) )
+                userItem.displayName.toLowerCase().includes( usersSearchPattern ) )
 );
 
 const roomsSearchPatternSelector = state => state.rooms.searchPattern.toLowerCase();

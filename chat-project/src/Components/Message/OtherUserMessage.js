@@ -1,14 +1,14 @@
 import React from "react";
 
 export default function OtherUserMessage(props) {
-    const { text, time, imgUrl, username } = props;
+    const { text, time, photoUrl, displayName } = props;
 
     return (
         <div className="d-flex justify-content-start mb-4">
             <div className="img_cont_msg">
-                <img src={imgUrl}
+                <img src={photoUrl}
                      className="rounded-circle user_img_msg" />
-                     <div>{username}</div>
+                     <div>{displayName}</div>
             </div>
             <div className="msg_cotainer">
                 {text}

@@ -10,8 +10,6 @@ import {
 //https://github.com/500tech/middleware-lecture
 const firebaseApi = ({getState,dispatch}) => next => action => {
     const apiActions = [
-        actionTypes.USER_SIGN_UP,
-        actionTypes.USER_SIGN_IN,
         actionTypes.CREATE_ROOM,
         actionTypes.SET_ACTIVE_ROOM,
         actionTypes.RECEIVED_MESSAGE
@@ -38,15 +36,15 @@ const firebaseApi = ({getState,dispatch}) => next => action => {
         case actionTypes.SET_ACTIVE_ROOM: {
             const firebaseCollection = firebase.firestore().collection(action.payload.collection);
             const {collection, ...data} = action.payload;
-            const curUserId = getState().users.curUserId;
+            const curUserId = getState().authUser.curUserId;
             let curUserRef = firebaseCollection.doc(curUserId);
-            curUserRef.update(data)
+            // update current user roomId
+            return curUserRef.update(data)
                 .then(() => next(action))
                 .catch(function (error) {
                     // The document probably doesn't exist.
                     console.error("Error updating document: ", error);
                 });
-            break;
         }
 
         default:

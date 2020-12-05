@@ -34,11 +34,11 @@ const auth = ({dispatch}) => next => action => {
                     console.log("updateProfile successful.");
                     const authUid = firebase.auth().currentUser.uid;
                     return firebase.firestore().collection("users").doc(authUid).set({
-                            uid:authUid,
-                            name: username,
+                            uid: authUid,
+                            displayName: username,
                             active: true,
                             roomId: null,
-                            imgUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
+                            photoUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
                         })
                     })
                 .then(() => {
@@ -89,17 +89,13 @@ const auth = ({dispatch}) => next => action => {
         }
 
         case actionTypes.USER_SIGN_OUT: {
-            return Promise.resolve()
+            const authUid = action.payload.curUserId;
+            let userRef = firebase.firestore().collection('users').doc(authUid);
+            return userRef.set({
+                active: false,
+                roomId: null
+            }, {merge: true})
                 .then( () => {
-                    const authUid = firebase.auth().currentUser.uid;
-                    let userRef = firebase.firestore().collection('users').doc(authUid);
-                    return userRef.set({
-                        active: false,
-                        roomId: null
-                    }, {merge: true})
-                })
-                .then( () => {
-                    const authUid = firebase.auth().currentUser.uid;
                     let userRef = firebase.firestore().collection('users').doc(authUid);
                     return userRef.set({
                         active: false,

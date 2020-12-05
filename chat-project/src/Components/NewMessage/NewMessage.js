@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
 
 import { receivedMessage } from "../../redux/actions";
 
 export default function NewMessage(props) {
     const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.authUser.currentUser);
+    const displayName = currentUser.displayName;
+    const photoURL = currentUser.photoURL;
     const { curUserId, activeRoomId } = props;
     const [ message, setMessage ] = useState("");
 
@@ -19,7 +22,7 @@ export default function NewMessage(props) {
         const now = new Date();
         const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
         message ?
-            dispatch(receivedMessage(curUserId, activeRoomId, message, sentTime))
+            dispatch(receivedMessage(curUserId, displayName, photoURL, activeRoomId, message, sentTime))
         : null ;
         setMessage('');
     }

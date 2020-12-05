@@ -2,17 +2,18 @@ import React from "react";
 
 import RoomItemsList from "../RoomItemsList/RoomItemsList";
 
-import { setFilterRoomPattern, createRoom } from "../../redux/actions";
 import InputBox from "../InputBox/InputBox";
 
 export default function RoomsContainer() {
+
+    const [filterRoomPattern, setFilterRoomPattern] = React.useState("");
 
     return (
         <div className="col-md-2 col-xl-3 chat">
             <div className="card mb-sm-2 mb-md-0 contacts_card">
                 <InputBox {
                               ...{
-                                  dispatchAction: setFilterRoomPattern,
+                                  updateData: setFilterRoomPattern,
                                   title: "Filter Room",
                                   filedName: "filterPattern",
                                   iconClass: "fas fa-search"
@@ -20,17 +21,17 @@ export default function RoomsContainer() {
                           }
                 />
 
-                <RoomItemsList />
+                <RoomItemsList filterRoomPattern={filterRoomPattern} />
 
-                <InputBox {
-                              ...{
-                                  dispatchAction: createRoom,
-                                  title: "Create Room",
-                                  filedName: "newRoom",
-                                  iconClass: "fas fa-plus"
-                              }
-                          }
-                />
+                {/*<InputBox {*/}
+                {/*              ...{*/}
+                {/*                  updateData: createRoom,*/}
+                {/*                  title: "Create Room",*/}
+                {/*                  filedName: "newRoom",*/}
+                {/*                  iconClass: "fas fa-plus"*/}
+                {/*              }*/}
+                {/*          }*/}
+                {/*/>*/}
             </div>
         </div>
     )

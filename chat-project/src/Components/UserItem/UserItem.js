@@ -2,7 +2,7 @@ import React from "react";
 
 // Todo! UserItemList and RoomItemList, UserItem and RoomItem
 export default function UserItem(props) {
-    const {active, name } = props;
+    const {active, displayName } = props;
     const online_icon = <span className="online_icon"></span>;
     return (
         <li className={active ? "active" : ""}>
@@ -13,8 +13,8 @@ export default function UserItem(props) {
                     { active && online_icon}
                 </div>
                 <div className="user_info">
-                    <span>{name}</span>
-                    {active && <p>{name} is online</p>}
+                    <span>{displayName}</span>
+                    {active && <p>{displayName} is online</p>}
                 </div>
             </div>
         </li>

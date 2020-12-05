@@ -1,13 +1,13 @@
 import produce from 'immer';
 
-import { createReducer,getAuthenticatedUser,
-  getAuthenticatedUserId, extractAuthUserEssentials } from "./utils"
+import { createReducer,getAuthenticatedUserFromSession,
+  getAuthenticatedUserIdFromSession, extractAuthUserEssentials } from "./utils"
 import * as actionTypes from "../consts/action-types";
 
 const initialState = {
   // TODO! probably switch to user instead id
-  currentUser: getAuthenticatedUser(),
-  curUserId: getAuthenticatedUserId(),
+  currentUser: getAuthenticatedUserFromSession(),
+  curUserId: getAuthenticatedUserIdFromSession(),
   signUpErrorMessage: null,
   signInErrorMessage: null,
   signOutErrorMessage: null,

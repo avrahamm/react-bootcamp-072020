@@ -31,11 +31,11 @@ export function setFilterRoomUsersPattern(searchPattern) {
     return {type: actionTypes.SET_SEARCH_ROOM_USERS_PATTERN, payload: searchPattern};
 }
 
-export function receivedMessage(userId, roomId, text, time) {
+export function receivedMessage(userId, displayName, photoURL, roomId, text, time) {
     return {type: actionTypes.RECEIVED_MESSAGE,
         payload: {
         collection: "messages",
-            userId, roomId, text, time,
+            userId, displayName, photoURL, roomId, text, time,
         }
     };
 }
@@ -120,8 +120,11 @@ export function resetUserPasswordError(errorMessage) {
     };
 }
 
-export function userSignOut() {
+export function userSignOut(curUserId) {
     return {
         type: actionTypes.USER_SIGN_OUT,
+        payload: {
+            curUserId
+        }
     };
 }

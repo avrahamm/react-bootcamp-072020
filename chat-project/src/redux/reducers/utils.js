@@ -3,8 +3,8 @@ import {firebaseConfig} from "../../../firebase";
 export function initUserIdToUserData(users) {
   let userIdToUserData = {};
   users.forEach(user => {
-    const {name, imgUrl} = user
-    userIdToUserData[user.uid] = {name, imgUrl};
+    const {displayName, photoUrl} = user
+    userIdToUserData[user.uid] = {displayName, photoUrl};
   })
   return userIdToUserData;
 }
@@ -37,22 +37,23 @@ export function extractAuthUserEssentials(user) {
   return null;
 }
 
-export function getAuthenticatedUser() {
+// firebase.auth().setPersistence saves to session
+export function getAuthenticatedUserFromSession() {
   const authUser = sessionStorage.getItem(
       `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
   return extractAuthUserEssentials(JSON.parse(authUser));
 }
 
-export function getAuthenticatedUserId() {
-  const authUser = getAuthenticatedUser();
+export function getAuthenticatedUserIdFromSession() {
+  const authUser = getAuthenticatedUserFromSession();
   if (authUser) {
     return authUser.uid;
   }
   return null;
 }
 
-export function getRooms() {
-  const rooms = JSON.parse(sessionStorage.getItem('rooms'));
-  return rooms ? rooms : [];
+export function getActiveRoomIdFromSession() {
+  const activeRoomId = sessionStorage.getItem('activeRoomId');
+  return activeRoomId ? activeRoomId : null;
 }

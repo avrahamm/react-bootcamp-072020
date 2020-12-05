@@ -12,8 +12,8 @@ export default function MainScreen() {
             <SignOutForm />
             <div className="row justify-content-center h-100">
                 <RoomsContainer />
-                <RoomsContent />
-                <RoomUsersContainer />
+                {/*<RoomsContent />*/}
+                {/*<RoomUsersContainer />*/}
             </div>
         </div>
     )

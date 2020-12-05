@@ -5,10 +5,11 @@ import {useDispatch, useSelector} from "react-redux";
 export default function SignOutForm() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.authUser.currentUser);
+    const curUserId = useSelector(state => state.authUser.curUserId);
 
     function handleSubmit(e) {
         e.preventDefault();
-        dispatch(actions.userSignOut())
+        dispatch(actions.userSignOut(curUserId));
     }
 
     return (
