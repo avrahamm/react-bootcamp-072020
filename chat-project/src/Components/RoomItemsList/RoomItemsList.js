@@ -12,6 +12,8 @@ export default function RoomItemsList({filterRoomPattern}) {
         collection: "rooms",
         orderColumn: "name",
         limit: 10,
+        dependencies:[],
+        conditions: []
     });
 
     const roomItemsList = roomItems

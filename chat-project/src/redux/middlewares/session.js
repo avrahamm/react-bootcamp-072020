@@ -12,12 +12,12 @@ const session = store => next => action => {
 
     switch(action.type) {
         case actionTypes.SET_ACTIVE_ROOM: {
-            sessionStorage.setItem('activeRoomId', action.payload.roomId);
+            sessionStorage.setItem('activeRoom', JSON.stringify(action.payload.room));
             return next(action);
         }
 
         case actionTypes.USER_SIGN_OUT: {
-            sessionStorage.removeItem('activeRoomId');
+            sessionStorage.removeItem('activeRoom');
             return next(action);
         }
 

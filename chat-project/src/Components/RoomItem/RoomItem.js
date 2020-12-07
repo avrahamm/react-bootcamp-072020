@@ -8,8 +8,8 @@ export default function RoomItem(props) {
     const {activeRoomId, id, name} = props;
 
 
-    function handleClick(e) {
-        activeRoomId !== id ? dispatch(setActiveRoom(id)) : "";
+    function handleClick() {
+        activeRoomId !== id ? dispatch(setActiveRoom({id, name})) : "";
     }
 
     return (

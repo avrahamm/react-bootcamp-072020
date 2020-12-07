@@ -82,7 +82,8 @@ function fetchCollectionData({collection, orderColumn, limit, setItems, conditio
 
 }
 
-function useCollectionData({activeRoomId,collection,orderColumn,limit,conditions=[]}) {
+function useCollectionData({activeRoomId,collection,orderColumn,limit,
+                               dependencies = [],conditions=[]}) {
     const [items, setItems] = React.useState([]);
 
     React.useEffect( () => {
@@ -106,7 +107,7 @@ function useCollectionData({activeRoomId,collection,orderColumn,limit,conditions
                 setItems([]);
             }
         }
-    }, [activeRoomId]);
+    }, dependencies);
 
     return items;
 }

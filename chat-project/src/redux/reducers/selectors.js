@@ -2,7 +2,7 @@ import {createSelector, defaultMemoize, createSelectorCreator} from "reselect";
 import isEqual from 'lodash.isEqual';
 
 const activeRoomIdSelector = state => state.rooms.activeRoomId;
-const activeRoomIdByPropsSelector = (_, props) => props.activeRoomId;
+const activeRoomIdByPropsSelector = (_, props) => props.activeRoom.id;
 const roomsSelector = state => state.rooms.rooms;
 const activeRoomByPropsSelector = createSelector(
     [activeRoomIdByPropsSelector, roomsSelector],

@@ -12,6 +12,7 @@ export default function UserItemsList({filterUserPattern}) {
         collection: "users",
         orderColumn: "displayName",
         limit: 10,
+        dependencies: [activeRoomId],
         conditions: [
             ["roomId", "==", activeRoomId]
         ]

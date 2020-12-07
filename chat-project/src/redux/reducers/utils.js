@@ -53,7 +53,17 @@ export function getAuthenticatedUserIdFromSession() {
   return null;
 }
 
+export function getActiveRoomFromSession() {
+  const activeRoom = JSON.parse(sessionStorage.getItem('activeRoom'));
+  return activeRoom ? activeRoom : null;
+}
+
 export function getActiveRoomIdFromSession() {
-  const activeRoomId = sessionStorage.getItem('activeRoomId');
-  return activeRoomId ? activeRoomId : null;
+  const activeRoom = JSON.parse(sessionStorage.getItem('activeRoom'));
+  return activeRoom ? activeRoom.id : null;
+}
+
+export function getActiveRoomNameFromSession() {
+  const activeRoom = JSON.parse(sessionStorage.getItem('activeRoom'));
+  return activeRoom ? activeRoom.name : null;
 }

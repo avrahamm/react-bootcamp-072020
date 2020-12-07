@@ -14,11 +14,11 @@ export function createRoom(roomName) {
         }};
 }
 
-export function setActiveRoom(roomId) {
+export function setActiveRoom(room) {
     return {type: actionTypes.SET_ACTIVE_ROOM,
         payload: {
             collection: "users",
-            roomId,
+            room,
         }
     };
 }
