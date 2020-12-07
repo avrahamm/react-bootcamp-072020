@@ -9,7 +9,8 @@ export default function RoomItemsList({filterRoomPattern}) {
     const [roomItems, setRoomItems] = useState([]);
 
     useEffect( () => {
-        fetchCollectionData(
+        let unsubscribe = null;
+        unsubscribe = fetchCollectionData(
             {
                 collection: "rooms",
                 orderColumn: "name",
@@ -17,6 +18,14 @@ export default function RoomItemsList({filterRoomPattern}) {
                 updateData: setRoomItems
             }
         );
+
+        return function abort() {
+            console.log(`RoomItemsList useEffect abort`);
+            if ( Boolean(unsubscribe) ) {
+                unsubscribe();
+                setRoomItems([]);
+            }
+        }
     }, []);
 
     const roomItemsList = roomItems

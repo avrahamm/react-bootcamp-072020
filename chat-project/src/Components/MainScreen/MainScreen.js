@@ -13,7 +13,7 @@ export default function MainScreen() {
             <div className="row justify-content-center h-100">
                 <RoomsContainer />
                 {/*<RoomsContent />*/}
-                {/*<RoomUsersContainer />*/}
+                <RoomUsersContainer />
             </div>
         </div>
     )
