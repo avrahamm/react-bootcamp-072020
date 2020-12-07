@@ -1,6 +1,7 @@
+import React from "react";
 import firebase from "./index";
 
-function fetchCollectionData({collection, orderColumn, limit, updateData, conditions = []}) {
+function fetchCollectionData({collection, orderColumn, limit, setItems, conditions = []}) {
     let query = firebase.firestore().collection(collection);
     conditions.forEach(condition => {
         const [field, opStr, value] = condition;
@@ -35,7 +36,7 @@ function fetchCollectionData({collection, orderColumn, limit, updateData, condit
             });
             if (addedDocsBatch.length) {
                 // we have the new item/s in batch
-                updateData(prevData => {
+                setItems(prevData => {
                     //debugger
                     const newAddedData = prevData.concat(addedDocsBatch);
                     console.log('conditions =', conditions);
@@ -44,7 +45,7 @@ function fetchCollectionData({collection, orderColumn, limit, updateData, condit
                 })
             } else if (modifiedDocsBatch.length) {
                 /// modified item/s in batch
-                updateData(prevData => {
+                setItems(prevData => {
                     //debugger
                     const modifiedData = prevData.map(prevItem => {
                         const modifiedItem = modifiedDocsBatch.find(modifiedItem => {
@@ -62,7 +63,7 @@ function fetchCollectionData({collection, orderColumn, limit, updateData, condit
                 })
             } else if (removedDocsBatch.length) {
                 /// modified item/s in batch
-                updateData(prevData => {
+                setItems(prevData => {
                     //debugger
                     const filteredData = prevData.filter(prevItem => {
                         const removedItem = removedDocsBatch.find(removedItem => {
@@ -81,6 +82,36 @@ function fetchCollectionData({collection, orderColumn, limit, updateData, condit
 
 }
 
+function useCollectionData({activeRoomId,collection,orderColumn,limit,conditions=[]}) {
+    const [items, setItems] = React.useState([]);
+
+    React.useEffect( () => {
+        let unsubscribe = null;
+        if ( activeRoomId ) {
+            unsubscribe = fetchCollectionData(
+                {
+                    collection,
+                    orderColumn,
+                    limit,
+                    setItems,
+                    conditions
+                }
+            );
+        }
+
+        return function abort() {
+            console.log(`UserItemsList useEffect abort`);
+            if ( Boolean(unsubscribe) ) {
+                unsubscribe();
+                setItems([]);
+            }
+        }
+    }, [activeRoomId]);
+
+    return items;
+}
+
 export {
     fetchCollectionData,
+    useCollectionData
 }

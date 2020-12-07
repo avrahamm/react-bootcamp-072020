@@ -1,32 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import {fetchCollectionData} from "../../../firebase/utils";
+import {useCollectionData} from "../../../firebase/utils";
 
 import RoomItem from "../RoomItem/RoomItem";
 
 export default function RoomItemsList({filterRoomPattern}) {
     const activeRoomId = useSelector( state => state.rooms.activeRoomId);
-    const [roomItems, setRoomItems] = useState([]);
 
-    useEffect( () => {
-        let unsubscribe = null;
-        unsubscribe = fetchCollectionData(
-            {
-                collection: "rooms",
-                orderColumn: "name",
-                limit: 10,
-                updateData: setRoomItems
-            }
-        );
-
-        return function abort() {
-            console.log(`RoomItemsList useEffect abort`);
-            if ( Boolean(unsubscribe) ) {
-                unsubscribe();
-                setRoomItems([]);
-            }
-        }
-    }, []);
+    const roomItems = useCollectionData({
+        activeRoomId: activeRoomId ? activeRoomId : true,
+        collection: "rooms",
+        orderColumn: "name",
+        limit: 10,
+    });
 
     const roomItemsList = roomItems
         .filter( roomItem => {
