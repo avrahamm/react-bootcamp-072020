@@ -1,5 +1,10 @@
 import * as actionTypes from "../consts/action-types";
 
+/**
+ * To stay in same state on window refresh.
+ * @param store
+ * @returns {function(*): function(*=): (*|undefined)}
+ */
 const session = store => next => action => {
     const sessionActions = [
         actionTypes.SET_ACTIVE_ROOM,

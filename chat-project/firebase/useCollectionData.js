@@ -82,6 +82,17 @@ function fetchCollectionData({collection, orderColumn, limit, setItems, conditio
 
 }
 
+/**
+ * Custom hook to connect to firestore collection
+ *  and subscribe to listen for realtime updates.
+ * @param activeRoomId
+ * @param collection
+ * @param orderColumn
+ * @param limit
+ * @param dependencies
+ * @param conditions
+ * @returns {*[]}
+ */
 function useCollectionData({activeRoomId,collection,orderColumn,limit,
                                dependencies = [],conditions=[]}) {
     const [items, setItems] = React.useState([]);

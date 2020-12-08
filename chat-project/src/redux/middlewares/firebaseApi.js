@@ -9,7 +9,7 @@ import {
 //https://github.com/500tech/middleware-lecture
 const firebaseApi = ({getState}) => next => action => {
     const apiActions = [
-        actionTypes.CREATE_ROOM,
+        // actionTypes.CREATE_ROOM,
         actionTypes.SET_ACTIVE_ROOM,
         actionTypes.RECEIVED_MESSAGE
     ];
@@ -19,7 +19,7 @@ const firebaseApi = ({getState}) => next => action => {
     }
 
     switch(action.type) {
-        case actionTypes.CREATE_ROOM:
+        // case actionTypes.CREATE_ROOM:
         case actionTypes.RECEIVED_MESSAGE: {
             const {collection, ...data} = action.payload;
             return addObjToFirebaseCollection(action.payload.collection, data);

@@ -1,15 +1,13 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 
-import activeRoomMessages from './reducers/activeRoomMessages';
 import rooms from './reducers/rooms';
 import authUser from './reducers/authUser';
-import activeRoomUsers from './reducers/activeRoomUsers';
 import logger from './middlewares/logger';
 import firebaseApi from './middlewares/firebaseApi';
 import auth from './middlewares/auth';
 import session from './middlewares/session';
 
-const reducer = combineReducers({activeRoomMessages, rooms, authUser, activeRoomUsers});
+const reducer = combineReducers({rooms, authUser});
 let preloadedState = window.localStorage.getItem('state');
 preloadedState = preloadedState ? JSON.parse(preloadedState) : {};
 
