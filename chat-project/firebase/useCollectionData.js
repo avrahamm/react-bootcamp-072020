@@ -113,6 +113,5 @@ function useCollectionData({activeRoomId,collection,orderColumn,limit,
 }
 
 export {
-    fetchCollectionData,
     useCollectionData
 }

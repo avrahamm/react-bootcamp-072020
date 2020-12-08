@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import UserItem from "../UserItem/UserItem";
-import {useCollectionData} from "../../../firebase/utils";
+import {useCollectionData} from "../../../firebase/useCollectionData";
 
 export default function UserItemsList({filterUserPattern}) {
     const activeRoomId = useSelector( state => state.rooms.activeRoomId);

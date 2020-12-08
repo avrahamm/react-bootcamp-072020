@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {useCollectionData} from "../../../firebase/utils";
+import {useCollectionData} from "../../../firebase/useCollectionData";
 
 import RoomItem from "../RoomItem/RoomItem";
 

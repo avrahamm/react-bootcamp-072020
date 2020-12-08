@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import RoomHeader from "../RoomHeader/RoomHeader";
 import MessagesList from "../MessagesList/MessagesList";
 import NewMessage from "../NewMessage/NewMessage";
-import {useCollectionData} from "../../../firebase/utils";
+import {useCollectionData} from "../../../firebase/useCollectionData";
 
 export default function ActiveRoomContent() {
     const activeRoomId = useSelector(state => state.rooms.activeRoomId);
