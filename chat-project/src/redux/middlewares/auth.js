@@ -27,18 +27,21 @@ const auth = ({dispatch}) => next => action => {
                     const currentUser = firebase.auth().currentUser;
                     return currentUser.updateProfile({
                         displayName: username,
+                        // TODO! Temporary image, apply firebase storage
+                        photoURL: "https://firebasestorage.googleapis.com/v0/b/redux-ynonp-chat-project.appspot.com/o/no-pic1.webp?alt=media&token=da1d7f5e-e3b7-476d-9e14-62b4a76fb432"
                     })
                 })
                 .then(function () {
                     // Update successful.
                     console.log("updateProfile successful.");
-                    const authUid = firebase.auth().currentUser.uid;
+                    const currentUser = firebase.auth().currentUser;
+                    const authUid = currentUser.uid;
                     return firebase.firestore().collection("users").doc(authUid).set({
                             uid: authUid,
                             displayName: username,
                             active: true,
                             roomId: null,
-                            photoUrl: "https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg",
+                            photoUrl: currentUser.photoURL,
                         })
                     })
                 .then(() => {
