@@ -31,11 +31,12 @@ export function setFilterRoomUsersPattern(searchPattern) {
     return {type: actionTypes.SET_SEARCH_ROOM_USERS_PATTERN, payload: searchPattern};
 }
 
-export function receivedMessage(userId, displayName, photoUrl, roomId, text, time) {
+export function receivedMessage(userId, displayName, photoUrl, roomId,
+                                text = null, uploadedFile= null, time) {
     return {type: actionTypes.RECEIVED_MESSAGE,
         payload: {
         collection: "messages",
-            userId, displayName, photoUrl, roomId, text, time,
+            userId, displayName, photoUrl, roomId, text, uploadedFile, time,
         }
     };
 }

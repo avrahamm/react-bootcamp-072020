@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
 
@@ -12,19 +12,30 @@ export default function NewMessage(props) {
     const photoURL = currentUser.photoURL;
     const { curUserId, activeRoomId } = props;
     const [ message, setMessage ] = useState("");
-
-    function handleChange(e) {
-        setMessage(e.target.value);
-    }
+    const [selectedFile, setSelectedFile] = useState(null);
+    const fileRef = useRef(null)
 
     function handleSubmit(e) {
         e.preventDefault();
+        if ( !Boolean(message) && !Boolean(selectedFile) ) {
+            return false;
+        }
+        // if( selectedFile) {
+        //     console.log(selectedFile);
+        // }
         const now = new Date();
         const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
-        message ?
-            dispatch(receivedMessage(curUserId, displayName, photoURL, activeRoomId, message, sentTime))
-        : null ;
+
+        if ( Boolean(selectedFile)) {
+            dispatch(receivedMessage(curUserId, displayName, photoURL,
+                activeRoomId, message, selectedFile, sentTime))
+        }
+        else if ( Boolean(message)) {
+            dispatch(receivedMessage(curUserId, displayName, photoURL,
+                activeRoomId, message, selectedFile, sentTime))
+        }
         setMessage('');
+        setSelectedFile(null);
     }
 
     return (
@@ -32,17 +43,27 @@ export default function NewMessage(props) {
             {console.log("NewMessage render")}
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
-                    <div className="input-group-append">
+                    <div className="input-group-append"
+                         onClick={ () =>
+                             fileRef.current && fileRef.current.click()
+                         }
+                    >
                         <span className="input-group-text attach_btn">
                             <i className="fas fa-paperclip"></i>
                         </span>
                     </div>
+                    <input id={"fileInput"}
+                           type="file"
+                           ref = {fileRef}
+                           style={{display:'none'}}
+                           onChange={(e) => setSelectedFile(e.target.files[0])}
+                    />
                     <textarea
                         name="message"
                         className="form-control type_msg"
                         placeholder="Type your message..."
                         value={message}
-                        onChange={ handleChange }
+                        onChange={ e => setMessage(e.target.value) }
                     />
                     <div className="input-group-append">
                         <span className="input-group-text send_btn" onClick={handleSubmit}>
