@@ -9,6 +9,11 @@ module.exports = {
   mode: 'development',
   devServer: {
     overlay: true,
+    // To handle manual refresh
+    //@link: https://stackoverflow.com/a/37449679/9346694
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true
   },
   module: {
     rules: [
