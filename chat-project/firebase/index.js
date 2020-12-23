@@ -16,6 +16,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // temporary for local browser console debugging
-window.firebase = firebase;
-export {firebaseConfig};
+// window.firebase = firebase;
+export { firebase, firebaseConfig };
 export default firebase;

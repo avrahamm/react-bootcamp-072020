@@ -1,7 +1,9 @@
-import React from "react";
-import firebase from "./index";
+import React, { useContext} from "react";
+// import firebase from "../../firebase";
 
-function fetchCollectionData({collection, orderColumn, limit, setItems, conditions = []}) {
+import {FirebaseContext} from "../contexts/FirebaseContext";
+
+function fetchCollectionData({collection, orderColumn, limit, setItems, conditions = [], firebase}) {
     let query = firebase.firestore().collection(collection);
     conditions.forEach(condition => {
         const [field, opStr, value] = condition;
@@ -96,6 +98,7 @@ function fetchCollectionData({collection, orderColumn, limit, setItems, conditio
 function useCollectionData({activeRoomId,collection,orderColumn,limit,
                                dependencies = [],conditions=[]}) {
     const [items, setItems] = React.useState([]);
+    const { firebase } = useContext(FirebaseContext);
 
     React.useEffect( () => {
         let unsubscribe = null;
@@ -106,7 +109,8 @@ function useCollectionData({activeRoomId,collection,orderColumn,limit,
                     orderColumn,
                     limit,
                     setItems,
-                    conditions
+                    conditions,
+                    firebase
                 }
             );
         }
