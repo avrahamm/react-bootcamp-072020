@@ -31,8 +31,8 @@ export function createReducer(cases) {
 
 export function extractAuthUserEssentials(user) {
   if (user) {
-    const {uid, displayName, photoURL} = user;
-    return {uid, displayName, photoURL};
+    const {uid, displayName, photoURL, email} = user;
+    return {uid, displayName, photoURL, email};
   }
   return null;
 }

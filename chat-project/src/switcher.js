@@ -7,33 +7,41 @@ import SignInForm from "./Components/Auth/SignInForm";
 import SignUpForm from "./Components/Auth/SignUpForm";
 import ResetForm from "./Components/Auth/ResetForm";
 import NotFound from "./Components/NotFound/NotFound";
+import * as ROUTES from "./constants/routes";
+import Profile from "./Components/Profile/Profile";
 
 const Switcher = () => {
     const curUserId = useSelector( state => state.authUser.curUserId);
 
     return (
         <Switch>
-            <Route path={"/signin"}>
+            <Route path={ROUTES.SIGN_IN}>
                 { Boolean(curUserId) ?
-                    <Redirect to={"/"} /> :
+                    <Redirect to={ROUTES.HOME} /> :
                     <SignInForm />
                 }
             </Route>
-            <Route path={"/signup"}>
+            <Route path={ROUTES.SIGN_UP}>
                 { Boolean(curUserId) ?
-                    <Redirect to={"/"} /> :
+                    <Redirect to={ROUTES.HOME} /> :
                     <SignUpForm />
                 }
             </Route>
-            <Route path={"/reset"}>
+            <Route path={ROUTES.RESET}>
                 <ResetForm />
             </Route>
-            <Route exact path={"/"}>
+
+            <Route path={ROUTES.PROFILE}>
+                <Profile />
+            </Route>
+
+            <Route exact path={ROUTES.HOME}>
                 {Boolean(curUserId) ?
                     <MainScreen /> :
-                    <Redirect to={"/signin"} />
+                    <Redirect to={ROUTES.SIGN_IN} />
                 }
             </Route>
+
             <Route>
                 <NotFound />
             </Route>
