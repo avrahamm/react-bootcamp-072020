@@ -8,6 +8,7 @@ export default function CurrentUserMessage(props) {
                      width="100" height="50" alt={"attachment"}/>;
     }
     return (
+        <>
         <div className="d-flex justify-content-end mb-4">
             {text ?
                 <div className="msg_cotainer_send">
@@ -16,13 +17,7 @@ export default function CurrentUserMessage(props) {
                 </div>
                 : null
             }
-            {image ?
-                <div className="msg_cotainer_send">
-                    {image}
-                    <span className="msg_time_send">{time}</span>
-                </div>
-                 : null
-            }
+
             <div className="img_cont_msg">
                 <img
                     src={photoUrl}
@@ -30,5 +25,15 @@ export default function CurrentUserMessage(props) {
                 <div>{displayName}</div>
             </div>
         </div>
+            {image ?
+                <div className="d-flex justify-content-end mb-4">
+                    <div className="msg_cotainer_send">
+                        {image}
+                        <span className="msg_time_send">{time}</span>
+                    </div>
+                </div>
+                : null
+            }
+        </>
     )
 }

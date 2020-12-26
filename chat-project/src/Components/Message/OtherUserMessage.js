@@ -9,6 +9,7 @@ export default function OtherUserMessage(props) {
     }
 
     return (
+        <>
         <div className="d-flex justify-content-start mb-4">
             <div className="img_cont_msg">
                 <img src={photoUrl}
@@ -22,13 +23,16 @@ export default function OtherUserMessage(props) {
                 </div>
                 : null
             }
+        </div>
             {image ?
-                <div className="msg_cotainer_send">
-                    {image}
-                    <span className="msg_time_send">{time}</span>
+                <div className="d-flex justify-content-start mb-4">
+                    <div className="msg_cotainer_send">
+                        {image}
+                        <span className="msg_time_send">{time}</span>
+                    </div>
                 </div>
                 : null
             }
-        </div>
+            </>
     )
 }

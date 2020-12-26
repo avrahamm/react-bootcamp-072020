@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
 
@@ -13,16 +13,23 @@ export default function NewMessage(props) {
     const { curUserId, activeRoomId } = props;
     const [ message, setMessage ] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
-    const fileRef = useRef(null)
+    const fileRef = useRef(null);
+
+    useEffect( () => {
+        setMessage("");
+        setSelectedFile(null);
+
+        return function abort() {
+            setMessage("");
+            setSelectedFile(null);
+        }
+    }, [activeRoomId])
 
     function handleSubmit(e) {
         e.preventDefault();
         if ( !Boolean(message) && !Boolean(selectedFile) ) {
             return false;
         }
-        // if( selectedFile) {
-        //     console.log(selectedFile);
-        // }
         const now = new Date();
         const sentTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
 
@@ -56,7 +63,9 @@ export default function NewMessage(props) {
                            type="file"
                            ref = {fileRef}
                            style={{display:'none'}}
-                           onChange={(e) => setSelectedFile(e.target.files[0])}
+                           onChange={(e) => {
+                               setSelectedFile(e.target.files[0]);
+                           }}
                     />
                     <textarea
                         name="message"
@@ -71,6 +80,19 @@ export default function NewMessage(props) {
                         </span>
                     </div>
                 </div>
+                {
+                    selectedFile ?
+                        <div className="input-group">
+                            <div className="img_cont_msg">
+                                <img
+                                    style={{width:"100%", height:"100%"}}
+                                    src={URL.createObjectURL(selectedFile)}
+                                    alt={"attached file"}
+                                />
+                            </div>
+                        </div>
+                        : ""
+                }
             </form>
         </div>
     )
