@@ -25,7 +25,6 @@ const session = store => next => action => {
 
         case actionTypes.USER_SIGN_UP:
         case actionTypes.USER_SIGN_IN: {
-            debugger
             sessionStorage.setItem('userDoc', JSON.stringify(action.meta.userDoc));
             return next(action);
         }

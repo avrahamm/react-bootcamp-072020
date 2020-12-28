@@ -53,7 +53,6 @@ const auth = ({dispatch}) => next => action => {
                         .doc(authUid).get()
                 })
                 .then((userDoc) => {
-                    debugger
                     console.log("userDoc = ", userDoc);
                     console.log("userDoc.data() = ", userDoc.data());
                     action.meta = {
