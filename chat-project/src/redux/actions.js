@@ -1,4 +1,5 @@
 import * as actionTypes from "./consts/action-types";
+import dateFormat from "dateformat";
 
 // TODO! should come from Firebase
 export function receivedRooms(newListOfRooms) {
@@ -37,6 +38,18 @@ export function receivedMessage(userId, displayName, photoUrl, roomId,
         payload: {
         collection: "messages",
             userId, displayName, photoUrl, roomId, text, uploadedFile, time,
+        }
+    };
+}
+
+export function updateProfileFields(displayName, country) {
+    const now = new Date();
+    const updatedTime = dateFormat(now, "mm/dd/yyyy, HH:MM:ss");
+
+    return {type: actionTypes.UPDATE_PROFILE_FIELDS,
+        payload: {
+            collection: "users",
+            displayName, country, updatedTime
         }
     };
 }

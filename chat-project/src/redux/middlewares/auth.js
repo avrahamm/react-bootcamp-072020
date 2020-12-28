@@ -8,6 +8,7 @@ const auth = ({dispatch}) => next => action => {
         actionTypes.USER_SIGN_IN,
         actionTypes.USER_SIGN_OUT,
         actionTypes.RESET_USER_PASSWORD,
+        actionTypes.UPDATE_PROFILE_FIELDS,
     ];
 
     if ( !authActions.includes(action.type)) {
@@ -42,11 +43,22 @@ const auth = ({dispatch}) => next => action => {
                             active: true,
                             roomId: null,
                             photoUrl: currentUser.photoURL,
+                            country: "",
                         })
                     })
-                .then(() => {
+                .then( () => {
+                    const currentUser = firebase.auth().currentUser;
+                    const authUid = currentUser.uid;
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).get()
+                })
+                .then((userDoc) => {
+                    debugger
+                    console.log("userDoc = ", userDoc);
+                    console.log("userDoc.data() = ", userDoc.data());
                     action.meta = {
-                        currentUser: firebase.auth().currentUser
+                        currentUser: firebase.auth().currentUser,
+                        userDoc: userDoc.data(),
                     }
                     return next(action);
                 })
@@ -58,6 +70,7 @@ const auth = ({dispatch}) => next => action => {
         }
 
         case actionTypes.USER_SIGN_IN: {
+            let userRef = null;
             const {email, password} = action.payload;
             return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
                 .then( () => {
@@ -67,20 +80,20 @@ const auth = ({dispatch}) => next => action => {
                     // throw({message: "Test error"});
                     console.log("Signed in");
                     const authUid = firebase.auth().currentUser.uid;
-                    let userRef = firebase.firestore().collection('users').doc(authUid);
-                    console.log("userRef = ");
-                    console.log(userRef);
+                    userRef = firebase.firestore().collection('users').doc(authUid);
                     return userRef.set({
                         active: true,
                         roomId: null
                     }, { merge: true });
                 })
-                .then(function (userRef) {
-                    console.log("userRef = ");
-                    console.log(userRef);
-                    console.log("Signed in");
+                .then( () => {
+                    return userRef.get()
+                })
+                .then(function(userDoc) {
+                    // console.log("userDoc.data() = ", userDoc.data());
                     action.meta = {
-                        currentUser: firebase.auth().currentUser
+                        currentUser: firebase.auth().currentUser,
+                        userDoc: userDoc.data(),
                     }
                     return next(action);
                 })
@@ -133,6 +146,38 @@ const auth = ({dispatch}) => next => action => {
             });
         }
 
+        case actionTypes.UPDATE_PROFILE_FIELDS: {
+            // 1) update firebase.auth().currentUser displayName
+            // 2) update current user in users table with new displayName,
+            // 3) update displayName in messages where userId === curUserId
+            // 4) update users reducer with updated fields
+            //  country and updatedTime.
+            const {displayName, country, updatedTime,} = action.payload;
+            const currentUser = firebase.auth().currentUser;
+            return currentUser.updateProfile({
+                displayName,
+            })
+                .then(function () {
+                    // Update successful.
+                    console.log("updateProfile successful.");
+                    const authUid = currentUser.uid;
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).set({
+                            displayName,
+                            country,
+                            updatedTime,
+                    }, { merge: true })
+                })
+                // .then(() => {
+                //     // 4) update users reducer with updated fields
+                //     return next(action);
+                // })
+                .catch((error) => {
+                    console.log(`UPDATE_PROFILE_FIELDS failed!`);
+                    console.log(error);
+                    // return dispatch(actions.userSignUpError(error.message))
+                })
+        }
         default:
             return;
     }

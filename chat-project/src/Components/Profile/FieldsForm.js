@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import "./Profile.css";
+import {updateProfileFields} from "../../redux/actions";
 
 export default function FieldsForm() {
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export default function FieldsForm() {
 
     function handleFieldsSubmit(e) {
         e.preventDefault();
+        dispatch(updateProfileFields(name, country));
     }
 
     // @link:https://bbbootstrap.com/snippets/bootstrap-edit-job-profile-form-add-experience-94553916
@@ -44,7 +46,7 @@ export default function FieldsForm() {
                     </div>
                 </div>
                 <div className="mt-5 text-center">
-                    <button className="btn btn-primary profile-button" type="button">Save Profile</button>
+                    <button className="btn btn-primary profile-button" type="submit">Save Profile</button>
                 </div>
             </div>
         </form>

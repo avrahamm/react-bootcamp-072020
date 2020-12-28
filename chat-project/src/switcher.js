@@ -32,7 +32,10 @@ const Switcher = () => {
             </Route>
 
             <Route path={ROUTES.PROFILE}>
-                <Profile />
+                {Boolean(curUserId) ?
+                    <Profile /> :
+                    <Redirect to={ROUTES.SIGN_IN} />
+                }
             </Route>
 
             <Route exact path={ROUTES.HOME}>

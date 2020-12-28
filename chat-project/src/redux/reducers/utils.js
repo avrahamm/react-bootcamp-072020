@@ -37,12 +37,27 @@ export function extractAuthUserEssentials(user) {
   return null;
 }
 
-// firebase.auth().setPersistence saves to session
+export function getUserDataFromSession() {
+  const authUser = getAuthenticatedUserFromSession();
+  if (!authUser) {
+    return null;
+  }
+  const userDoc = getUserDocFromSession();
+  authUser.country = userDoc.country;
+  return authUser;
+}
+
 export function getAuthenticatedUserFromSession() {
+  // firebase.auth().setPersistence saves to session
   const authUser = sessionStorage.getItem(
       `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
   return extractAuthUserEssentials(JSON.parse(authUser));
+}
+
+export function getUserDocFromSession() {
+  const userDoc = sessionStorage.getItem(`userDoc`);
+  return JSON.parse(userDoc);
 }
 
 export function getAuthenticatedUserIdFromSession() {

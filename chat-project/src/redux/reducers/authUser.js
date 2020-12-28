@@ -1,12 +1,12 @@
 import produce from 'immer';
 
-import { createReducer,getAuthenticatedUserFromSession,
+import { createReducer, getUserDataFromSession,
   getAuthenticatedUserIdFromSession, extractAuthUserEssentials } from "./utils"
 import * as actionTypes from "../consts/action-types";
 
 const initialState = {
   // TODO! probably switch to user instead id
-  currentUser: getAuthenticatedUserFromSession(),
+  currentUser: getUserDataFromSession(),
   curUserId: getAuthenticatedUserIdFromSession(),
   signUpErrorMessage: null,
   signInErrorMessage: null,
@@ -25,11 +25,18 @@ function setAuthtUser(state, action) {
     const currentUser = action.meta.currentUser
     state.currentUser = extractAuthUserEssentials(currentUser);
     state.curUserId = currentUser.uid;
+    state.currentUser.country = action.meta.userDoc.country;
   }
   else {
     state.currentUser = null;
     state.curUserId = null;
   }
+}
+
+function updateProfileFields(state, action) {
+  const { displayName, country} = action.payload;
+  state.currentUser.displayName = displayName;
+  state.currentUser.country = country;
 }
 
 function userSignUpError(state, action) {
@@ -62,6 +69,7 @@ const cases = {
   [actionTypes.RESET_USER_PASSWORD]: resetUserPassword,
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,
+  [actionTypes.UPDATE_PROFILE_FIELDS]: updateProfileFields,
 }
 
 export default produce(createReducer(cases), initialState);

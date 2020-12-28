@@ -5,11 +5,13 @@ import * as actionTypes from "../consts/action-types";
  * @param store
  * @returns {function(*): function(*=): (*|undefined)}
  */
+const sessionActions = [
+    actionTypes.SET_ACTIVE_ROOM,
+    actionTypes.USER_SIGN_UP,
+    actionTypes.USER_SIGN_IN,
+    actionTypes.USER_SIGN_OUT
+];
 const session = store => next => action => {
-    const sessionActions = [
-        actionTypes.SET_ACTIVE_ROOM,
-        actionTypes.USER_SIGN_OUT
-    ];
 
     if ( !sessionActions.includes(action.type)) {
         return next(action);
@@ -21,8 +23,16 @@ const session = store => next => action => {
             return next(action);
         }
 
+        case actionTypes.USER_SIGN_UP:
+        case actionTypes.USER_SIGN_IN: {
+            debugger
+            sessionStorage.setItem('userDoc', JSON.stringify(action.meta.userDoc));
+            return next(action);
+        }
+
         case actionTypes.USER_SIGN_OUT: {
             sessionStorage.removeItem('activeRoom');
+            sessionStorage.removeItem('userDoc');
             return next(action);
         }
 
