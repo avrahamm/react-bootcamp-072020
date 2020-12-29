@@ -80,10 +80,10 @@ const auth = ({dispatch}) => next => action => {
                     console.log("Signed in");
                     const authUid = firebase.auth().currentUser.uid;
                     userRef = firebase.firestore().collection('users').doc(authUid);
-                    return userRef.set({
+                    return userRef.update({
                         active: true,
                         roomId: null
-                    }, { merge: true });
+                    });
                 })
                 .then( () => {
                     return userRef.get()
@@ -106,16 +106,16 @@ const auth = ({dispatch}) => next => action => {
         case actionTypes.USER_SIGN_OUT: {
             const authUid = action.payload.curUserId;
             let userRef = firebase.firestore().collection('users').doc(authUid);
-            return userRef.set({
+            return userRef.update({
                 active: false,
                 roomId: null
-            }, {merge: true})
+            })
                 .then( () => {
                     let userRef = firebase.firestore().collection('users').doc(authUid);
-                    return userRef.set({
+                    return userRef.update({
                         active: false,
                         roomId: null
-                    }, {merge: true})
+                    })
                 })
                 .then(() => {
                     return firebase.auth().signOut()
@@ -167,27 +167,26 @@ const auth = ({dispatch}) => next => action => {
                     // Update successful.
                     console.log("updateProfile successful.");
                     return firebase.firestore().collection("users")
-                        .doc(authUid).set({
+                        .doc(authUid).update({
                             displayName,
                             country,
                             updatedTime,
-                    }, { merge: true })
+                    })
                 })
                 .then(() => {
                     // 4) update displayName in messages where userId === curUserId
-                    debugger
                     let messagesQuery = firebase.firestore().collection("messages")
                         .where("userId", "==", authUid);
                     return messagesQuery.get();
                 })
                 .then((querySnapshot) => {
-                    return querySnapshot.forEach(function(messageDoc) {
-                        // doc.data() is never undefined for query doc snapshots
+                    let batch = firebase.firestore().batch();
+                    querySnapshot.forEach((messageDoc) => {
                         console.log(messageDoc.id, " => ", messageDoc.data());
-                        return messageDoc.ref.update({
-                            displayName,
-                        });
+                        return batch.update(messageDoc.ref, {displayName});
                     });
+                    // assuming batch size is less than 500/ max by docs.
+                    return batch.commit();
                 })
                 .then( () => {
                     return firebase.firestore().collection("users")
