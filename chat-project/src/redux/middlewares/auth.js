@@ -146,20 +146,26 @@ const auth = ({dispatch}) => next => action => {
         }
 
         case actionTypes.UPDATE_PROFILE_FIELDS: {
-            // 1) update firebase.auth().currentUser displayName
-            // 2) update current user in users table with new displayName,
-            // 3) update displayName in messages where userId === curUserId
-            // 4) update users reducer with updated fields
+            // 1) update firebase.auth().currentUser displayName - V
+            // 2) update current user in users table with new displayName, -V
+            // 3) update current user in session, - V
+            // 4) TODO! update displayName in messages where userId === curUserId
+            // 5) update users reducer with updated fields - V
             //  country and updatedTime.
+
             const {displayName, country, updatedTime,} = action.payload;
+            /** TODO! FIX! after refresh on /profile page,
+             * firebase is unavailable.
+             */
             const currentUser = firebase.auth().currentUser;
+            const authUid = currentUser.uid;
+
             return currentUser.updateProfile({
                 displayName,
             })
                 .then(function () {
                     // Update successful.
                     console.log("updateProfile successful.");
-                    const authUid = currentUser.uid;
                     return firebase.firestore().collection("users")
                         .doc(authUid).set({
                             displayName,
@@ -167,10 +173,17 @@ const auth = ({dispatch}) => next => action => {
                             updatedTime,
                     }, { merge: true })
                 })
-                // .then(() => {
-                //     // 4) update users reducer with updated fields
-                //     return next(action);
-                // })
+                .then( () => {
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).get()
+                })
+                .then((userDoc) => {
+                    action.meta = {
+                        currentUser: firebase.auth().currentUser,
+                        userDoc: userDoc.data(),
+                    }
+                    return next(action);
+                })
                 .catch((error) => {
                     console.log(`UPDATE_PROFILE_FIELDS failed!`);
                     console.log(error);

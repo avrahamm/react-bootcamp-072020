@@ -18,15 +18,24 @@ export default function SignOutForm() {
     return (
         <>
             <form className="form-signout" onSubmit={handleSubmit}>
-                <label htmlFor="signOut">Logged in as {
-                    currentUser ? currentUser.displayName
-                        : "signed out"} |
-                    <button id="signOut" className="btn btn-success btn-block" type="submit">
-                        <i className="fas fa-sign-out-alt"/> Sign out
-                    </button>
-                </label>
+                <div className="row">
+                    <div className="col-md-1">
+                        <label htmlFor="signOut">Logged in as {
+                            currentUser ? currentUser.displayName
+                                : "signed out"} |
+                            <button id="signOut" className="btn btn-success btn-block" type="submit">
+                                <i className="fas fa-sign-out-alt"/> Sign out
+                            </button>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <Link to={ROUTES.PROFILE}>
+                        <div className="col-md-1"><h3>Profile</h3></div>
+                    </Link>
+                </div>
             </form>
-            <Link to={ROUTES.PROFILE}><h3>Profile</h3></Link>
         </>
     )
 }

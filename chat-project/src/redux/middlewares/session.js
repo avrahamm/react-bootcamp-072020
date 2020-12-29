@@ -9,7 +9,8 @@ const sessionActions = [
     actionTypes.SET_ACTIVE_ROOM,
     actionTypes.USER_SIGN_UP,
     actionTypes.USER_SIGN_IN,
-    actionTypes.USER_SIGN_OUT
+    actionTypes.USER_SIGN_OUT,
+    actionTypes.UPDATE_PROFILE_FIELDS,
 ];
 const session = store => next => action => {
 
@@ -32,6 +33,11 @@ const session = store => next => action => {
         case actionTypes.USER_SIGN_OUT: {
             sessionStorage.removeItem('activeRoom');
             sessionStorage.removeItem('userDoc');
+            return next(action);
+        }
+
+        case actionTypes.UPDATE_PROFILE_FIELDS: {
+            sessionStorage.setItem('userDoc', JSON.stringify(action.meta.userDoc));
             return next(action);
         }
 
