@@ -149,7 +149,7 @@ const auth = ({dispatch}) => next => action => {
             // 1) update firebase.auth().currentUser displayName - V
             // 2) update current user in users table with new displayName, -V
             // 3) update current user in session, - V
-            // 4) TODO! update displayName in messages where userId === curUserId
+            // 4) update displayName in messages where userId === curUserId - V
             // 5) update users reducer with updated fields - V
             //  country and updatedTime.
 
@@ -172,6 +172,22 @@ const auth = ({dispatch}) => next => action => {
                             country,
                             updatedTime,
                     }, { merge: true })
+                })
+                .then(() => {
+                    // 4) update displayName in messages where userId === curUserId
+                    debugger
+                    let messagesQuery = firebase.firestore().collection("messages")
+                        .where("userId", "==", authUid);
+                    return messagesQuery.get();
+                })
+                .then((querySnapshot) => {
+                    return querySnapshot.forEach(function(messageDoc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(messageDoc.id, " => ", messageDoc.data());
+                        return messageDoc.ref.update({
+                            displayName,
+                        });
+                    });
                 })
                 .then( () => {
                     return firebase.firestore().collection("users")
