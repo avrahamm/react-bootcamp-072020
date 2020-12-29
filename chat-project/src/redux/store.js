@@ -5,6 +5,7 @@ import authUser from './reducers/authUser';
 import logger from './middlewares/logger';
 import firebaseApi from './middlewares/firebaseApi';
 import auth from './middlewares/auth';
+import profile from './middlewares/profile';
 import session from './middlewares/session';
 
 const reducer = combineReducers({rooms, authUser});
@@ -18,6 +19,7 @@ const store = createStore(reducer,
         applyMiddleware(
             logger,
             auth,
+            profile,
             firebaseApi,
             session
         )
