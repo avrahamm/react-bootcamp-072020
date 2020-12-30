@@ -12,6 +12,7 @@ const initialState = {
   signInErrorMessage: null,
   signOutErrorMessage: null,
   resetUserPasswordMessage: null,
+  updateProfileFieldsErrorMessage: null,
 };
 
 function resetAuthErrors(state) {
@@ -37,6 +38,15 @@ function updateProfileFields(state, action) {
   const { displayName, country} = action.payload;
   state.currentUser.displayName = displayName;
   state.currentUser.country = country;
+  resetProfileErrors(state);
+}
+
+function updateProfileFieldsError(state, action) {
+  state.updateProfileFieldsErrorMessage = action.payload.errorMessage;
+}
+
+function resetProfileErrors(state) {
+  state.updateProfileFieldsErrorMessage = null;
 }
 
 function userSignUpError(state, action) {
@@ -70,6 +80,8 @@ const cases = {
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,
   [actionTypes.UPDATE_PROFILE_FIELDS]: updateProfileFields,
+  [actionTypes.UPDATE_PROFILE_FIELDS_ERROR]: updateProfileFieldsError,
+  [actionTypes.RESET_PROFILE_ERRORS]: resetProfileErrors,
 }
 
 export default produce(createReducer(cases), initialState);

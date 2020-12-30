@@ -142,3 +142,20 @@ export function userSignOut(curUserId) {
         }
     };
 }
+
+export function updateProfileFieldsError(errorMessage) {
+
+    return {
+        type: actionTypes.UPDATE_PROFILE_FIELDS_ERROR,
+        payload: {
+            errorMessage
+        }
+    };
+}
+
+export function resetProfileErrors() {
+    return {
+        type: actionTypes.RESET_PROFILE_ERRORS
+    };
+}
+

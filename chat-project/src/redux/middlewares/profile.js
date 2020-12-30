@@ -24,12 +24,19 @@ const auth = ({dispatch}) => next => action => {
             /** TODO! FIX! after refresh on /profile page,
              * firebase is unavailable.
              */
-            const currentUser = firebase.auth().currentUser;
-            const authUid = currentUser.uid;
+            let currentUser = null;
+            let authUid = null;
 
-            return currentUser.updateProfile({
-                displayName,
-            })
+            return Promise.resolve()
+                .then( () => {
+                    currentUser = firebase.auth().currentUser;
+                    authUid = currentUser.uid;
+                })
+                .then(() => {
+                    return currentUser.updateProfile({
+                        displayName,
+                    })
+                })
                 .then(function () {
                     // Update successful.
                     console.log("updateProfile successful.");
@@ -69,7 +76,7 @@ const auth = ({dispatch}) => next => action => {
                 .catch((error) => {
                     console.log(`UPDATE_PROFILE_FIELDS failed!`);
                     console.log(error);
-                    // return dispatch(actions.userSignUpError(error.message))
+                    return dispatch(actions.updateProfileFieldsError(error.message));
                 })
         }
         default:
