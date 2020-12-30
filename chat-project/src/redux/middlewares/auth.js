@@ -1,6 +1,6 @@
 import * as actionTypes from "../consts/action-types";
 import * as actions from "../actions";
-import firebase from "../../../firebase";
+import { firebase, defaultNoPicImage } from "../../../firebase";
 
 const auth = ({dispatch}) => next => action => {
     const authActions = [
@@ -28,7 +28,7 @@ const auth = ({dispatch}) => next => action => {
                     return currentUser.updateProfile({
                         displayName: username,
                         // TODO! Temporary image, apply firebase storage
-                        photoURL: "https://firebasestorage.googleapis.com/v0/b/redux-ynonp-chat-project.appspot.com/o/no-pic.png?alt=media&token=a168a552-9a32-4826-9047-d449222b3bec"
+                        photoURL: defaultNoPicImage
                     })
                 })
                 .then(function () {

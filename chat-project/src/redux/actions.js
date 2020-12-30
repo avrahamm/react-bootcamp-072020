@@ -54,6 +54,26 @@ export function updateProfileFields(displayName, country) {
     };
 }
 
+export function updateProfilePicture(newPicture) {
+
+    return {type: actionTypes.UPDATE_PROFILE_PICTURE,
+        payload: {
+            collection: "users",
+            // TODO!
+        }
+    };
+}
+
+export function removeProfilePicture() {
+
+    return {type: actionTypes.REMOVE_PROFILE_PICTURE,
+        payload: {
+            collection: "users",
+            // TODO!
+        }
+    };
+}
+
 export function undo() {
     return {type: actionTypes.UNDO};
 }

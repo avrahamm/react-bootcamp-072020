@@ -15,7 +15,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+const defaultNoPicImage = "https://firebasestorage.googleapis.com/v0/b/redux-ynonp-chat-project.appspot.com/o/no-pic.png?alt=media&token=a168a552-9a32-4826-9047-d449222b3bec";
 // temporary for local browser console debugging
 // window.firebase = firebase;
-export { firebase, firebaseConfig };
+export { firebase, firebaseConfig, defaultNoPicImage };
 export default firebase;
