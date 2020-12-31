@@ -65,13 +65,7 @@ export function updateProfilePicture(newPicture) {
 }
 
 export function removeProfilePicture() {
-
-    return {type: actionTypes.REMOVE_PROFILE_PICTURE,
-        payload: {
-            collection: "users",
-            // TODO!
-        }
-    };
+    return {type: actionTypes.REMOVE_PROFILE_PICTURE };
 }
 
 export function undo() {
@@ -167,6 +161,16 @@ export function updateProfileFieldsError(errorMessage) {
 
     return {
         type: actionTypes.UPDATE_PROFILE_FIELDS_ERROR,
+        payload: {
+            errorMessage
+        }
+    };
+}
+
+export function updateProfilePictureError(errorMessage) {
+
+    return {
+        type: actionTypes.UPDATE_PROFILE_PICTURE_ERROR,
         payload: {
             errorMessage
         }

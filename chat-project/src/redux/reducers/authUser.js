@@ -13,6 +13,7 @@ const initialState = {
   signOutErrorMessage: null,
   resetUserPasswordMessage: null,
   updateProfileFieldsErrorMessage: null,
+  updateProfilePictureErrorMessage: null,
 };
 
 function resetAuthErrors(state) {
@@ -41,12 +42,24 @@ function updateProfileFields(state, action) {
   resetProfileErrors(state);
 }
 
+//TODO! consider to rename to updateProfilePicture
+function removeProfilePicture(state, action) {
+  const { photoUrl} = action.meta;
+  state.currentUser.photoURL = photoUrl;
+  resetProfileErrors(state);
+}
+
 function updateProfileFieldsError(state, action) {
   state.updateProfileFieldsErrorMessage = action.payload.errorMessage;
 }
 
+function updateProfilePictureError(state, action) {
+  state.updateProfilePictureErrorMessage = action.payload.errorMessage;
+}
+
 function resetProfileErrors(state) {
   state.updateProfileFieldsErrorMessage = null;
+  state.updateProfilePictureErrorMessage = null;
 }
 
 function userSignUpError(state, action) {
@@ -80,7 +93,9 @@ const cases = {
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,
   [actionTypes.UPDATE_PROFILE_FIELDS]: updateProfileFields,
+  [actionTypes.REMOVE_PROFILE_PICTURE]: removeProfilePicture,
   [actionTypes.UPDATE_PROFILE_FIELDS_ERROR]: updateProfileFieldsError,
+  [actionTypes.UPDATE_PROFILE_PICTURE_ERROR]: updateProfilePictureError,
   [actionTypes.RESET_PROFILE_ERRORS]: resetProfileErrors,
 }
 

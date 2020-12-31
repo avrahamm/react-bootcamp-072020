@@ -1,10 +1,11 @@
 import * as actionTypes from "../consts/action-types";
 import * as actions from "../actions";
-import firebase from "../../../firebase";
+import { firebase, defaultNoPicImage } from "../../../firebase";
 
 const auth = ({dispatch}) => next => action => {
     const authActions = [
         actionTypes.UPDATE_PROFILE_FIELDS,
+        actionTypes.REMOVE_PROFILE_PICTURE,
     ];
 
     if ( !authActions.includes(action.type)) {
@@ -77,6 +78,65 @@ const auth = ({dispatch}) => next => action => {
                     console.log(`UPDATE_PROFILE_FIELDS failed!`);
                     console.log(error);
                     return dispatch(actions.updateProfileFieldsError(error.message));
+                })
+        }
+        case actionTypes.REMOVE_PROFILE_PICTURE: {
+            // 1) update firebase.auth().currentUser photoURL - V
+            // 2) update current user in users table with new photoURL, -V
+            // 3) update displayName in messages where userId === curUserId - V
+            // 4) update authUser reducer with updated fields - V
+            // 3) update current user in session, - V
+            //  country and updatedTime.
+            let currentUser = null;
+            let authUid = null;
+
+            return Promise.resolve()
+                .then( () => {
+                    currentUser = firebase.auth().currentUser;
+                    authUid = currentUser.uid;
+                })
+                .then(() => {
+                    return currentUser.updateProfile({
+                        photoURL: defaultNoPicImage,
+                    })
+                })
+                .then(function () {
+                    // Update successful.
+                    console.log("updateProfile successful.");
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).update({
+                            photoUrl: defaultNoPicImage,
+                        })
+                })
+                .then(() => {
+                    // 4) update displayName in messages where userId === curUserId
+                    let messagesQuery = firebase.firestore().collection("messages")
+                        .where("userId", "==", authUid);
+                    return messagesQuery.get();
+                })
+                .then((querySnapshot) => {
+                    let batch = firebase.firestore().batch();
+                    querySnapshot.forEach((messageDoc) => {
+                        console.log(messageDoc.id, " => ", messageDoc.data());
+                        return batch.update(messageDoc.ref, {photoUrl: defaultNoPicImage,});
+                    });
+                    // assuming batch size is less than 500/ max by docs.
+                    return batch.commit();
+                })
+                .then( () => {
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).get()
+                })
+                .then((userDoc) => {
+                    action.meta = {
+                        photoUrl: defaultNoPicImage,
+                    }
+                    return next(action);
+                })
+                .catch((error) => {
+                    console.log(`REMOVE_PROFILE_PICTURE failed!`);
+                    console.log(error);
+                    return dispatch(actions.updateProfilePictureError(error.message));
                 })
         }
         default:
