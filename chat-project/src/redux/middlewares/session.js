@@ -11,6 +11,7 @@ const sessionActions = [
     actionTypes.USER_SIGN_IN,
     actionTypes.USER_SIGN_OUT,
     actionTypes.UPDATE_PROFILE_FIELDS,
+    actionTypes.REMOVE_PROFILE_PICTURE,
 ];
 const session = store => next => action => {
 
@@ -36,7 +37,8 @@ const session = store => next => action => {
             return next(action);
         }
 
-        case actionTypes.UPDATE_PROFILE_FIELDS: {
+        case actionTypes.UPDATE_PROFILE_FIELDS:
+        case actionTypes.REMOVE_PROFILE_PICTURE: {
             sessionStorage.setItem('userDoc', JSON.stringify(action.meta.userDoc));
             return next(action);
         }

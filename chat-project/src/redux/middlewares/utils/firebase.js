@@ -1,6 +1,6 @@
 import firebase from "../../../../firebase";
 // A loading image URL.
-const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
+import {LOADING_IMAGE_URL} from "../../../constants/defaults";
 
 function addObjToFirebaseCollection(collectionName, data={}) {
     const firebaseCollection = firebase.firestore().collection(collectionName);

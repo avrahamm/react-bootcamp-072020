@@ -44,7 +44,7 @@ function updateProfileFields(state, action) {
 
 //TODO! consider to rename to updateProfilePicture
 function removeProfilePicture(state, action) {
-  const { photoUrl} = action.meta;
+  const {photoUrl} = action.meta.userDoc;
   state.currentUser.photoURL = photoUrl;
   resetProfileErrors(state);
 }
