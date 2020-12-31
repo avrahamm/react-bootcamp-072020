@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -11,10 +11,19 @@ export default function PictureForm() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.authUser.currentUser);
     const curCountry = currentUser.country ? currentUser.country : "";
+    let updateProfilePictureErrorMessage = useSelector(state =>
+        state.authUser.updateProfilePictureErrorMessage);
 
     const fileRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [removePicture, setRemovePicture] = useState(false);
+
+    useEffect( () => {
+
+        return function abort() {
+            dispatch(actions.resetProfileErrors());
+        }
+    }, []);
 
     const handleCancelClick = (e) => {
         setRemovePicture(false);
@@ -71,6 +80,10 @@ export default function PictureForm() {
                         onClick={handleCancelClick}
                         className="btn btn-danger">Reset</button>
                 </div>
+                {Boolean(updateProfilePictureErrorMessage)
+                    ? <p style={{color: "red"}}>{updateProfilePictureErrorMessage}</p>
+                    : ""
+                }
                 <img className="rounded-circle mt-5"
                      src={formPicture}
                      width="90"

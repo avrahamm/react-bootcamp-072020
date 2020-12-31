@@ -75,7 +75,7 @@ const auth = ({dispatch}) => next => action => {
                     return next(action);
                 })
                 .catch((error) => {
-                    console.log(`UPDATE_PROFILE_FIELDS failed!`);
+                    console.log(`UPDATE PROFILE FIELDS/PICTURE failed!`);
                     console.log(error);
                     return dispatch(errorAction(error.message));
                 })

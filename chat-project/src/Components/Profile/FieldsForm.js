@@ -6,18 +6,25 @@ import * as actions from "../../redux/actions";
 
 export default function FieldsForm() {
     const dispatch = useDispatch();
-    // TODO! consider using reselect library
-    // to ignore currentUser updated because of uploading new picture
-    const currentUser = useSelector(state => state.authUser.currentUser);
+    const currentUserCountry = useSelector(state =>
+        state.authUser.currentUser.country ?
+            state.authUser.currentUser.country :
+            ""
+    );
+    const currentUserName = useSelector(state =>
+        state.authUser.currentUser.displayName ?
+            state.authUser.currentUser.displayName :
+            ""
+    );
     let updateProfileFieldsErrorMessage = useSelector(state =>
         state.authUser.updateProfileFieldsErrorMessage);
 
     const getCountry = () => {
-        return currentUser.country ? currentUser.country : "";
+        return currentUserCountry;
     }
 
     const getName = () => {
-        return currentUser.displayName;
+        return currentUserName;
     }
 
     const [country, setCountry] = useState(getCountry);
@@ -26,7 +33,7 @@ export default function FieldsForm() {
     useEffect( () => {
 
         return function abort() {
-            dispatch(actions.updateProfileFieldsError());
+            dispatch(actions.resetProfileErrors());
         }
     }, [])
 
