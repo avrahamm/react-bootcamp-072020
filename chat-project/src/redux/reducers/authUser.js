@@ -43,7 +43,7 @@ function updateProfileFields(state, action) {
 }
 
 //TODO! consider to rename to updateProfilePicture
-function removeProfilePicture(state, action) {
+function updateProfilePicture(state, action) {
   const {photoUrl} = action.meta.userDoc;
   state.currentUser.photoURL = photoUrl;
   resetProfileErrors(state);
@@ -93,7 +93,8 @@ const cases = {
   [actionTypes.RESET_USER_PASSWORD_ERROR]: resetUserPasswordError,
   [actionTypes.RESET_AUTH_ERRORS]: resetAuthErrors,
   [actionTypes.UPDATE_PROFILE_FIELDS]: updateProfileFields,
-  [actionTypes.REMOVE_PROFILE_PICTURE]: removeProfilePicture,
+  [actionTypes.REMOVE_PROFILE_PICTURE]: updateProfilePicture,
+  [actionTypes.UPDATE_PROFILE_PICTURE]: updateProfilePicture,
   [actionTypes.UPDATE_PROFILE_FIELDS_ERROR]: updateProfileFieldsError,
   [actionTypes.UPDATE_PROFILE_PICTURE_ERROR]: updateProfilePictureError,
   [actionTypes.RESET_PROFILE_ERRORS]: resetProfileErrors,

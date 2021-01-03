@@ -52,7 +52,7 @@ function addMessageDocumentWithImage(data) {
             // 4 - Update the chat message placeholder with the image's URL.
             return messageRef.update({
                 imageUrl: url,
-                storageUri: fileSnapshot.metadata.fullPath
+                // storageUri: fileSnapshot.metadata.fullPath
             });
         })
         .catch(function (error) {
