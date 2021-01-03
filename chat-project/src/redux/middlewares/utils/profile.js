@@ -53,6 +53,29 @@ export const getUpdateProfileData = (action) => {
             }
         }
 
+        case actionTypes.UPDATE_PROFILE_PICTURE: {
+            const {newPicture} = action.payload;
+
+            const authUserData = {
+                photoURL: defaultNoPicImage,
+            }
+            const userData = {
+                photoUrl: defaultNoPicImage,
+            };
+            const messageData = {
+                photoUrl: defaultNoPicImage,
+            };
+            const errorAction = actions.updateProfilePictureError;
+
+            return {
+                authUserData,
+                userData,
+                messageData,
+                errorAction,
+            }
+        }
+
+
         default: {
             return {};
         }

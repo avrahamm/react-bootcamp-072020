@@ -6,6 +6,7 @@ import "./Profile.css";
 import * as ROUTES from "../../constants/routes";
 import * as actions from "../../redux/actions";
 import {NO_PIC_IMAGE} from "../../constants/defaults";
+import {defaultNoPicImage} from "../../../firebase";
 
 export default function PictureForm() {
     const dispatch = useDispatch();
@@ -50,11 +51,11 @@ export default function PictureForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if ( !Boolean(selectedFile) && !Boolean(removePicture) ) {
+        if ( !Boolean(selectedFile) && !removePicture ) {
             return false;
         }
 
-        if ( Boolean(removePicture) ) {
+        if ( removePicture ) {
             return dispatch(actions.removeProfilePicture());
         }
 
@@ -63,9 +64,12 @@ export default function PictureForm() {
         }
     }
 
+    // either current picture or a picture intended to be set.
     let formPicture = removePicture ? NO_PIC_IMAGE
         : ( selectedFile ? URL.createObjectURL(selectedFile)
             : currentUser.photoURL );
+
+    const isRemovePictureRelevant = currentUser.photoURL !== defaultNoPicImage;
 
     // @link:https://bbbootstrap.com/snippets/bootstrap-edit-job-profile-form-add-experience-94553916
     return (
@@ -94,7 +98,7 @@ export default function PictureForm() {
                 </span>
                 <span
                     className="text-black-50">{currentUser.email}
-                            </span>
+                </span>
                 <span>{curCountry}</span>
                 <div className="mt-3 text-center">
                     <button type="button"
@@ -103,12 +107,16 @@ export default function PictureForm() {
                         className="btn btn-primary"
                     >Upload new picture</button>
                 </div>
+                { isRemovePictureRelevant
+                    ?
                 <div className="mt-3 text-center">
                     <button type="button"
                         id={"removeButton"}
                         onClick={handleRemoveClick}
                         className="btn btn-danger">Remove picture</button>
                 </div>
+                    : ""
+                }
                 <div className="form-group" style={{display:"none"}}>
                     <label htmlFor="photoFile">Photo picture</label>
                     <input type="file"

@@ -58,8 +58,7 @@ export function updateProfilePicture(newPicture) {
 
     return {type: actionTypes.UPDATE_PROFILE_PICTURE,
         payload: {
-            collection: "users",
-            // TODO!
+            newPicture
         }
     };
 }
