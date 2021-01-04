@@ -12,19 +12,24 @@ export default function PictureForm() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.authUser.currentUser);
     const curCountry = currentUser.country ? currentUser.country : "";
+    const curPhotoUrl = currentUser.photoURL ? currentUser.photoURL : "";
     let updateProfilePictureErrorMessage = useSelector(state =>
         state.authUser.updateProfilePictureErrorMessage);
 
     const fileRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [removePicture, setRemovePicture] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect( () => {
+        setRemovePicture(false);
+        setSelectedFile(null);
+        setLoading(false);
 
         return function abort() {
             dispatch(actions.resetProfileErrors());
         }
-    }, []);
+    }, [curPhotoUrl]);
 
     const handleCancelClick = (e) => {
         setRemovePicture(false);
@@ -56,10 +61,12 @@ export default function PictureForm() {
         }
 
         if ( removePicture ) {
+            setLoading(true);
             return dispatch(actions.removeProfilePicture());
         }
 
         if ( Boolean(selectedFile) ) {
+            setLoading(true);
             return dispatch(actions.updateProfilePicture(selectedFile));
         }
     }
@@ -67,7 +74,7 @@ export default function PictureForm() {
     // either current picture or a picture intended to be set.
     let formPicture = removePicture ? NO_PIC_IMAGE
         : ( selectedFile ? URL.createObjectURL(selectedFile)
-            : currentUser.photoURL );
+            : curPhotoUrl );
 
     const isRemovePictureRelevant = currentUser.photoURL !== defaultNoPicImage;
 
@@ -84,8 +91,12 @@ export default function PictureForm() {
                         onClick={handleCancelClick}
                         className="btn btn-danger">Reset</button>
                 </div>
+                { (!Boolean(updateProfilePictureErrorMessage) && loading)
+                    ? <h3 style={{color: "blue"}}>Loading..</h3>
+                    : ""
+                }
                 {Boolean(updateProfilePictureErrorMessage)
-                    ? <p style={{color: "red"}}>{updateProfilePictureErrorMessage}</p>
+                    ? <h3 style={{color: "red"}}>{"Error: " + updateProfilePictureErrorMessage}</h3>
                     : ""
                 }
                 <img className="rounded-circle mt-5"

@@ -29,16 +29,18 @@ export default function FieldsForm() {
 
     const [country, setCountry] = useState(getCountry);
     const [name, setName] = useState(getName);
+    const [loading, setLoading] = useState(false);
 
     useEffect( () => {
-
+        setLoading(false);
         return function abort() {
             dispatch(actions.resetProfileErrors());
         }
-    }, [])
+    }, [currentUserName, currentUserCountry])
 
     function handleFieldsSubmit(e) {
         e.preventDefault();
+        setLoading(true);
         dispatch(actions.updateProfileFields(name, country));
     }
 
@@ -49,8 +51,12 @@ export default function FieldsForm() {
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h6 className="text-right">Edit your profile</h6>
                 </div>
+                { (!Boolean(updateProfileFieldsErrorMessage) && loading)
+                    ? <h3 style={{color: "blue"}}>Loading..</h3>
+                    : ""
+                }
                 {Boolean(updateProfileFieldsErrorMessage)
-                    ? <p style={{color: "red"}}>{updateProfileFieldsErrorMessage}</p>
+                    ? <h3 style={{color: "red"}}>{updateProfileFieldsErrorMessage}</h3>
                     : ""
                 }
                 <div className="row mt-2">
