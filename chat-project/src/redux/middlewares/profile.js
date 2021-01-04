@@ -14,15 +14,23 @@ const auth = ({dispatch}) => next => action => {
         return next(action);
     }
 
+    /**
+     * Common steps, each case adapts for himself.
+     * There is code repetition of code very similar for each case, yet with specific data.
+     * Currently, I prefer not to generalize as each case still can demand more specific behaviour.
+     *
+     * 1.1) upload new file to storage if needed
+     * 1.2) get new picture URL
+     * 1.3) update firebase.auth().currentUser displayName/photoURL - V
+     * 2) update current user in users table with new displayName/photoUrl, -V
+     * 3) update current user in session, - V
+     * 4) update displayName/photoUrl in messages where userId === curUserId - V
+     * 5) delete old file from storage
+     * 6) update users reducer with updated userDoc - V
+     *      country and updatedTime.
+     */
     switch(action.type) {
         case actionTypes.UPDATE_PROFILE_FIELDS: {
-            // 1) update firebase.auth().currentUser displayName/photoURL - V
-            // 2) update current user in users table with new displayName/photoUrl, -V
-            // 3) update current user in session, - V
-            // 4) update displayName/photoUrl in messages where userId === curUserId - V
-            // 5) update users reducer with updated userDoc - V
-            //  country and updatedTime.
-
             const {
                 authUserData,
                 userData,
@@ -46,9 +54,18 @@ const auth = ({dispatch}) => next => action => {
                 })
                 .then(function () {
                     // Update successful.
-                    console.log("updateProfile successful.");
                     return firebase.firestore().collection("users")
                         .doc(authUid).update(userData)
+                })
+                .then( () => {
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).get()
+                })
+                .then((userDoc) => {
+                    // to update session
+                    action.meta = {
+                        userDoc: userDoc.data(),
+                    }
                 })
                 .then(() => {
                     // 4) update displayName in messages where userId === curUserId
@@ -65,14 +82,7 @@ const auth = ({dispatch}) => next => action => {
                     // assuming batch size is less than 500/ max by docs.
                     return batch.commit();
                 })
-                .then( () => {
-                    return firebase.firestore().collection("users")
-                        .doc(authUid).get()
-                })
-                .then((userDoc) => {
-                    action.meta = {
-                        userDoc: userDoc.data(),
-                    }
+                .then(() => {
                     return next(action);
                 })
                 .catch((error) => {
@@ -81,13 +91,7 @@ const auth = ({dispatch}) => next => action => {
                     return dispatch(errorAction(error.message));
                 })
         }
-        // 1) update firebase.auth().currentUser displayName/photoURL - V
-        // 1.1) remove current users profile image from storage
-        // 2) update current user in users table with new displayName/photoUrl, -V
-        // 3) update current user in session, - V
-        // 4) update displayName/photoUrl in messages where userId === curUserId - V
-        // 5) update users reducer with updated userDoc - V
-        //  country and updatedTime.
+
         case actionTypes.REMOVE_PROFILE_PICTURE: {
 
             const {
@@ -99,28 +103,31 @@ const auth = ({dispatch}) => next => action => {
 
             let currentUser = null;
             let authUid = null;
-            let currentPhoto = null;
+            let currentPhotoUrl = null;
 
             return Promise.resolve()
                 .then( () => {
                     // if fails - error is thrown and errorAction is dispatched.
                     currentUser = firebase.auth().currentUser;
                     authUid = currentUser.uid;
-                    currentPhoto = currentUser.photoURL;
-                })
-                .then( () => {
-                    debugger
-                    let httpsReference = firebase.storage().refFromURL(currentPhoto);
-                    return httpsReference.delete();
+                    currentPhotoUrl = currentUser.photoURL;
                 })
                 .then(() => {
                     return currentUser.updateProfile(authUserData)
                 })
                 .then(function () {
-                    // Update successful.
-                    console.log("updateProfile successful.");
                     return firebase.firestore().collection("users")
                         .doc(authUid).update(userData)
+                })
+                .then( () => {
+                    return firebase.firestore().collection("users")
+                        .doc(authUid).get()
+                })
+                .then((userDoc) => {
+                    // to update session
+                    action.meta = {
+                        userDoc: userDoc.data(),
+                    }
                 })
                 .then(() => {
                     // 4) update displayName in messages where userId === curUserId
@@ -138,13 +145,12 @@ const auth = ({dispatch}) => next => action => {
                     return batch.commit();
                 })
                 .then( () => {
-                    return firebase.firestore().collection("users")
-                        .doc(authUid).get()
-                })
-                .then((userDoc) => {
-                    action.meta = {
-                        userDoc: userDoc.data(),
+                    if ( currentPhotoUrl !== defaultNoPicImage ) {
+                        let httpsReference = firebase.storage().refFromURL(currentPhotoUrl);
+                        return httpsReference.delete();
                     }
+                })
+                .then(() => {
                     return next(action);
                 })
                 .catch((error) => {
@@ -155,23 +161,6 @@ const auth = ({dispatch}) => next => action => {
         }
 
         case actionTypes.UPDATE_PROFILE_PICTURE: {
-            // 1.2) upload new picture to storage
-            // 1.3) get new picture URL
-            // 1.4) update firebase.auth().currentUser displayName/photoURL - V
-            // 2) update current user in users table with new displayName/photoUrl, -V
-            // 3) update current user in session, - V
-            // 4) update displayName/photoUrl in messages where userId === curUserId - V
-            // 4.1) delete old image form storage
-            // 5) update users reducer with updated userDoc - V
-            //  country and updatedTime.
-
-            // const {
-            //     authUserData,
-            //     userData,
-            //     messageData,
-            //     errorAction,
-            // } = getUpdateProfileData(action);
-
             const { newPicture } = action.payload;
             let currentUser = null;
             let authUid = null;
@@ -187,7 +176,6 @@ const auth = ({dispatch}) => next => action => {
                     currentPhotoUrl = currentUser.photoURL;
                 })
                 .then( () => {
-                    debugger
                     const filePath = `users/${authUid}/${newPicture.name}`;
                     return firebase.storage().ref(filePath).put(newPicture);
                 })
@@ -216,6 +204,7 @@ const auth = ({dispatch}) => next => action => {
                         .doc(authUid).get()
                 })
                 .then((userDoc) => {
+                    // to update session
                     action.meta = {
                         userDoc: userDoc.data(),
                     }
@@ -238,7 +227,6 @@ const auth = ({dispatch}) => next => action => {
                     return batch.commit();
                 })
                 .then( () => {
-                    debugger
                     if ( currentPhotoUrl !== defaultNoPicImage ) {
                         let httpsReference = firebase.storage().refFromURL(currentPhotoUrl);
                         return httpsReference.delete();
